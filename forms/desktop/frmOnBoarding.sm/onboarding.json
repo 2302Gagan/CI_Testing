@@ -34,23 +34,19 @@
         "type": "string",
         "value": "100%"
     },
-    "autogrowmode": 0,
     "canUpdateUI": true,
     "centery": {
         "type": "string",
         "value": "55%"
     },
-    "clipbounds": true,
     "containerweight": 0,
     "data": {},
-    "enablescrolling": true,
     "id": "onboarding",
     "info": null,
     "iscustomlayout": false,
     "issegmentchild": false,
     "isvisible": false,
     "kuid": "bb9fbb9facb846008cae6833435e97cb",
-    "layouttype": 2,
     "masterType": 1,
     "name": "kony.ui.UserWidgetInstance",
     "parent": "flxContent",
@@ -58,8 +54,6 @@
     "retaincontentalignment": false,
     "retainflexpositionproperties": false,
     "retainflowhorizontalalignment": false,
-    "snapgridsize": 10,
-    "snaptogrid": true,
     "sourceUserWidget": "d91d5cd8a88d41bfba21c94628626572",
     "wType": "UserWidgetInstance"
 }

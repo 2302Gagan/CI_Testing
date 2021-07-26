@@ -622,7 +622,125 @@
 						<params/>
 					</mapping>
 				</mappings>
-			</jsfunction>		
-		</jsfunctions>
+			</jsfunction>
+<jsfunction name="setGlobalRequestParam" returntype="void">
+            <params>
+               <param name="paramName" type="String" />
+			   <param name="paramValue" type="String" />
+			   <param name="paramType" type="String" />
+            </params>
+            <mappings>
+               <mapping platform="winphone10" library="konyLogger.zip" namespace="KonyLogger.Core" class="KonyJSFacade" static="true" method="SetGlobalRequestParam" returntype="System.Void" frameworks="">
+                  <params>
+                     <param type="System.String"/>
+					 <param type="System.String"/>
+					 <param type="System.String"/>
+                  </params>
+               </mapping>
+               <mapping platform="windows10" library="konyLogger.zip" namespace="KonyLogger.Core" class="KonyJSFacade" static="true" method="SetGlobalRequestParam" returntype="System.Void" frameworks="">
+                  <params>
+                     <param type="System.String"/>
+				     <param type="System.String"/>
+					 <param type="System.String"/>
+                  </params>
+               </mapping>
+               <mapping platform="android" library="konylogger.jar" namespace="com.kony.logger.Core" class="KonyJSFacade" static="true" method="setGlobalRequestParam" returntype="void" frameworks="">
+                  <params>
+                     <param type="java.lang.String" />
+					 <param type="java.lang.String" />
+					 <param type="java.lang.String" />
+                  </params>
+               </mapping>
+               <mapping platform="tabrcandroid" library="konylogger.jar" namespace="com.kony.logger.Core" class="KonyJSFacade" static="true" method="setGlobalRequestParam" returntype="void" frameworks="">
+                  <params>
+                     <param type="java.lang.String" />
+					 <param type="java.lang.String" />
+					 <param type="java.lang.String" />
+                  </params>
+               </mapping>
+               <mapping platform="iphone" library="konyLogger.zip" namespace="" class="LoggerAbstraction" static="true" method="setGlobalRequestParam:paramValue:paramType:" returntype="void" frameworks="">
+                  <params>
+                     <param type="NSString" />
+					 <param type="NSString" />
+					 <param type="NSString" />
+                  </params>
+               </mapping>
+               <mapping platform="ipad" library="konyLogger.zip" namespace="" class="LoggerAbstraction" static="true" method="setGlobalRequestParam:paramValue:paramType:" returntype="void" frameworks="">
+                  <params>
+                     <param type="NSString" />
+					 <param type="NSString" />
+					 <param type="NSString" />
+                  </params>
+               </mapping>
+            </mappings>
+         </jsfunction>
+		 <jsfunction name="removeGlobalRequestParam" returntype="void">
+            <params>
+               <param name="paramName" type="String" />
+			   <param name="paramType" type="String" />
+            </params>
+            <mappings>
+               <mapping platform="winphone10" library="konyLogger.zip" namespace="KonyLogger.Core" class="KonyJSFacade" static="true" method="RemoveGlobalRequestParam" returntype="System.Void" frameworks="">
+                  <params>
+                     <param type="System.String"/>
+				     <param type="System.String"/>
+                  </params>
+               </mapping>
+               <mapping platform="windows10" library="konyLogger.zip" namespace="KonyLogger.Core" class="KonyJSFacade" static="true" method="RemoveGlobalRequestParam" returntype="System.Void" frameworks="">
+                  <params>
+                     <param type="System.String"/>
+				     <param type="System.String"/>
+                  </params>
+               </mapping>
+               <mapping platform="android" library="konylogger.jar" namespace="com.kony.logger.Core" class="KonyJSFacade" static="true" method="removeGlobalRequestParam" returntype="void" frameworks="">
+                  <params>
+                     <param type="java.lang.String" />
+					 <param type="java.lang.String" />
+                  </params>
+               </mapping>
+               <mapping platform="tabrcandroid" library="konylogger.jar" namespace="com.kony.logger.Core" class="KonyJSFacade" static="true" method="removeGlobalRequestParam" returntype="void" frameworks="">
+                  <params>
+                     <param type="java.lang.String" />
+					 <param type="java.lang.String" />
+                  </params>
+               </mapping>
+               <mapping platform="iphone" library="konyLogger.zip" namespace="" class="LoggerAbstraction" static="true" method="removeGlobalRequestParam:paramType:" returntype="void" frameworks="">
+                  <params>
+                     <param type="NSString" />
+					 <param type="NSString" />
+                  </params>
+               </mapping>
+               <mapping platform="ipad" library="konyLogger.zip" namespace="" class="LoggerAbstraction" static="true" method="removeGlobalRequestParam:paramType:" returntype="void" frameworks="">
+                  <params>
+                     <param type="NSString" />
+					 <param type="NSString" />
+                  </params>
+               </mapping>
+            </mappings>
+         </jsfunction>
+		 <jsfunction name="resetGlobalRequestParams" returntype="void">
+            <params />
+            <mappings>
+               <mapping platform="winphone10" library="konyLogger.zip" namespace="KonyLogger.Core" class="KonyJSFacade" static="true" method="ResetGlobalRequestParams" returntype="System.Void" frameworks="">
+                  <params />
+               </mapping>
+               <mapping platform="windows10" library="konyLogger.zip" namespace="KonyLogger.Core" class="KonyJSFacade" static="true" method="ResetGlobalRequestParams" returntype="System.Void" frameworks="">
+                  <params />
+               </mapping>
+               <mapping platform="android" library="konylogger.jar" namespace="com.kony.logger.Core" class="KonyJSFacade" static="true" method="resetGlobalRequestParams" returntype="void" frameworks="">
+                  <params />
+               </mapping>
+               <mapping platform="tabrcandroid" library="konylogger.jar" namespace="com.kony.logger.Core" class="KonyJSFacade" static="true" method="resetGlobalRequestParams" returntype="void" frameworks="">
+                  <params />
+               </mapping>
+               <mapping platform="iphone" library="konyLogger.zip" namespace="" class="LoggerAbstraction" static="true" method="resetGlobalRequestParams" returntype="void" frameworks="">
+                  <params />
+               </mapping>
+               <mapping platform="ipad" library="konyLogger.zip" namespace="" class="LoggerAbstraction" static="true" method="resetGlobalRequestParams" returntype="void" frameworks="">
+                  <params />
+               </mapping>
+            </mappings>
+		</jsfunction>			
+	  </jsfunctions>
 	</jsnamespace>
 </application>

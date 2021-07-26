@@ -18,4 +18,7 @@ KonyLogger.deactivatePersistors= function(deactivatedList){};
 KonyLogger.setClaimsToken= function(claimsToken){};
 KonyLogger.subscribeLogListener= function(logListener){};
 KonyLogger.unsubscribeLogListener= function(){};
+KonyLogger.setGlobalRequestParam= function(paramName, paramValue, paramType){};
+KonyLogger.removeGlobalRequestParam= function(paramName, paramType){};
+KonyLogger.resetGlobalRequestParams= function(){};
 

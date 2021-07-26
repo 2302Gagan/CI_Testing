@@ -44,8 +44,15 @@ public class N_KonyLogger extends JSLibrary {
 	public static final String subscribeLogListener = "subscribeLogListener";
  
 	public static final String unsubscribeLogListener = "unsubscribeLogListener";
+	
+	public static final String setGlobalRequestParam = "setGlobalRequestParam";
+	
+	public static final String removeGlobalRequestParam = "removeGlobalRequestParam";
+	
+	public static final String resetGlobalRequestParams = "resetGlobalRequestParams";
  
-	String[] methods = { getLogLevel, flush, setConfig, setPersistorConfig, setLogLevel, activatePersistors, deactivatePersistors, setClaimsToken, subscribeLogListener, unsubscribeLogListener};
+	String[] methods = { getLogLevel, flush, setConfig, setPersistorConfig, setLogLevel, activatePersistors, deactivatePersistors, setClaimsToken, subscribeLogListener, unsubscribeLogListener, 
+	setGlobalRequestParam, removeGlobalRequestParam, resetGlobalRequestParams};
 
 
  Library libs[] = null;
@@ -143,7 +150,39 @@ public class N_KonyLogger extends JSLibrary {
  if (paramLen != 0){ return new Object[] {new Double(100),"Invalid Params"}; }
  ret = this.unsubscribeLogListener( );
  
- 			break;			
+ 			break;
+		case 10:
+		 if (paramLen != 3){ return new Object[] {new Double(100),"Invalid Params"}; }
+ java.lang.String paramName10 = null;
+ if(params[0] != null && params[0] != LuaNil.nil) {
+ paramName10 = (java.lang.String)params[0];
+ }
+ java.lang.String paramValue10 = null;
+ if(params[1] != null && params[1] != LuaNil.nil) {
+ paramValue10 = (java.lang.String)params[1];
+ }
+ java.lang.String paramType10 = null;
+ if(params[2] != null && params[2] != LuaNil.nil) {
+ paramType10 = (java.lang.String)params[2];
+ }
+ ret = this.setGlobalRequestParam( paramName10, paramValue10, paramType10 );
+			break;
+		case 11:
+		 if (paramLen != 2){ return new Object[] {new Double(100),"Invalid Params"}; }
+ java.lang.String paramName11 = null;
+ if(params[0] != null && params[0] != LuaNil.nil) {
+ paramName11 = (java.lang.String)params[0];
+ }
+ java.lang.String paramType11 = null;
+ if(params[1] != null && params[1] != LuaNil.nil) {
+ paramType11 = (java.lang.String)params[1];
+ }
+ ret = this.removeGlobalRequestParam( paramName11, paramType11 );
+			break;
+		case 12:
+ if (paramLen != 0){ return new Object[] {new Double(100),"Invalid Params"}; }
+ ret = this.resetGlobalRequestParams( );
+			break;			
  		default:
 			break;
 		}
@@ -269,6 +308,39 @@ public class N_KonyLogger extends JSLibrary {
 	}
  
 
+	public final Object[] setGlobalRequestParam( java.lang.String inputKey0, java.lang.String inputKey1, java.lang.String inputKey2 ){
+ 
+		Object[] ret = null;
+	com.kony.logger.Core.KonyJSFacade.setGlobalRequestParam( inputKey0
+	, inputKey1
+	, inputKey2
+	);
+ 
+ ret = new Object[]{LuaNil.nil, new Double(0)};
+ 		return ret;
+	}
+	
+	
+	public final Object[] removeGlobalRequestParam( java.lang.String inputKey0, java.lang.String inputKey1 ){
+ 
+		Object[] ret = null;
+	com.kony.logger.Core.KonyJSFacade.removeGlobalRequestParam( inputKey0
+	, inputKey1
+	);
+	 
+	 ret = new Object[]{LuaNil.nil, new Double(0)};
+			return ret;
+	}
+	
+	
+	public final Object[] resetGlobalRequestParams( ){
+ 
+				Object[] ret = null;
+	 com.kony.logger.Core.KonyJSFacade.resetGlobalRequestParams( );
+	 
+	 ret = new Object[]{LuaNil.nil, new Double(0)};
+			return ret;
+	}
 
 class InitializeLogger extends JSLibrary {
 

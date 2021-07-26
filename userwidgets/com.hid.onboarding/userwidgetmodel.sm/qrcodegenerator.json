@@ -33,13 +33,11 @@
         "type": "string",
         "value": "100%"
     },
-    "autogrowmode": 0,
     "canUpdateUI": true,
     "centerx": {
         "type": "string",
         "value": "50%"
     },
-    "clipbounds": true,
     "containerweight": 0,
     "data": {
         "colorDark": "#00539b",
@@ -49,21 +47,17 @@
         "qrcodeHeight": "140",
         "qrcodeWidth": "140"
     },
-    "enablescrolling": true,
     "id": "qrcodegenerator",
     "info": null,
     "iscustomlayout": false,
     "isvisible": true,
     "kuid": "c7b21cb1d050425eadc45d5bc27d919c",
-    "layouttype": 2,
     "masterType": 1,
     "name": "kony.ui.UserWidgetInstance",
     "parent": "flxQRMain",
     "pf": "userwidgetmodel",
     "retaincontentalignment": false,
     "retainflexpositionproperties": false,
-    "snapgridsize": 10,
-    "snaptogrid": true,
     "sourceUserWidget": "ie2ce5bd9888444e8400947e44244542",
     "wType": "UserWidgetInstance"
 }

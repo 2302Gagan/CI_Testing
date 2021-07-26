@@ -1,0 +1,814 @@
+[2021-07-25 15:40:16.087] [INFO] ci - 
+ 
+        -------------------------------
+               Kony CI v9.2.26
+        -------------------------------
+         node version: v15.4.0
+
+[2021-07-25 15:40:18.010] [DEBUG] ci -  ➠ Pre-build validations
+[2021-07-25 15:40:18.011] [INFO] ci - ✓ ANT_HOME
+[2021-07-25 15:40:18.016] [INFO] ci - ✓ java version
+[2021-07-25 15:40:18.023] [ERROR] ci - Build Failed!
+- CustomError:  ant 1.10.8 - not found
+    at e (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:3194)
+    at C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2965
+    at Array.forEach (<anonymous>)
+    at d (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2953)
+    at Object.a.preBuildValidations (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:846)
+    at runApplicationBuild (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:1386)
+    at Object.<anonymous> (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:7185)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:76:12)
+    at node:internal/main/run_main_module:17:47 {
+  code: 58
+}
+[2021-07-26 15:36:27.049] [INFO] ci - 
+ 
+        -------------------------------
+               Kony CI v9.2.26
+        -------------------------------
+         node version: v15.4.0
+
+[2021-07-26 15:36:29.112] [DEBUG] ci -  ➠ Pre-build validations
+[2021-07-26 15:36:29.114] [INFO] ci - ✓ ANT_HOME
+[2021-07-26 15:36:29.120] [INFO] ci - ✓ java version
+[2021-07-26 15:36:29.124] [ERROR] ci - Build Failed!
+- CustomError:  ant 1.10.8 - not found
+    at e (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:3194)
+    at C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2965
+    at Array.forEach (<anonymous>)
+    at d (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2953)
+    at Object.a.preBuildValidations (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:846)
+    at runApplicationBuild (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:1386)
+    at Object.<anonymous> (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:7185)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:76:12)
+    at node:internal/main/run_main_module:17:47 {
+  code: 58
+}
+[2021-07-26 15:38:35.966] [INFO] ci - 
+ 
+        -------------------------------
+               Kony CI v9.2.26
+        -------------------------------
+         node version: v15.4.0
+
+[2021-07-26 15:38:37.626] [DEBUG] ci -  ➠ Pre-build validations
+[2021-07-26 15:38:37.627] [INFO] ci - ✓ ANT_HOME
+[2021-07-26 15:38:37.630] [INFO] ci - ✓ java version
+[2021-07-26 15:38:37.635] [ERROR] ci - Build Failed!
+- CustomError:  ant 1.10.8 - not found
+    at e (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:3194)
+    at C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2965
+    at Array.forEach (<anonymous>)
+    at d (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2953)
+    at Object.a.preBuildValidations (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:846)
+    at runApplicationBuild (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:1386)
+    at Object.<anonymous> (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:7185)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:76:12)
+    at node:internal/main/run_main_module:17:47 {
+  code: 58
+}
+[2021-07-26 15:43:37.882] [INFO] ci - 
+ 
+        -------------------------------
+               Kony CI v9.2.26
+        -------------------------------
+         node version: v15.4.0
+
+[2021-07-26 15:43:39.291] [DEBUG] ci -  ➠ Pre-build validations
+[2021-07-26 15:43:39.293] [INFO] ci - ✓ ANT_HOME
+[2021-07-26 15:43:39.295] [INFO] ci - ✓ java version
+[2021-07-26 15:43:39.300] [ERROR] ci - Build Failed!
+- CustomError:  ant 1.10.8 - not found
+    at e (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:3194)
+    at C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2965
+    at Array.forEach (<anonymous>)
+    at d (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:2953)
+    at Object.a.preBuildValidations (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\utils\validationUtils.js:1:846)
+    at runApplicationBuild (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:1386)
+    at Object.<anonymous> (C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\BuildManager.js:1:7185)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:76:12)
+    at node:internal/main/run_main_module:17:47 {
+  code: 58
+}
+[2021-07-26 16:01:57.225] [INFO] ci - 
+ 
+        -------------------------------
+               Kony CI v9.2.26
+        -------------------------------
+         node version: v15.4.0
+
+[2021-07-26 16:02:00.432] [DEBUG] ci -  ➠ Pre-build validations
+[2021-07-26 16:02:00.434] [INFO] ci - ✓ ANT_HOME
+[2021-07-26 16:02:00.438] [INFO] ci - ✓ java version
+[2021-07-26 16:02:00.439] [INFO] ci - ✓ ant version
+[2021-07-26 16:02:00.439] [INFO] ci - ✓ node version
+[2021-07-26 16:02:00.440] [INFO] ci -  xcode 9.0 - not found
+[2021-07-26 16:02:00.442] [DEBUG] ~~~~ - Close Current Watcher
+[2021-07-26 16:02:00.454] [INFO] ~~~~ - Validating and Repairing the project structure: C:\Users\c-gagkau\Documents\OnboardingApprove
+[2021-07-26 16:02:00.457] [INFO] ~~~~ - Validating project structure using validator template: '9.0'
+[2021-07-26 16:02:00.694] [INFO] ~~~~ - Porting project[OnboardingApprove] in workspace [C:\Users\c-gagkau\Documents] from_version[sprint38], to_version[sprint39]
+[2021-07-26 16:02:00.695] [INFO] ~~~~ - Porting project [OnboardingApprove] from sprint 38 to sprint 39.
+[2021-07-26 16:02:00.696] [INFO] ~~~~ - Initializing context for widget porter
+[2021-07-26 16:02:00.697] [INFO] ~~~~ - Start of widget porting
+[2021-07-26 16:02:00.697] [INFO] ~~~~ - Porting widgets for parent: form
+[2021-07-26 16:02:00.866] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\forms\desktop\frmOnBoarding.sm\loginComponent.json
+[2021-07-26 16:02:00.876] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\forms\desktop\frmOnBoarding.sm\onboarding.json
+[2021-07-26 16:02:00.995] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\forms\desktop\frmPostLogin.sm\loginComponent.json
+[2021-07-26 16:02:01.004] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\forms\desktop\frmPostLogin.sm\transactionSigning.json
+[2021-07-26 16:02:01.026] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\forms\desktop\frmPostLogin.sm\userManagement.json
+[2021-07-26 16:02:01.029] [INFO] ~~~~ - Porting widgets for parent: component
+[2021-07-26 16:02:02.208] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.hid.onboarding\userwidgetmodel.sm\qrcodegenerator.json
+[2021-07-26 16:02:02.639] [INFO] ~~~~ - Porting widget located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.hid.userManagement\userwidgetmodel.sm\__tabSelfService__\qrcodegenerator.json
+[2021-07-26 16:02:02.708] [INFO] ~~~~ - End of widget porting
+[2021-07-26 16:02:02.709] [INFO] ~~~~ - Initializing context for action porter
+[2021-07-26 16:02:02.710] [INFO] ~~~~ - Start of action porting
+[2021-07-26 16:02:02.710] [INFO] ~~~~ - Porting actions for parent: actions
+[2021-07-26 16:02:02.711] [INFO] ~~~~ - Porting actions for parent: studioactions
+[2021-07-26 16:02:02.718] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_a04ba7f176014d4a996919cd2c3f8dfd.json
+[2021-07-26 16:02:02.719] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_b0ebddf304d6460b905404d6b496e0df.json
+[2021-07-26 16:02:02.721] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_c055f0ea0eaa4c9ea917ed52a1c93130.json
+[2021-07-26 16:02:02.724] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_c3f0065bccf94e0c91298e9f6485b3b0.json
+[2021-07-26 16:02:02.726] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_df0c0294252440e4b93f76f19775a863.json
+[2021-07-26 16:02:02.727] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_dff7d086809c48dbbd946e49e701e048.json
+[2021-07-26 16:02:02.730] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_f5c1e87f46f341d1807d9a5f75939001.json
+[2021-07-26 16:02:02.732] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_f81a7a839abc4b228e68d33a1cd170b7.json
+[2021-07-26 16:02:02.734] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_fbc7b2d962114cc8bacf9a2c02b47193.json
+[2021-07-26 16:02:02.736] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_ffe0ec05544948ef91a32ecc076d045c.json
+[2021-07-26 16:02:02.738] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_h9a5cb1ce3bf4a1cbf33da5fdfc14ac4.json
+[2021-07-26 16:02:02.740] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_h9e3e1daad9c491b8fa9ef0359929a4d.json
+[2021-07-26 16:02:02.743] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_i594f2e364034e6591171be6255642d7.json
+[2021-07-26 16:02:02.745] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_ia957a4a99c240cda42456aa4cb65537.json
+[2021-07-26 16:02:02.748] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Button_jd46006c910e42889a8bdca528942c99.json
+[2021-07-26 16:02:02.749] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Label_fb87b28254404c7d89891f35a2ef3df7.json
+[2021-07-26 16:02:02.751] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\common\AS_Segment_b665927de68c4985b4b97a4f0a939bfc.json
+[2021-07-26 16:02:02.754] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Button_c9174637f75d475aae1d12132cd9f2a6.json
+[2021-07-26 16:02:02.757] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Button_db313cc4b59a44e5b5fe6ee6c7c485e2.json
+[2021-07-26 16:02:02.758] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Button_ed954cf3f048491a94ede533ed1aae64.json
+[2021-07-26 16:02:02.760] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Button_ff8890cdccb844069013b08a490a020a.json
+[2021-07-26 16:02:02.764] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Form_ab2c9e7a4d704430a591d691e7df5934.json
+[2021-07-26 16:02:02.766] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Form_b106db361d7a4cd58ee94ae70e695dd3.json
+[2021-07-26 16:02:02.768] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Form_fe7fc785fe514a8886657185188c1af0.json
+[2021-07-26 16:02:02.769] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Form_i8eef6ae50fb470da0cef48b88d5620f.json
+[2021-07-26 16:02:02.772] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Image_a757a45392974197aa290d8b96f64671.json
+[2021-07-26 16:02:02.774] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Image_ad6f681115284e759446133933623457.json
+[2021-07-26 16:02:02.779] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Image_aed1033be59e4401b52395fdf60ae3d0.json
+[2021-07-26 16:02:02.781] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Image_b4b99946a9d94190b4f5e451bca4b4ae.json
+[2021-07-26 16:02:02.784] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Image_ca8e1bd2cdd043a1b166b4ec3f068890.json
+[2021-07-26 16:02:02.786] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Image_f0acb80737ed494c9c720d0eea74c216.json
+[2021-07-26 16:02:02.789] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Label_a7453581bbd8440fb7b3eb15d9287a9a.json
+[2021-07-26 16:02:02.795] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Label_c2ad9f7986e847c9824ebc811ee59b0b.json
+[2021-07-26 16:02:02.806] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Label_cda21da6d153493c81e6eac76c42c82a.json
+[2021-07-26 16:02:02.809] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_Label_e587c4de9c1d4f079cef9b3317f8e063.json
+[2021-07-26 16:02:02.813] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_UWI_bd252a5e47ee4439acdd60dc18757479.json
+[2021-07-26 16:02:02.815] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_UWI_f7cff341819f4233ad46812830f2ed06.json
+[2021-07-26 16:02:02.817] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_UWI_f89ca078fad846b2867814d4621d1edd.json
+[2021-07-26 16:02:02.819] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_UWI_fb246ac10a9a42d081168c3c74c73a59.json
+[2021-07-26 16:02:02.827] [INFO] ~~~~ - Porting action located at: C:\Users\c-gagkau\Documents\OnboardingApprove\studioactions\desktop\AS_UWI_i382330ac1fb4f00beab0800a7102109.json
+[2021-07-26 16:02:02.831] [INFO] ~~~~ - End of action porting
+[2021-07-26 16:02:02.832] [INFO] ~~~~ - Initializing context for component porter
+[2021-07-26 16:02:02.833] [INFO] ~~~~ - Start of component porting
+[2021-07-26 16:02:03.571] [INFO] ~~~~ - Porting tool CDF located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.hid.loginComponent\uwProperties.json
+[2021-07-26 16:02:03.786] [INFO] ~~~~ - Porting tool CDF located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.hid.onboarding\uwProperties.json
+[2021-07-26 16:02:04.138] [INFO] ~~~~ - Porting tool CDF located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.hid.transactionSigning\uwProperties.json
+[2021-07-26 16:02:04.378] [INFO] ~~~~ - Porting tool CDF located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.hid.userManagement\uwProperties.json
+[2021-07-26 16:02:04.479] [INFO] ~~~~ - Porting tool CDF located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.konymp.qrcodegenerator\uwProperties.json
+[2021-07-26 16:02:04.494] [INFO] ~~~~ - Porting tool CDF located at: C:\Users\c-gagkau\Documents\OnboardingApprove\userwidgets\com.konymp.qrcodegeneratorCopy\uwProperties.json
+[2021-07-26 16:02:04.849] [INFO] ~~~~ - End of component porting
+[2021-07-26 16:02:04.851] [INFO] ~~~~ - Porting project [OnboardingApprove] from sprint 38 to sprint 39 is completed.
+[2021-07-26 16:02:04.869] [INFO] ~~~~ - START: Porting android Default SDK project settings.
+[2021-07-26 16:02:04.888] [INFO] ~~~~ - END: Porting android Default SDK project settings.
+[2021-07-26 16:02:05.018] [INFO] ci - 
+[2021-07-26 16:02:05.020] [INFO] ci - andtargetsdkkey selected is 9.0 (28)
+[2021-07-26 16:02:05.021] [INFO] ci - andweartargetsdkkey selected is 9.0 (28)
+[2021-07-26 16:02:05.028] [DEBUG] ci -  Done... 
+
+[2021-07-26 16:02:05.035] [DEBUG] ci - ⚀ Loading ... C:\Users\c-gagkau\Documents\OnboardingApprove\projectProperties.json
+[2021-07-26 16:02:05.037] [DEBUG] ci - ⚀ Loading ... C:\Users\c-gagkau\Documents\bundles\com.kony.studio.viz.core.win64\konywebstudio\kbuild\config\HeadlessBuild-Default.json
+[2021-07-26 16:02:05.038] [DEBUG] ci - ⚀ Loading ... C:\Users\c-gagkau\Documents\OnboardingApprove\HeadlessBuild.properties
+[2021-07-26 16:02:05.070] [INFO] ci - Cleaning binaries location...
+[2021-07-26 16:02:05.071] [INFO] ci - Cleaning webapps location...
+[2021-07-26 16:02:05.078] [INFO] ci - 
+[2021-07-26 16:02:05.534] [INFO] ci - 
+[2021-07-26 16:02:06.189] [DEBUG] ci - Upgrade native apis...
+[2021-07-26 16:02:06.200] [INFO] ci - There are no NFIs in your current project to upgrade.
+[2021-07-26 16:02:06.205] [INFO] ci - ‼︎ Service config is not provided. Skip setting service doc.
+[2021-07-26 16:02:06.235] [INFO] ci - C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk
+[2021-07-26 16:02:06.241] [INFO] ci - 
+[2021-07-26 16:02:06.289] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:06.290] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json
+[2021-07-26 16:02:06.291] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:06.327] [DEBUG] ~~~~ - Delete api intellisense: Kony_FileStorage-Android-4.0
+[2021-07-26 16:02:06.354] [DEBUG] ~~~~ - Delete unzip dir: C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_FileStorage-Android-4.0
+[2021-07-26 16:02:06.358] [DEBUG] ~~~~ - Deleting  C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_FileStorage-Android-4.0.zip
+[2021-07-26 16:02:06.360] [DEBUG] ~~~~ - Save nativeapi.json after deleting:  Kony_FileStorage-Android-4.0
+[2021-07-26 16:02:06.598] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:06.599] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\2.0\nativeapi.json
+[2021-07-26 16:02:06.600] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:06.799] [DEBUG] ~~~~ - Delete api intellisense: Kony_FileStorage-iOS-11.0
+[2021-07-26 16:02:06.806] [DEBUG] ~~~~ - Delete unzip dir: C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\11.0\Kony_FileStorage-iOS-11.0
+[2021-07-26 16:02:06.810] [DEBUG] ~~~~ - Deleting  C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\11.0\Kony_FileStorage-iOS-11.0.zip
+[2021-07-26 16:02:06.812] [DEBUG] ~~~~ - Save nativeapi.json after deleting:  Kony_FileStorage-iOS-11.0
+[2021-07-26 16:02:07.030] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:07.031] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json
+[2021-07-26 16:02:07.032] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:07.040] [DEBUG] ~~~~ - Delete api intellisense: Kony_SDKCommons-Android-4.0
+[2021-07-26 16:02:07.043] [DEBUG] ~~~~ - Delete unzip dir: C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_SDKCommons-Android-4.0
+[2021-07-26 16:02:07.050] [DEBUG] ~~~~ - Deleting  C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_SDKCommons-Android-4.0.zip
+[2021-07-26 16:02:07.051] [DEBUG] ~~~~ - Save nativeapi.json after deleting:  Kony_SDKCommons-Android-4.0
+[2021-07-26 16:02:07.273] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:07.286] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\2.0\nativeapi.json
+[2021-07-26 16:02:07.290] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:07.436] [DEBUG] ~~~~ - Delete api intellisense: Kony_SDKCommons-iOS-11.0
+[2021-07-26 16:02:07.450] [DEBUG] ~~~~ - Delete unzip dir: C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\11.0\Kony_SDKCommons-iOS-11.0
+[2021-07-26 16:02:07.456] [DEBUG] ~~~~ - Deleting  C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\11.0\Kony_SDKCommons-iOS-11.0.zip
+[2021-07-26 16:02:07.461] [DEBUG] ~~~~ - Save nativeapi.json after deleting:  Kony_SDKCommons-iOS-11.0
+[2021-07-26 16:02:07.741] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:07.743] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json
+[2021-07-26 16:02:07.744] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:07.759] [DEBUG] ~~~~ - Delete api intellisense: Kony_SyncV2-Android-4.0
+[2021-07-26 16:02:07.770] [DEBUG] ~~~~ - Delete unzip dir: C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_SyncV2-Android-4.0
+[2021-07-26 16:02:07.774] [DEBUG] ~~~~ - Deleting  C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_SyncV2-Android-4.0.zip
+[2021-07-26 16:02:07.775] [DEBUG] ~~~~ - Save nativeapi.json after deleting:  Kony_SyncV2-Android-4.0
+[2021-07-26 16:02:07.945] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:07.946] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\2.0\nativeapi.json
+[2021-07-26 16:02:07.947] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:08.168] [DEBUG] ~~~~ - Delete api intellisense: Kony_SyncV2-iOS-11.0
+[2021-07-26 16:02:08.171] [DEBUG] ~~~~ - Delete unzip dir: C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\11.0\Kony_SyncV2-iOS-11.0
+[2021-07-26 16:02:08.175] [DEBUG] ~~~~ - Deleting  C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\11.0\Kony_SyncV2-iOS-11.0.zip
+[2021-07-26 16:02:08.178] [DEBUG] ~~~~ - Save nativeapi.json after deleting:  Kony_SyncV2-iOS-11.0
+[2021-07-26 16:02:08.305] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:08.305] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json
+[2021-07-26 16:02:08.306] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:08.310] [WARN] ~~~~ - apikey doesn't exists: Kony_WebSocket-Android-4.0 C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json
+[2021-07-26 16:02:08.416] [DEBUG] ~~~~ - Delete native framework from workspace
+[2021-07-26 16:02:08.416] [ERROR] ~~~~ - native api json doesn't exists C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json
+[2021-07-26 16:02:08.416] [DEBUG] ~~~~ - Delete native framework from project: /OnboardingApprove/--self--
+[2021-07-26 16:02:08.418] [WARN] ~~~~ - apikey doesn't exists: Kony_WebSocket-iOS-14.3 C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json
+[2021-07-26 16:02:08.459] [ERROR] ~~~~ - Error delete api intellisense: Kony_FileStorage-Android-4.0 Error: connect ECONNREFUSED 127.0.0.1:3230
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1138:16)
+[2021-07-26 16:02:08.460] [ERROR] ~~~~ - Error delete api intellisense: Kony_FileStorage-iOS-11.0 Error: connect ECONNREFUSED 127.0.0.1:3230
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1138:16)
+[2021-07-26 16:02:08.465] [ERROR] ~~~~ - Error delete api intellisense: Kony_SDKCommons-Android-4.0 Error: connect ECONNREFUSED 127.0.0.1:3230
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1138:16)
+[2021-07-26 16:02:08.467] [ERROR] ~~~~ - Error delete api intellisense: Kony_SDKCommons-iOS-11.0 Error: connect ECONNREFUSED 127.0.0.1:3230
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1138:16)
+[2021-07-26 16:02:08.474] [ERROR] ~~~~ - Error delete api intellisense: Kony_SyncV2-Android-4.0 Error: connect ECONNREFUSED 127.0.0.1:3230
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1138:16)
+[2021-07-26 16:02:08.496] [ERROR] ~~~~ - Error delete api intellisense: Kony_SyncV2-iOS-11.0 Error: connect ECONNREFUSED 127.0.0.1:3230
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1138:16)
+[2021-07-26 16:02:08.527] [DEBUG] ~~~~ - Updating filepath to workspace 'nativeapi.json'
+[2021-07-26 16:02:08.528] [DEBUG] ~~~~ - C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json doesn't exist. Initilizing with empty api list
+[2021-07-26 16:02:08.534] [DEBUG] ~~~~ - api key: Kony_FileStorage-Android-4.0 not found in 'C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json', adding now!
+[2021-07-26 16:02:08.536] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json' with Kony_FileStorage-Android-4.0
+[2021-07-26 16:02:08.540] [DEBUG] ~~~~ - Copy framework file: C:\Users\c-gagkau\Documents\.nativebindings\Android\4.0\Kony_FileStorage-Android-4.0.zip to C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_FileStorage-Android-4.0.zip
+[2021-07-26 16:02:08.570] [DEBUG] ~~~~ - Updating filepath to workspace 'nativeapi.json'
+[2021-07-26 16:02:08.575] [DEBUG] ~~~~ - api key: Kony_SDKCommons-Android-4.0 not found in 'C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json', adding now!
+[2021-07-26 16:02:08.577] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json' with Kony_SDKCommons-Android-4.0
+[2021-07-26 16:02:08.580] [DEBUG] ~~~~ - Copy framework file: C:\Users\c-gagkau\Documents\.nativebindings\Android\4.0\Kony_SDKCommons-Android-4.0.zip to C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_SDKCommons-Android-4.0.zip
+[2021-07-26 16:02:08.609] [DEBUG] ~~~~ - api key: Kony_FileStorage-Android-4.0 not found in 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json', adding now!
+[2021-07-26 16:02:08.616] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json' with Kony_FileStorage-Android-4.0
+[2021-07-26 16:02:08.618] [DEBUG] ~~~~ - Import native framework successful.
+[2021-07-26 16:02:08.625] [DEBUG] ~~~~ - Updating filepath to workspace 'nativeapi.json'
+[2021-07-26 16:02:08.627] [DEBUG] ~~~~ - api key: Kony_SyncV2-Android-4.0 not found in 'C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json', adding now!
+[2021-07-26 16:02:08.628] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\.nativebindings\nativeapi.json' with Kony_SyncV2-Android-4.0
+[2021-07-26 16:02:08.629] [DEBUG] ~~~~ - Copy framework file: C:\Users\c-gagkau\Documents\.nativebindings\Android\4.0\Kony_SyncV2-Android-4.0.zip to C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\Android\4.0\Kony_SyncV2-Android-4.0.zip
+[2021-07-26 16:02:08.658] [DEBUG] ~~~~ - api key: Kony_SDKCommons-Android-4.0 not found in 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json', adding now!
+[2021-07-26 16:02:08.660] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json' with Kony_SDKCommons-Android-4.0
+[2021-07-26 16:02:08.660] [DEBUG] ~~~~ - Import native framework successful.
+[2021-07-26 16:02:08.696] [DEBUG] ~~~~ - api key: Kony_SyncV2-Android-4.0 not found in 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json', adding now!
+[2021-07-26 16:02:08.700] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json' with Kony_SyncV2-Android-4.0
+[2021-07-26 16:02:08.701] [DEBUG] ~~~~ - Import native framework successful.
+[2021-07-26 16:02:08.868] [DEBUG] ~~~~ - Updating filepath to workspace 'nativeapi.json'
+[2021-07-26 16:02:08.874] [DEBUG] ~~~~ - C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json doesn't exist. Initilizing with empty api list
+[2021-07-26 16:02:08.876] [DEBUG] ~~~~ - api key: Kony_FileStorage-iOS-14.3 not found in 'C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json', adding now!
+[2021-07-26 16:02:08.877] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json' with Kony_FileStorage-iOS-14.3
+[2021-07-26 16:02:08.884] [DEBUG] ~~~~ - Copy framework file: C:\Users\c-gagkau\Documents\.nativebindings\3.0\iOS\14.3\Kony_FileStorage-iOS-14.3.zip to C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\14.3\Kony_FileStorage-iOS-14.3.zip
+[2021-07-26 16:02:09.031] [DEBUG] ~~~~ - Updating filepath to workspace 'nativeapi.json'
+[2021-07-26 16:02:09.035] [DEBUG] ~~~~ - api key: Kony_SyncV2-iOS-14.3 not found in 'C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json', adding now!
+[2021-07-26 16:02:09.037] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json' with Kony_SyncV2-iOS-14.3
+[2021-07-26 16:02:09.040] [DEBUG] ~~~~ - Copy framework file: C:\Users\c-gagkau\Documents\.nativebindings\3.0\iOS\14.3\Kony_SyncV2-iOS-14.3.zip to C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\14.3\Kony_SyncV2-iOS-14.3.zip
+[2021-07-26 16:02:09.111] [DEBUG] ~~~~ - Updating filepath to workspace 'nativeapi.json'
+[2021-07-26 16:02:09.118] [DEBUG] ~~~~ - api key: Kony_SDKCommons-iOS-14.3 not found in 'C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json', adding now!
+[2021-07-26 16:02:09.119] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\.nativebindings\3.0\nativeapi.json' with Kony_SDKCommons-iOS-14.3
+[2021-07-26 16:02:09.120] [DEBUG] ~~~~ - Copy framework file: C:\Users\c-gagkau\Documents\.nativebindings\3.0\iOS\14.3\Kony_SDKCommons-iOS-14.3.zip to C:\Users\c-gagkau\Documents\OnboardingApprove\nativebindings\iOS\14.3\Kony_SDKCommons-iOS-14.3.zip
+[2021-07-26 16:02:09.137] [DEBUG] ~~~~ - api key: Kony_FileStorage-iOS-14.3 not found in 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json', adding now!
+[2021-07-26 16:02:09.140] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json' with Kony_FileStorage-iOS-14.3
+[2021-07-26 16:02:09.140] [DEBUG] ~~~~ - Import native framework successful.
+[2021-07-26 16:02:09.410] [DEBUG] ~~~~ - api key: Kony_SyncV2-iOS-14.3 not found in 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json', adding now!
+[2021-07-26 16:02:09.413] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json' with Kony_SyncV2-iOS-14.3
+[2021-07-26 16:02:09.415] [DEBUG] ~~~~ - Import native framework successful.
+[2021-07-26 16:02:09.506] [DEBUG] ~~~~ - api key: Kony_SDKCommons-iOS-14.3 not found in 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json', adding now!
+[2021-07-26 16:02:09.508] [DEBUG] ~~~~ - Updated 'C:\Users\c-gagkau\Documents\OnboardingApprove\nativeapi.json' with Kony_SDKCommons-iOS-14.3
+[2021-07-26 16:02:09.508] [DEBUG] ~~~~ - Import native framework successful.
+[2021-07-26 16:02:09.510] [DEBUG] ~~~~ - Imported 8 Sync FFI.
+[2021-07-26 16:02:09.511] [INFO] ci - Added default native function APIs.
+[2021-07-26 16:02:09.527] [INFO] ci - 
+[2021-07-26 16:02:09.539] [INFO] ci - Properties has been saved in sdkplugin.properties file.
+[2021-07-26 16:02:09.549] [INFO] ci - Copying sdk files.
+[2021-07-26 16:02:09.552] [INFO] ci - KonySyncLib.js is not found in SDK plugin.
+[2021-07-26 16:02:09.601] [INFO] ci - SDK file is copied.
+[2021-07-26 16:02:09.603] [INFO] ci - C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk
+[2021-07-26 16:02:09.607] [INFO] ci - 
+[2021-07-26 16:02:09.784] [INFO] ci - 
+[2021-07-26 16:02:09.786] [INFO] ci - Properties has been saved in sdkplugin.properties file.
+[2021-07-26 16:02:09.929] [INFO] ci - C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk
+[2021-07-26 16:02:09.936] [INFO] ci - 
+[2021-07-26 16:02:09.986] [INFO] ci - C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk
+[2021-07-26 16:02:09.989] [INFO] ci - 
+[2021-07-26 16:02:10.082] [INFO] ci - 
+[2021-07-26 16:02:10.084] [INFO] ci - Properties has been saved in sdkplugin.properties file.
+[2021-07-26 16:02:10.185] [INFO] ci - C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk
+[2021-07-26 16:02:10.189] [INFO] ci - 
+[2021-07-26 16:02:10.303] [INFO] ci - 
+[2021-07-26 16:02:10.306] [INFO] ci - Properties has been saved in sdkplugin.properties file.
+[2021-07-26 16:02:10.307] [INFO] ci - C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk
+[2021-07-26 16:02:10.310] [INFO] ci - 
+[2021-07-26 16:02:10.318] [DEBUG] ci - Removing 'CMS.framework' for iphone as project is using NFI 3.0
+[2021-07-26 16:02:10.396] [INFO] ci - iphone artifacts copied from shared libs C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk\resources\sdk\sharedLibs to C:\Users\c-gagkau\Documents\OnboardingApprove\resources\customlibs\lib\iphone
+[2021-07-26 16:02:10.397] [DEBUG] ci - Removing 'CMS.framework' for ipad as project is using NFI 3.0
+[2021-07-26 16:02:10.487] [INFO] ci - ipad artifacts copied from shared libs C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk\resources\sdk\sharedLibs to C:\Users\c-gagkau\Documents\OnboardingApprove\resources\customlibs\lib\ipad
+[2021-07-26 16:02:10.493] [INFO] ci - android artifacts copied from shared libs C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk\resources\sdk\sharedLibs to C:\Users\c-gagkau\Documents\OnboardingApprove\resources\customlibs\lib\android
+[2021-07-26 16:02:10.498] [INFO] ci - tabrcandroid artifacts copied from shared libs C:\Users\c-gagkau\Documents\bundles\com.kony.mobile.fabric.client.sdk\resources\sdk\sharedLibs to C:\Users\c-gagkau\Documents\OnboardingApprove\resources\customlibs\lib\tabrcandroid
+[2021-07-26 16:02:10.504] [INFO] ci - 
+[2021-07-26 16:02:10.506] [INFO] ci - Properties has been saved in sdkplugin.properties file.
+[2021-07-26 16:02:10.507] [INFO] ci - Start of command line application build.
+[2021-07-26 16:02:10.508] [INFO] ci - Start of Visulaizer Codegen.
+[2021-07-26 16:02:10.508] [INFO] ci - C:\Users\c-gagkau\Documents\OnboardingApprove
+[2021-07-26 16:02:10.508] [INFO] ci - 
+[2021-07-26 16:02:10.542] [DEBUG] ~~~~ - [ 'defaultTheme' ]
+[2021-07-26 16:02:11.115] [DEBUG] ~~~~ - Saving forms controller actions for channel: desktop
+[2021-07-26 16:02:11.620] [DEBUG] ~~~~ - Found custom action on loginComponent [ide_onFailureCallback : AS_UWI_fb246ac10a9a42d081168c3c74c73a59]
+[2021-07-26 16:02:11.621] [DEBUG] ~~~~ - Found custom action on loginComponent [ide_onSuccessCallback : AS_UWI_i382330ac1fb4f00beab0800a7102109]
+[2021-07-26 16:02:11.628] [DEBUG] ~~~~ - Found custom action on loginComponent [ide_onFailureCallback : AS_UWI_fb246ac10a9a42d081168c3c74c73a59]
+[2021-07-26 16:02:11.628] [DEBUG] ~~~~ - Found custom action on loginComponent [ide_onSuccessCallback : AS_UWI_i382330ac1fb4f00beab0800a7102109]
+[2021-07-26 16:02:11.685] [DEBUG] ~~~~ - Saving templates controller actions for channel: desktop and type:  maps
+[2021-07-26 16:02:11.941] [DEBUG] ~~~~ - Saving templates controller actions for channel: desktop and type:  segments
+[2021-07-26 16:02:12.323] [DEBUG] ~~~~ - Saving user widgets controller actions
+[2021-07-26 16:02:12.940] [WARN] ~~~~ - colorDark isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.941] [WARN] ~~~~ - colorLight isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.941] [WARN] ~~~~ - correctLevel isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.942] [WARN] ~~~~ - dataToEncode isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.942] [WARN] ~~~~ - qrcodeHeight isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.943] [WARN] ~~~~ - qrcodeWidth isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.949] [WARN] ~~~~ - colorDark isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.949] [WARN] ~~~~ - colorLight isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.950] [WARN] ~~~~ - correctLevel isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.951] [WARN] ~~~~ - dataToEncode isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.954] [WARN] ~~~~ - qrcodeHeight isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.955] [WARN] ~~~~ - qrcodeWidth isn't a custom event on com.konymp.qrcodegenerator
+[2021-07-26 16:02:12.967] [WARN] ~~~~ - colorDark isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.968] [WARN] ~~~~ - colorLight isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.968] [WARN] ~~~~ - qrcodeHeight isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.969] [WARN] ~~~~ - qrcodeWidth isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.973] [WARN] ~~~~ - colorDark isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.973] [WARN] ~~~~ - colorLight isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.974] [WARN] ~~~~ - qrcodeHeight isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.974] [WARN] ~~~~ - qrcodeWidth isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.977] [WARN] ~~~~ - colorDark isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.978] [WARN] ~~~~ - colorLight isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.978] [WARN] ~~~~ - qrcodeHeight isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:12.979] [WARN] ~~~~ - qrcodeWidth isn't a custom event on com.konymp.qrcodegeneratorCopy
+[2021-07-26 16:02:13.006] [INFO] ~~~~ - Validating and Repairing the project structure: C:\Users\c-gagkau\Documents\OnboardingApprove
+[2021-07-26 16:02:13.008] [INFO] ~~~~ - Validating project structure using validator template: '9.0'
+[2021-07-26 16:02:13.206] [INFO] ~~~~ - Validating project themes: C:\Users\c-gagkau\Documents\OnboardingApprove
+[2021-07-26 16:02:13.206] [INFO] ~~~~ - Project dir:  C:\Users\c-gagkau\Documents\OnboardingApprove
+[2021-07-26 16:02:13.209] [INFO] ~~~~ - Theme dir, size:  C:\Users\c-gagkau\Documents\OnboardingApprove\themes\defaultTheme 372
+[2021-07-26 16:02:13.425] [DEBUG] ~~~~ -  ::::::::: Custom themes: []
+[2021-07-26 16:02:13.426] [INFO] ~~~~ - 
+Project dir:  C:\Users\c-gagkau\Documents\OnboardingApprove 
+No of uniq skin ids:  372
+[2021-07-26 16:02:13.426] [INFO] ~~~~ - 
+Skin kuid issues:  0 
+Theme skin issues:  0 
+Widget skin issues:  0 
+Widget psp skin issues:  0 
+Widget disabled skin issues: 0
+[2021-07-26 16:02:13.431] [INFO] ci - End of Visulaizer Codegen.
+[2021-07-26 16:02:13.438] [DEBUG] ~~~~ - [BUILD] Codegen starts. StartTime: 1627295533438
+[2021-07-26 16:02:13.794] [INFO] ~~~~ - <---Codegeneration Started--->
+[2021-07-26 16:02:15.160] [DEBUG] ~~~~ - [BUILD] Code generation for desktopweb
+[2021-07-26 16:02:15.161] [DEBUG] ~~~~ - NO SUCH DIRECTORY TO CLEAN: C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove\desktopweb
+[2021-07-26 16:02:15.164] [DEBUG] ~~~~ - Scripts output directory C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove\desktopweb\appjs
+[2021-07-26 16:02:16.608] [DEBUG] ~~~~ - Generating com/hid/loginComponent/loginComponentController for platform desktopweb
+[2021-07-26 16:02:16.737] [DEBUG] ~~~~ - Generating com/hid/transactionSigning/transactionSigningController for platform desktopweb
+[2021-07-26 16:02:16.806] [DEBUG] ~~~~ - Generating com/konymp/qrcodegenerator/qrcodegeneratorController for platform desktopweb
+[2021-07-26 16:02:16.869] [DEBUG] ~~~~ - Generating com/konymp/qrcodegeneratorCopy/qrcodegeneratorCopyController for platform desktopweb
+[2021-07-26 16:02:16.945] [DEBUG] ~~~~ - Generating com/hid/onboarding/onboardingController for platform desktopweb
+[2021-07-26 16:02:17.040] [DEBUG] ~~~~ - Generating com/hid/userManagement/userManagementController for platform desktopweb
+[2021-07-26 16:02:17.858] [DEBUG] ~~~~ - Generating Form1Controller for platform desktopweb
+[2021-07-26 16:02:17.862] [DEBUG] ~~~~ - Generating frmAuthenticationController for platform desktopweb
+[2021-07-26 16:02:17.909] [DEBUG] ~~~~ - Generating frmOnBoardingController for platform desktopweb
+[2021-07-26 16:02:17.925] [DEBUG] ~~~~ - Generating frmOnSuccesAuthenticateController for platform desktopweb
+[2021-07-26 16:02:17.934] [DEBUG] ~~~~ - Generating frmPostLoginController for platform desktopweb
+[2021-07-26 16:02:17.958] [DEBUG] ~~~~ - Generating CopyflxDevicesSegmentController for platform desktopweb
+[2021-07-26 16:02:17.968] [DEBUG] ~~~~ - Generating CopyflxDevicesSegment1Controller for platform desktopweb
+[2021-07-26 16:02:17.986] [DEBUG] ~~~~ - Generating CopyflxSegPushDevicesController for platform desktopweb
+[2021-07-26 16:02:17.997] [DEBUG] ~~~~ - Generating flxSampleRowTemplateController for platform desktopweb
+[2021-07-26 16:02:18.007] [DEBUG] ~~~~ - Generating flxSectionHeaderTemplateController for platform desktopweb
+[2021-07-26 16:02:18.015] [DEBUG] ~~~~ - Generating flxDevicesSegmentController for platform desktopweb
+[2021-07-26 16:02:18.024] [DEBUG] ~~~~ - Generating flxSegPushDevicesController for platform desktopweb
+[2021-07-26 16:02:25.521] [DEBUG] ~~~~ - Copying HTML/CSS/manifest C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove\spageneratedfiles\desktopweb C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove\desktopweb
+[2021-07-26 16:02:25.646] [DEBUG] ~~~~ - [BUILD] Codegen ends. endTime: 1627295545646. Time taken (in ms) : 12208
+[2021-07-26 16:02:25.651] [DEBUG] ~~~~ - [BUILD] Archiving starts. Start time: 1627295545651
+[2021-07-26 16:02:25.656] [DEBUG] ~~~~ - Web Directories created @ 
+[2021-07-26 16:02:25.657] [DEBUG] ~~~~ - SPA Directories created @ C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove
+[2021-07-26 16:02:25.673] [DEBUG] ~~~~ - Directories created @ C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove
+[2021-07-26 16:02:25.675] [DEBUG] ~~~~ - Populating project OnboardingApprove
+[2021-07-26 16:02:25.676] [DEBUG] ~~~~ - USING IDE EVENTS :: true
+[2021-07-26 16:02:25.677] [DEBUG] ~~~~ - Populate Completed
+[2021-07-26 16:02:25.678] [DEBUG] ~~~~ - Building for desktopweb
+[2021-07-26 16:02:25.685] [DEBUG] ~~~~ - Populating WEB project OnboardingApprove
+[2021-07-26 16:02:25.687] [DEBUG] ~~~~ - Populating actions for  [ 'desktopweb' ]
+[2021-07-26 16:02:28.878] [DEBUG] ~~~~ - Compacting...  
+[2021-07-26 16:02:28.939] [DEBUG] ~~~~ - SPA require file list 'applicationController','com/hid/loginComponent/AuthenticationBusinessController','com/hid/loginComponent/AuthenticationPresentationController','com/hid/loginComponent/KonyLogger','com/hid/loginComponent/loginComponentController','com/hid/loginComponent/loginComponent','com/hid/loginComponent/loginComponentConfig','com/hid/transactionSigning/transactionSigningBusinessController','com/hid/transactionSigning/transactionSigningPresentationController','com/hid/transactionSigning/transactionSigningController','com/hid/transactionSigning/transactionSigning','com/hid/transactionSigning/transactionSigningConfig','com/konymp/qrcodegenerator/analytics','com/konymp/qrcodegenerator/KonyLogger','com/konymp/qrcodegenerator/qrcodegeneratorController','com/konymp/qrcodegenerator/qrcodegenerator','com/konymp/qrcodegenerator/qrcodegeneratorConfig','com/konymp/qrcodegeneratorCopy/analytics','com/konymp/qrcodegeneratorCopy/KonyLogger','com/konymp/qrcodegeneratorCopy/qrcodegeneratorCopyController','com/konymp/qrcodegeneratorCopy/qrcodegeneratorCopy','com/konymp/qrcodegeneratorCopy/qrcodegeneratorCopyConfig','com/hid/onboarding/OnboardingBusinessController','com/hid/onboarding/OnboardingPresentationController','com/hid/onboarding/onboardingController','com/hid/onboarding/onboarding','com/hid/onboarding/onboardingConfig','com/hid/userManagement/UserManagementBusinessController','com/hid/userManagement/UserManagementPresentationController','com/hid/userManagement/userManagementController','com/hid/userManagement/userManagement','com/hid/userManagement/userManagementConfig','CopyflxDevicesSegment','CopyflxDevicesSegment1','CopyflxSegPushDevices','flxSampleRowTemplate','flxSectionHeaderTemplate','flxDevicesSegment','flxSegPushDevices','CopyflxDevicesSegmentController','CopyflxDevicesSegment1Controller','CopyflxSegPushDevicesController','flxSampleRowTemplateController','flxSectionHeaderTemplateController','flxDevicesSegmentController','flxSegPushDevicesController','HIDObjects/ActivationCodeValidation/MF_Config','HIDObjects/ActivationCodeValidation/Model','HIDObjects/ActivationCodeValidation/Repository','HIDObjects/AddHardwareAuthenticator/MF_Config','HIDObjects/AddHardwareAuthenticator/Model','HIDObjects/AddHardwareAuthenticator/Repository','HIDObjects/AddHardwareDeviceToUser/MF_Config','HIDObjects/AddHardwareDeviceToUser/Model','HIDObjects/AddHardwareDeviceToUser/Repository','HIDObjects/AddOOBAuthenticator/MF_Config','HIDObjects/AddOOBAuthenticator/Model','HIDObjects/AddOOBAuthenticator/Repository','HIDObjects/AddPasswordAuthenticator/MF_Config','HIDObjects/AddPasswordAuthenticator/Model','HIDObjects/AddPasswordAuthenticator/Repository','HIDObjects/ApproveDeviceRegistration/MF_Config','HIDObjects/ApproveDeviceRegistration/Model','HIDObjects/ApproveDeviceRegistration/Repository','HIDObjects/ApproveStatusPolling/MF_Config','HIDObjects/ApproveStatusPolling/Model','HIDObjects/ApproveStatusPolling/Repository','HIDObjects/DeviceRegistrationPolling/MF_Config','HIDObjects/DeviceRegistrationPolling/Model','HIDObjects/DeviceRegistrationPolling/Repository','HIDObjects/HIDApproveInitiation/MF_Config','HIDObjects/HIDApproveInitiation/Model','HIDObjects/HIDApproveInitiation/Repository','HIDObjects/resources/MF_Config','HIDObjects/resources/Model','HIDObjects/SearchDevices/MF_Config','HIDObjects/SearchDevices/Model','HIDObjects/SearchDevices/Repository','HIDObjects/SearchHardwareDevice/MF_Config','HIDObjects/SearchHardwareDevice/Model','HIDObjects/SearchHardwareDevice/Repository','HIDObjects/SendOOB/MF_Config','HIDObjects/SendOOB/Model','HIDObjects/SendOOB/Repository','HIDObjects/status/MF_Config','HIDObjects/status/Model','HIDObjects/UpdateDeviceStatus/MF_Config','HIDObjects/UpdateDeviceStatus/Model','HIDObjects/UpdateDeviceStatus/Repository','HIDObjects/ValidateOOB/MF_Config','HIDObjects/ValidateOOB/Model','HIDObjects/ValidateOOB/Repository','HIDObjects/ValidateOTP/MF_Config','HIDObjects/ValidateOTP/Model','HIDObjects/ValidateOTP/Repository','RepoManagerConfig'
+[2021-07-26 16:02:28.991] [DEBUG] ~~~~ - SPA individual file list path:  C:\Users\c-gagkau\Documents\.webapps\OnboardingApprove\desktopweb\appjs\require\spaindividualfilelist.js
+[2021-07-26 16:02:28.992] [DEBUG] ~~~~ - SPA individual file list content:  Form1.js,Form1Controller.js,frmAuthentication.js,frmAuthenticationController.js,frmOnBoarding.js,frmOnBoardingController.js,frmOnSuccesAuthenticate.js,frmOnSuccesAuthenticateController.js,frmPostLogin.js,frmPostLoginController.js
+[2021-07-26 16:02:28.995] [DEBUG] ~~~~ - SPA Populated successfully
+[2021-07-26 16:02:28.996] [INFO] ~~~~ - Code generation for project 'OnboardingApprove' completed.
+[2021-07-26 16:02:28.997] [DEBUG] ~~~~ - Codegen Status :  { desktopweb: 'success' }
+[2021-07-26 16:02:29.407] [DEBUG] ~~~~ - [BUILD] Archiving ends. End time: 1627295549407. Time taken (in ms) : 3756
+[2021-07-26 16:02:29.408] [INFO] ci - [ 'desktopweb' ]
+[2021-07-26 16:02:29.418] [INFO] ci - 
+[2021-07-26 16:02:29.569] [INFO] ci - Loaded common properties. 
+[2021-07-26 16:02:29.570] [INFO] ci - Platform:spa , build status : STARTED
+[2021-07-26 16:02:29.588] [INFO] ci - 
+[2021-07-26 16:02:29.609] [INFO] ci - Loaded properties. spa
+[2021-07-26 16:02:29.610] [INFO] ci - Start of build for platform : spa
+[2021-07-26 16:02:29.610] [INFO] ci - APPFOLDER C:\Users\c-gagkau\Documents\temp\OnboardingApprove
+[2021-07-26 16:02:29.611] [INFO] ci -  propFilePath C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\spabuild.properties
+[2021-07-26 16:02:29.616] [INFO] ci - Platform:spa , build status : INPROGRESS
+[2021-07-26 16:02:29.651] [INFO] ci - Execute task Spa Pre Build...
+[2021-07-26 16:02:29.652] [INFO] ci -  ANT_HOME: C:\apache-ant-1.10.8\bin\ant
+[2021-07-26 16:02:29.661] [INFO] ci - Execute task Replace Tokens in Web-xml...
+[2021-07-26 16:02:29.669] [INFO] ci - -Dspa.available=true -Dspa.version=9.2.24.v202106151457 -Dspa.plugin.loc=C:\Users\c-gagkau\Documents\bundles\com.kony.spa -DOnboardingApprove_spatargetplatforms=desktopweb -Ddesktopweb.available=true -Ddesktopweb.version=9.2.27.v202106301309 -Ddesktopweb.plugin.loc=C:\Users\c-gagkau\Documents\bundles\com.kony.desktopweb -DOnboardingApprove_tctargetplatforms= -Dtc.plugin.loc= -Dtc.available=false -Dwebcommons.plugin.loc=C:\Users\c-gagkau\Documents\bundles\com.kony.webcommons -Dwebcommons.version=9.2.2.202101081034 -Dwebcommons.available=true -Djetty.portnum=8888 -Djetty.httpsportnum=8443 -DOnboardingApprove_appid=HIDApproveDemo -DOnboardingApprove_locales=ar,de_DE,en,en_GB,en_US,es,es_ES,fr_FR -DOnboardingApprove_sessionmgr=1 -DOnboardingApprove_appversion=1.0.0 -DOnboardingApprove_build.option=debug -DOnboardingApprove_jspbase=/WEB-INF/ -DOnboardingApprove_devlanguage=js -Dapps.list=OnboardingApprove -Dwebapps.loc=C:\Users\c-gagkau\Documents\webapps -Dplugin.loc=C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor -DOnboardingApprove_resfolder=C:\Users\c-gagkau\Documents\OnboardingApprove\resources -f C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\jettydeploy\build.xml -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\ant-contrib-0.6.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\AntelopeTasks_3.4.0.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\antlr-3.3-complete.jar all
+[2021-07-26 16:02:29.693] [INFO] ci - -Dactionbar=false -Dapp.icon.glossyeffect=false -Dappfolder=C:/Users/c-gagkau/Documents/temp/OnboardingApprove -Dappid=HIDApproveDemo -Dappname=OnboardingApprove -Dappversion=1.0.0 -Dappversioncode=1 -Dbuild.option=debug -Dbundle.identifier=com.kony.OnboardingApprove -Dbundle.version=1.0 -Dcustomlibs.dir=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/customlibs/lib -Dcustomlibs.src.dir=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/customlibs/jsSrc -Dcustomlibs.xml.dir=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/customlibs/jsXml -Dcustomwidgets.dir=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/customwidgets/lib -Dcustomwidgets.src.dir=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/customwidgets/jsSrc -Ddefaultlocale=de_DE -Ddev.language=js -Ddotwebapps.loc=C:/Users/c-gagkau/Documents/.webapps/OnboardingApprove -Denableawssdk=false -DenableCordova=false -Dfonts_workspace=C:/Users/c-gagkau/Documents/.metadata/.konystudio/fonts -Di18n.properties=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/i18n/properties -Di18n.xml=C:/Users/c-gagkau/Documents/OnboardingApprove/resources/i18n/xml -DignoreStringLocales= -Dimagemagick= -Dip_address=172.19.0.1 -Dipaddress=172.19.0.1 -DisMVC=true -Disvizintegration=true -Djetty.httpsportnum=8443 -Djetty.portnum=8888 -Dlocales=ar,de_DE,en,en_GB,en_US,es,es_ES,fr_FR -Dlogo= -Dmachineip=10.10.25.110 -Dmbaasappkey= -Dmbaasappkey.injection.required=false -Dmbaasappsecret= -Dmode=0 -Dnativecodegen.available=true -Dplugin.loc=C:/Users/c-gagkau/Documents/bundles/com.pat.tool.keditor -Dport_number=8171 -Dproject.loc=C:/Users/c-gagkau/Documents/OnboardingApprove -Dproject.name=OnboardingApprove -Dprojname=OnboardingApprove -Dremoveprintstatements=false -Dresfolder=C:/Users/c-gagkau/Documents/OnboardingApprove/resources -Dreslocale.str=ar/*,de_DE/*,en/*,en_GB/*,en_US/*,es/*,es_ES/*,fr_FR/* -Dresources.common.folder=common -Dresources.desktop.native=desktop/native -Dresources.desktop.web=desktop/web -Dresources.mobile.native=mobile/native -Dresources.mobile.web=mobile/web -Dresources.new.structure=true -Dresources.tablet.native=tablet/native -Dresources.tablet.web=tablet/web -Dscripts.dir= -Dstartupform= -Dstaticforms= -Dsystem.path=C:/ProgramData/Oracle/Java/javapath;C:/Program Files (x86)/Common Files/Oracle/Java/javapath;C:/Windows/system32;C:/Windows;C:/Windows/System32/Wbem;C:/Windows/System32/WindowsPowerShell/v1.0/;C:/Windows/System32/OpenSSH/;C:/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL;C:/Program Files/Intel/Intel(R) Management Engine Components/DAL;C:/Java/jdk1.8.0_151/bin;C:/Program Files/node-v15.4.0-win-x64/;C:/ProgramData/chocolatey/bin;C:/Program Files/dotnet/;C:/Program Files/apache-maven-3.8.1-bin/apache-maven-3.8.1/bin;C:/Program Files/Microsoft SQL Server/130/Tools/Binn/;C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/;C:/Program Files/Docker/Docker/resources/bin;C:/ProgramData/DockerDesktop/version-bin;C:/Program Files/Git/cmd;C:/work/ac.swdev.haf/system/windows/Python36-32;C:/work/ac.swdev.haf/system/windows/Python36-32/Scripts;C:/Users/c-gagkau/AppData/Local/Android/Sdk/platform-tools;C:/Java/jdk1.8.0_151/bin/bin;C:/apache-ant-1.10.8/bin;C:/Java;C:/Users/c-gagkau/AppData/Local/Microsoft/WindowsApps;C:/Users/c-gagkau/AppData/Roaming/npm;C:/Users/c-gagkau/AppData/Local/Programs/Microsoft VS Code/bin;C:/Users/c-gagkau/.dotnet/tools -Dtabletstartupform=null -Dthemes=default -Dunittesting=false -Dusegoogleplaylocationservices=false -DUseOpenSSLLibrary=false -DUseSQLCipherFIPS=false -Dvendorname=KonyLabs -Dw.context=HIDApproveDemo -Dwebapps.loc=C:/Users/c-gagkau/Documents/webapps -Dwebmodule.loc=C:/Users/c-gagkau/Documents/OnboardingApprove/web_module -Dwmlocales=ar\nde_DE\nen\nen_GB\nen_US\nes\nes_ES\nfr_FR -Dwmthemes=default.theme -Dworkspace.loc=C:/Users/c-gagkau/Documents -DenableAutomation=false -Dbuildtype=war -Ddesktopwebsplash= -Ddesktopweb.fonts.folder=Desktop_web -Dkonywebstudio.loc=C:/Users/c-gagkau/Documents/bundles/com.kony.studio.viz.core.win64/konywebstudio -Ddesktopweb.version=9.2.27.v202106301309 -Denableseo=false -DenableProgressiveWeb=false -DserviceWorkerFile= -DserviceWorkerHelperFile= -Denableasyncdesktopweb=true -Denableasyncspa=true -DenableOfflineObjectsSPA=false -DenableOfflineObjectsDW=false -DenableViewportZooming=false -DenableWindowsRuntimeForWebApp=false -DenableWindowsOfflineObjectsForWebApp=false -DenablePushNotificationsDW=false -Dfcmsenderid= -Ddesktopwebmanifestjson= -Dhttp.port=80 -Dhttps.port=443 -Djspbase=/WEB-INF/ -Djsps.secure=true -Dmetatags= -Dphantompath= -Dprotectedmodeenabled.web=false -Dkony.proxy.scheme=http -Dseoconfigfilename= -Dsessionmgr=1 -Dsetprintlevel=true -Dsitemapxmlfilename= -Dspaandroidmixed.selected=false -Dspaandroidtabletmixed.selected=false -Dspaandroidtabletsplash= -Dspaandroidtablet.fonts.folder=SPA Android Tablet -Dspaandroidtablet.selected=false -Dspaandroid.fonts.folder=SPA Android -Dspaandroid.selected=false -Dspaansplash= -Dspabbnth.selected=false -Dspabbsplash= -Dspablackberrymixed.selected=false -Dspablackberry.fonts.folder=SPA Blackberry -Dspablackberry.selected=false -Dspaipad.fonts.folder=SPA iPad -Dspaipad.selected=false -Dspaipadsplash= -Dspaiphone.fonts.folder=SPA iPhone -Dspaiphone.selected=false -Dspaipsplash= -Dspatargetplatforms=desktopweb -Dspawindowstablet.fonts.folder=SPA Windows Tablet -Dspawindowstablet.selected=false -Dspawindowstabletsplash= -Dspawindows.fonts.folder=SPA Windows -Dspawindows.selected=false -Dspawinphone8splash= -Dspawinphone8.selected=false -Dspa.version=9.2.24.v202106151457 -Dtheme.names= -Dthirdparty.loc=C:/Users/c-gagkau/Documents/bundles/com.kony.thirdparty.jars -Dwebcommons.plugin.loc=C:/Users/c-gagkau/Documents/bundles/com.kony.webcommons -Dwebcommons.version=9.2.2.202101081034 -DwebLibraryMode=js -Dweb.cacheid=261581741 -Dweb.cacheversion=1301384967 -Ddesktopweb.available=true -Ddesktopweb.plugin.loc=C:/Users/c-gagkau/Documents/bundles/com.kony.desktopweb -Dspa.available=true -Dspa.plugin.loc=C:/Users/c-gagkau/Documents/bundles/com.kony.spa -DwarDir=C:\Users\c-gagkau\Documents\temp\OnboardingApprove\middleware_mobileweb\cloud -Dwebcommons.available=true -Dbuildweb=C:\Users\c-gagkau\Documents\temp\OnboardingApprove\middleware_mobileweb\cloud -f C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build.xml -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\ant-contrib-0.6.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\AntelopeTasks_3.4.0.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\antlr-3.3-complete.jar replaceTokensInWebXml
+[2021-07-26 16:02:30.661] [INFO] ci - Unable to locate tools.jar. Expected to find it in C:\Java\lib\tools.jar
+[2021-07-26 16:02:30.864] [INFO] ci - Buildfile: C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\jettydeploy\build.xml
+[2021-07-26 16:02:30.865] [INFO] ci - 
+[2021-07-26 16:02:31.495] [INFO] ci - init:
+[2021-07-26 16:02:31.639] [INFO] ci - createrichdirs:
+[2021-07-26 16:02:31.691] [INFO] ci - [echo] AppID: OnboardingApprove
+[2021-07-26 16:02:31.702] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\webapps\OnboardingApprover
+[2021-07-26 16:02:31.702] [INFO] ci - 
+[2021-07-26 16:02:31.839] [INFO] ci - [copy] Copying 4 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprover
+[2021-07-26 16:02:31.839] [INFO] ci - 
+[2021-07-26 16:02:32.819] [INFO] ci - Unable to locate tools.jar. Expected to find it in C:\Java\lib\tools.jar
+[2021-07-26 16:02:32.837] [INFO] ci - createthindirs:
+[2021-07-26 16:02:32.844] [INFO] ci - [echo] APPS OnboardingApprove
+[2021-07-26 16:02:32.857] [INFO] ci - [echo] AppID: OnboardingApprove
+[2021-07-26 16:02:32.859] [INFO] ci - 
+[2021-07-26 16:02:32.908] [INFO] ci - [echo] TC plugin changed or dir doesn't exist
+[2021-07-26 16:02:33.096] [INFO] ci - Buildfile: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build.xml
+[2021-07-26 16:02:33.178] [INFO] ci - loadTaskDefs:
+[2021-07-26 16:02:33.248] [INFO] ci - init:
+[2021-07-26 16:02:33.255] [INFO] ci - createWebApp:
+[2021-07-26 16:02:33.256] [INFO] ci - 
+[2021-07-26 16:02:33.258] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp
+[2021-07-26 16:02:33.304] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\WEB-INF
+[2021-07-26 16:02:33.305] [INFO] ci - 
+[2021-07-26 16:02:33.311] [INFO] ci - [unjar] Expanding: C:\Users\c-gagkau\Documents\bundles\com.kony.webcommons\common\wap\lib\konyweblib.jar into C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\WEB-INF\classes
+[2021-07-26 16:02:33.312] [INFO] ci - 
+[2021-07-26 16:02:33.319] [INFO] ci - [echo]  build.wap.base : C:\Users\c-gagkau\Documents\bundles\com.kony.webcommons\common\wap
+[2021-07-26 16:02:33.319] [INFO] ci - 
+[2021-07-26 16:02:33.390] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove
+[2021-07-26 16:02:33.556] [INFO] ci - createWEBINFFolders:
+[2021-07-26 16:02:33.625] [INFO] ci - createWEBINFFolders:
+[2021-07-26 16:02:33.628] [INFO] ci - 
+[2021-07-26 16:02:33.634] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\desktopweb
+[2021-07-26 16:02:33.645] [INFO] ci - [copy] Copying 2 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove
+[2021-07-26 16:02:33.648] [INFO] ci - 
+[2021-07-26 16:02:33.687] [INFO] ci - [copy] Copying 2 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF
+[2021-07-26 16:02:33.689] [INFO] ci - 
+[2021-07-26 16:02:33.727] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove
+[2021-07-26 16:02:33.776] [INFO] ci - [echo] Webfile: C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF/web.xml
+[2021-07-26 16:02:33.777] [INFO] ci - [echo] AppID: HIDApproveDemo
+[2021-07-26 16:02:33.778] [INFO] ci - [echo] HTTP Port: 8888
+[2021-07-26 16:02:33.779] [INFO] ci - 
+[2021-07-26 16:02:33.783] [INFO] ci - [echo] HTTPs Port: 8443
+[2021-07-26 16:02:33.784] [INFO] ci - 
+[2021-07-26 16:02:33.789] [INFO] ci - [echo] Locales: ar,de_DE,en,en_GB,en_US,es,es_ES,fr_FR
+[2021-07-26 16:02:33.791] [INFO] ci - [echo] Session Manager: 1
+[2021-07-26 16:02:33.801] [INFO] ci - [echo] Build Option: debug
+[2021-07-26 16:02:33.804] [INFO] ci - [echo] SPA Target platforms: desktopweb
+[2021-07-26 16:02:33.805] [INFO] ci - [echo] TC Target platforms:
+[2021-07-26 16:02:33.806] [INFO] ci - [echo] res dir: C:\Users\c-gagkau\Documents\OnboardingApprove\resources
+[2021-07-26 16:02:33.807] [INFO] ci - 
+[2021-07-26 16:02:33.808] [INFO] ci - [echo] dev language: js
+[2021-07-26 16:02:33.809] [INFO] ci - 
+[2021-07-26 16:02:33.809] [INFO] ci - [echo] Executing target in: ${tcplugin.loc}/tc/wap/build.xml
+[2021-07-26 16:02:33.858] [INFO] ci - loadTaskDefs:
+[2021-07-26 16:02:33.859] [INFO] ci - 
+[2021-07-26 16:02:33.877] [INFO] ci - replaceTokensInWebXml:
+[2021-07-26 16:02:33.878] [INFO] ci - 
+[2021-07-26 16:02:33.884] [INFO] ci - [echo] Build web folder: C:\Users\c-gagkau\Documents\webapps/OnboardingApprove/WEB-INF/..
+[2021-07-26 16:02:33.884] [INFO] ci - [echo]
+[2021-07-26 16:02:34.085] [INFO] ci - [echo] Checking for bot...
+[2021-07-26 16:02:34.086] [INFO] ci - 
+[2021-07-26 16:02:34.096] [INFO] ci - [echo] webapps location: C:\Users\c-gagkau\Documents\webapps
+[2021-07-26 16:02:34.096] [INFO] ci - 
+[2021-07-26 16:02:34.102] [INFO] ci - [echo] spabot is not available...
+[2021-07-26 16:02:34.108] [INFO] ci - 
+[2021-07-26 16:02:34.180] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.268] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.286] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.295] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.297] [INFO] ci - 
+[2021-07-26 16:02:34.366] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.379] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.408] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.408] [INFO] ci - 
+[2021-07-26 16:02:34.466] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\classes\com\kony\web\resource
+[2021-07-26 16:02:34.521] [INFO] ci - all:
+[2021-07-26 16:02:34.521] [INFO] ci - 
+[2021-07-26 16:02:34.539] [INFO] ci - BUILD SUCCESSFUL
+Total time: 3 seconds
+[2021-07-26 16:02:34.702] [INFO] ci - loadTaskDefs:
+[2021-07-26 16:02:34.703] [INFO] ci - 
+[2021-07-26 16:02:34.919] [INFO] ci - replaceTokensInWebXml:
+[2021-07-26 16:02:34.960] [INFO] ci - 
+[2021-07-26 16:02:35.020] [INFO] ci - [echo] Build web folder: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\middleware_mobileweb\cloud
+[2021-07-26 16:02:35.020] [INFO] ci - 
+[2021-07-26 16:02:35.021] [INFO] ci - [echo]
+[2021-07-26 16:02:35.201] [INFO] ci - 
+[2021-07-26 16:02:35.803] [INFO] ci - [echo] Checking for bot...
+[2021-07-26 16:02:35.804] [INFO] ci - 
+[2021-07-26 16:02:35.805] [INFO] ci - [echo] webapps location: C:/Users/c-gagkau/Documents/webapps
+[2021-07-26 16:02:35.808] [INFO] ci - [echo] spabot is not available...
+[2021-07-26 16:02:35.809] [INFO] ci - 
+[2021-07-26 16:02:35.861] [INFO] ci - BUILD SUCCESSFUL
+Total time: 2 seconds
+[2021-07-26 16:02:35.953] [INFO] ci - 
+[2021-07-26 16:02:35.953] [INFO] ci - Execute task Packagespa...
+[2021-07-26 16:02:35.954] [INFO] ci - -propertyfile C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\spabuild.properties -f C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build.xml -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\ant-contrib-0.6.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\AntelopeTasks_3.4.0.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\antlr-3.3-complete.jar jsproject
+[2021-07-26 16:02:36.418] [INFO] ci - Unable to locate tools.jar. Expected to find it in C:\Java\lib\tools.jar
+[2021-07-26 16:02:36.637] [INFO] ci - Buildfile: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build.xml
+[2021-07-26 16:02:37.336] [INFO] ci - loadTaskDefs:
+[2021-07-26 16:02:37.537] [INFO] ci - init:
+[2021-07-26 16:02:37.540] [INFO] ci - 
+[2021-07-26 16:02:37.568] [INFO] ci - clean:
+[2021-07-26 16:02:37.569] [INFO] ci - 
+[2021-07-26 16:02:37.570] [INFO] ci - check-selections:
+[2021-07-26 16:02:37.636] [INFO] ci - [echo] spa selected: ${spa.selected}
+[2021-07-26 16:02:37.637] [INFO] ci - [echo] tc selected: ${tc.selected}
+[2021-07-26 16:02:37.638] [INFO] ci - 
+[2021-07-26 16:02:37.639] [INFO] ci - spa-build:
+[2021-07-26 16:02:37.640] [INFO] ci - tc-build:
+[2021-07-26 16:02:37.641] [INFO] ci - preparepublishfiles:
+[2021-07-26 16:02:37.755] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\WEB-INF
+[2021-07-26 16:02:37.769] [INFO] ci - 
+[2021-07-26 16:02:37.809] [INFO] ci - [echo] Build web folder: C:/Users/c-gagkau/Documents/webapps/OnboardingApprove/temp
+[2021-07-26 16:02:37.810] [INFO] ci - [echo]
+[2021-07-26 16:02:38.698] [INFO] ci - [echo] Checking for bot...
+[2021-07-26 16:02:38.699] [INFO] ci - [echo] webapps location: C:/Users/c-gagkau/Documents/webapps
+[2021-07-26 16:02:38.700] [INFO] ci - [echo] spabot is not available...
+[2021-07-26 16:02:38.701] [INFO] ci - 
+[2021-07-26 16:02:38.741] [INFO] ci - jsproject:
+[2021-07-26 16:02:38.756] [INFO] ci - BUILD SUCCESSFUL
+Total time: 2 seconds
+[2021-07-26 16:02:38.824] [INFO] ci - Execute task Package desktopweb - desktopweb.xml...
+[2021-07-26 16:02:38.824] [INFO] ci - -propertyfile C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\spabuild.properties -f C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\desktopweb\build.xml -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\ant-contrib-0.6.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\AntelopeTasks_3.4.0.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\antlr-3.3-complete.jar all
+[2021-07-26 16:02:39.363] [INFO] ci - Unable to locate tools.jar. Expected to find it in C:\Java\lib\tools.jar
+[2021-07-26 16:02:39.567] [INFO] ci - Buildfile: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\desktopweb\build.xml
+[2021-07-26 16:02:40.457] [INFO] ci - init:
+[2021-07-26 16:02:40.635] [INFO] ci - desktopweb:
+[2021-07-26 16:02:40.684] [INFO] ci - [echo]  Start of Desktop Web build C:/Users/c-gagkau/Documents/temp/OnboardingApprove
+[2021-07-26 16:02:40.686] [INFO] ci - 
+[2021-07-26 16:02:40.721] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb
+[2021-07-26 16:02:40.723] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\appjs
+[2021-07-26 16:02:40.904] [INFO] ci - [copy] Copying 3 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb
+[2021-07-26 16:02:40.904] [INFO] ci - 
+[2021-07-26 16:02:40.971] [INFO] ci - [echo] Exclude file details from IDE: includembass: ${includembass}, excludedfilesname: ${excludedfilesname}, studio.excludes:
+[2021-07-26 16:03:30.257] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\jsoutput\desktopweb\appjs\reqappjs
+[2021-07-26 16:03:30.259] [INFO] ci - 
+[2021-07-26 16:03:30.279] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\jsoutput\desktopweb\appjs\reqappjs
+[2021-07-26 16:03:30.309] [INFO] ci - [copy] Copying 8 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\jsoutput\desktopweb\appjs\reqappjs
+[2021-07-26 16:03:30.459] [INFO] ci - [delete] Deleting directory C:\Users\c-gagkau\Documents\temp\OnboardingApprove\jsoutput\desktopweb\appjs\reqappjs
+[2021-07-26 16:03:30.491] [INFO] ci - [copy] Copying 2 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\desktopweb\appjs
+[2021-07-26 16:03:30.520] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\desktopweb\appjs
+[2021-07-26 16:03:30.575] [INFO] ci - [copy] Copying 10 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\desktopweb\appjs
+[2021-07-26 16:03:30.575] [INFO] ci - 
+[2021-07-26 16:03:30.635] [INFO] ci - [copy] Copying 13 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\appjs
+[2021-07-26 16:03:30.727] [INFO] ci - [copy] Copying 3 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb
+[2021-07-26 16:03:30.993] [INFO] ci - [copy] Copying 111 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\jslib
+[2021-07-26 16:03:30.999] [INFO] ci - 
+[2021-07-26 16:03:31.876] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb
+[2021-07-26 16:03:31.877] [INFO] ci - 
+[2021-07-26 16:03:31.891] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb
+[2021-07-26 16:03:31.911] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb
+[2021-07-26 16:03:31.938] [INFO] ci - [copy] Copying 76 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\images
+[2021-07-26 16:03:32.350] [INFO] ci - [copy] Copying 95 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\images
+[2021-07-26 16:03:32.351] [INFO] ci - 
+[2021-07-26 16:03:33.382] [INFO] ci - [echo] New structure ************
+[2021-07-26 16:03:33.382] [INFO] ci - 
+[2021-07-26 16:03:33.393] [INFO] ci - [copy] Copying 21 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\images
+[2021-07-26 16:03:33.394] [INFO] ci - 
+[2021-07-26 16:03:33.477] [INFO] ci - [copy] Warning: C:\Users\c-gagkau\Documents\OnboardingApprove\resources\build does not exist.
+[2021-07-26 16:03:33.480] [INFO] ci - [copy] Copying 7 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\images
+[2021-07-26 16:03:34.515] [INFO] ci - [echo] New structure ************
+[2021-07-26 16:03:34.516] [INFO] ci - 
+[2021-07-26 16:03:34.525] [INFO] ci - [echo] ****************C:/Users/c-gagkau/Documents/OnboardingApprove/resources/i18n/spa
+[2021-07-26 16:03:34.539] [INFO] ci - [copy] Copying 8 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\web\desktopweb\resources\strings
+[2021-07-26 16:03:34.637] [INFO] ci - [copy] Copying 323 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\desktopweb
+[2021-07-26 16:03:35.993] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\desktopweb
+[2021-07-26 16:03:35.994] [INFO] ci - 
+[2021-07-26 16:03:36.001] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\WEB-INF\desktopweb
+[2021-07-26 16:03:36.007] [INFO] ci - [copy] Copying 3 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\desktopweb
+[2021-07-26 16:03:36.075] [INFO] ci - [copy] Copying 132 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\desktopweb\web
+[2021-07-26 16:03:36.607] [INFO] ci - [copy] Copying 132 files to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\jsoutput\desktopweb\web
+[2021-07-26 16:03:37.311] [INFO] ci - [copy] Copied 36 empty directories to 5 empty directories under C:\Users\c-gagkau\Documents\temp\OnboardingApprove\jsoutput\desktopweb\web
+[2021-07-26 16:03:37.314] [INFO] ci - all:
+[2021-07-26 16:03:37.315] [INFO] ci - 
+[2021-07-26 16:03:37.324] [INFO] ci - BUILD SUCCESSFUL
+Total time: 57 seconds
+[2021-07-26 16:03:37.369] [INFO] ci - Execute task Package spa...
+[2021-07-26 16:03:37.369] [INFO] ci - -propertyfile C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\spabuild.properties -f C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build.xml -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\ant-contrib-0.6.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\AntelopeTasks_3.4.0.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\antlr-3.3-complete.jar replaceTokensInWebXml runminify
+[2021-07-26 16:03:37.735] [INFO] ci - Unable to locate tools.jar. Expected to find it in C:\Java\lib\tools.jar
+[2021-07-26 16:03:37.885] [INFO] ci - Buildfile: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build.xml
+[2021-07-26 16:03:38.568] [INFO] ci - loadTaskDefs:
+[2021-07-26 16:03:38.568] [INFO] ci - 
+[2021-07-26 16:03:38.727] [INFO] ci - replaceTokensInWebXml:
+[2021-07-26 16:03:38.729] [INFO] ci - 
+[2021-07-26 16:03:38.762] [INFO] ci - [echo] Build web folder: C:/Users/c-gagkau/Documents/webapps/OnboardingApprove
+[2021-07-26 16:03:38.763] [INFO] ci - 
+[2021-07-26 16:03:38.764] [INFO] ci - [echo]
+[2021-07-26 16:03:39.368] [INFO] ci - [echo] Checking for bot...
+[2021-07-26 16:03:39.368] [INFO] ci - [echo] webapps location: C:/Users/c-gagkau/Documents/webapps
+[2021-07-26 16:03:39.370] [INFO] ci - [echo] spabot is not available...
+[2021-07-26 16:03:39.374] [INFO] ci - 
+[2021-07-26 16:03:39.396] [INFO] ci - loadTaskDefs:
+[2021-07-26 16:03:39.397] [INFO] ci - 
+[2021-07-26 16:03:39.439] [INFO] ci - check-selections:
+[2021-07-26 16:03:39.440] [INFO] ci - 
+[2021-07-26 16:03:39.456] [INFO] ci - [echo] spa selected: ${spa.selected}
+[2021-07-26 16:03:39.456] [INFO] ci - [echo] tc selected: ${tc.selected}
+[2021-07-26 16:03:39.457] [INFO] ci - seobuild:
+[2021-07-26 16:03:39.458] [INFO] ci - 
+[2021-07-26 16:03:39.491] [INFO] ci - [echo] SEO build not enabled for this project.
+[2021-07-26 16:03:39.495] [INFO] ci - 
+[2021-07-26 16:03:39.500] [INFO] ci - run-minify:
+[2021-07-26 16:03:39.505] [INFO] ci - 
+[2021-07-26 16:03:39.610] [INFO] ci - init:
+[2021-07-26 16:03:39.611] [INFO] ci - 
+[2021-07-26 16:03:39.644] [INFO] ci - runminify:
+[2021-07-26 16:03:39.646] [INFO] ci - 
+[2021-07-26 16:03:39.658] [INFO] ci - [echo] Build Option : debug
+[2021-07-26 16:03:39.659] [INFO] ci - 
+[2021-07-26 16:03:39.683] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\appjs
+[2021-07-26 16:03:39.684] [INFO] ci - 
+[2021-07-26 16:03:39.688] [INFO] ci - [echo] Copying unminified appjs
+[2021-07-26 16:03:39.755] [INFO] ci - [copy] Copying 13 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\appjs
+[2021-07-26 16:03:39.845] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb
+[2021-07-26 16:03:39.925] [INFO] ci - [copy] Copying 132 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\web
+[2021-07-26 16:03:40.688] [INFO] ci - [copy] Copied 36 empty directories to 5 empty directories under C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\web
+[2021-07-26 16:03:40.698] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\jslib
+[2021-07-26 16:03:40.751] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\jslib\tparty\googlemaps
+[2021-07-26 16:03:40.770] [INFO] ci - [echo] copying i18n resources Files
+[2021-07-26 16:03:40.788] [INFO] ci - [copy] Copying 8 files to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb\resources
+[2021-07-26 16:03:40.834] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\desktopweb
+[2021-07-26 16:03:40.834] [INFO] ci - 
+[2021-07-26 16:03:40.844] [INFO] ci - [move] Moving 1 file to C:\Users\c-gagkau\Documents\webapps\OnboardingApprove\temp\WEB-INF\desktopweb
+[2021-07-26 16:03:40.849] [INFO] ci - buildwar:
+[2021-07-26 16:03:40.881] [INFO] ci - [echo] port.changed.true ${port.changed.true} ${port.changed}
+[2021-07-26 16:03:41.268] [INFO] ci - [jar] Building jar: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\HIDApproveDemo-local.war
+[2021-07-26 16:03:44.853] [INFO] ci - [jar] desktopweb/web/localfiles/Chart_donut/donut.html already added, skipping
+[2021-07-26 16:03:44.861] [INFO] ci - [jar] desktopweb/web/localfiles/Chart_halfDonutUp/halfDonutUp.html already added, skipping
+[2021-07-26 16:03:44.865] [INFO] ci - [jar] desktopweb/web/localfiles/Chart_pie/Pie_chartistChart.html already added, skipping
+[2021-07-26 16:03:44.879] [INFO] ci - [jar] desktopweb/web/localfiles/CopyChart_halfDonutUp/halfDonutUp.html already added, skipping
+[2021-07-26 16:03:44.897] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0a997bbb0c17743/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:44.914] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0ab898ac2b30045/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:44.928] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0cd06dd567aa844/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:44.943] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0cd2ae0e0acd743/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:44.958] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0cdc647ef908e4b/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:44.973] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0cebb68dd072d44/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:44.974] [INFO] ci - 
+[2021-07-26 16:03:44.990] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0d380f0e20fc842/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.006] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0de8563103fac43/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.022] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode0haa7d3be750e40/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.038] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode1/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.055] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode2/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.070] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode3/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.089] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode4/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.105] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode5/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.120] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopykonympQRCode/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.121] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc.html already added, skipping
+[2021-07-26 16:03:45.123] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0c08c6a9c0c184c.html already added, skipping
+[2021-07-26 16:03:45.124] [INFO] ci - 
+[2021-07-26 16:03:45.126] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0ce44cb16b54444.html already added, skipping
+[2021-07-26 16:03:45.127] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0d955d49a50e240.html already added, skipping
+[2021-07-26 16:03:45.128] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0f65f25dc1ab140.html already added, skipping
+[2021-07-26 16:03:45.129] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0fdd6059d365b44.html already added, skipping
+[2021-07-26 16:03:45.130] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0h2088a6a0cd341.html already added, skipping
+[2021-07-26 16:03:45.131] [INFO] ci - 
+[2021-07-26 16:03:45.137] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0h880010d626d43.html already added, skipping
+[2021-07-26 16:03:45.138] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0h8a4570963114d.html already added, skipping
+[2021-07-26 16:03:45.140] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc0j8b84728ccd54a.html already added, skipping
+[2021-07-26 16:03:45.141] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc1.html already added, skipping
+[2021-07-26 16:03:45.143] [INFO] ci - 
+[2021-07-26 16:03:45.144] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc2.html already added, skipping
+[2021-07-26 16:03:45.145] [INFO] ci - 
+[2021-07-26 16:03:45.146] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc3.html already added, skipping
+[2021-07-26 16:03:45.148] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc4.html already added, skipping
+[2021-07-26 16:03:45.148] [INFO] ci - 
+[2021-07-26 16:03:45.152] [INFO] ci - [jar] desktopweb/web/localfiles/CopyCopyqrenc5.html already added, skipping
+[2021-07-26 16:03:45.168] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode0df989e8efae640/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.180] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode0ec3075fc16b14e/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.198] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode0g52c76925be74f/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.202] [INFO] ci - 
+[2021-07-26 16:03:45.221] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode0gb0f8189555a4d/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.222] [INFO] ci - 
+[2021-07-26 16:03:45.241] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode1/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.256] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode2/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.268] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode3/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.282] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode4/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.284] [INFO] ci - 
+[2021-07-26 16:03:45.308] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode5/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.309] [INFO] ci - 
+[2021-07-26 16:03:45.336] [INFO] ci - [jar] desktopweb/web/localfiles/CopykonympQRCode/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.337] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc.html already added, skipping
+[2021-07-26 16:03:45.338] [INFO] ci - 
+[2021-07-26 16:03:45.339] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc0d1b9bfe06ba34c.html already added, skipping
+[2021-07-26 16:03:45.340] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc0d4675b2f1ac343.html already added, skipping
+[2021-07-26 16:03:45.343] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc0d9588dc1df2c42.html already added, skipping
+[2021-07-26 16:03:45.344] [INFO] ci - 
+[2021-07-26 16:03:45.346] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc0j5f5df7e63434a.html already added, skipping
+[2021-07-26 16:03:45.347] [INFO] ci - 
+[2021-07-26 16:03:45.355] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc1.html already added, skipping
+[2021-07-26 16:03:45.357] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc2.html already added, skipping
+[2021-07-26 16:03:45.358] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc3.html already added, skipping
+[2021-07-26 16:03:45.362] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc4.html already added, skipping
+[2021-07-26 16:03:45.366] [INFO] ci - [jar] desktopweb/web/localfiles/Copyqrenc5.html already added, skipping
+[2021-07-26 16:03:45.368] [INFO] ci - 
+[2021-07-26 16:03:45.389] [INFO] ci - [jar] desktopweb/web/localfiles/konympQRCode/qrcodeIndex.html already added, skipping
+[2021-07-26 16:03:45.390] [INFO] ci - [jar] desktopweb/web/localfiles/qrenc3.html already added, skipping
+[2021-07-26 16:03:45.855] [INFO] ci - customPostBuildTask:
+[2021-07-26 16:03:45.857] [INFO] ci - [echo] No custom build task found for SPA/Desktopweb.
+[2021-07-26 16:03:45.857] [INFO] ci - 
+[2021-07-26 16:03:45.858] [INFO] ci - runminify:
+[2021-07-26 16:03:45.858] [INFO] ci - 
+[2021-07-26 16:03:45.876] [INFO] ci - BUILD SUCCESSFUL
+Total time: 7 seconds
+[2021-07-26 16:03:45.937] [INFO] ci - 
+[2021-07-26 16:03:45.952] [INFO] ci - Execute task Building Web Client binary file...
+[2021-07-26 16:03:45.953] [INFO] ci - -Dmiddleware.file=C:\Users\c-gagkau\Documents\bundles\com.kony.cloudmiddleware\middleware.war -Dcloudmiddleware.location=C:\Users\c-gagkau\Documents\bundles\com.kony.cloudmiddleware -Dcloudthirdparty.location=C:\Users\c-gagkau\Documents\bundles\com.kony.cloudthirdparty -Dtemp.dir=C:\Users\c-gagkau\Documents\OnboardingApprove\.temp -Dmobileweb.file=C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\HIDApproveDemo-local.war -Dmobileweb.file.skip=false -Dwebcommons.plugin.loc=C:\Users\c-gagkau\Documents\bundles\com.kony.webcommons -Dwebcommons.version=9.2.2.202101081034 -Dcontext=HIDApproveDemo -Doutput.dir=C:\Users\c-gagkau\Documents\temp\OnboardingApprove\middleware_mobileweb -Dservicedef.location=C:\Users\c-gagkau\Documents\OnboardingApprove\services\servicedef.xml -Dappid=HIDApproveDemo -Dplugin.loc=C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor -Ddsl.loc=C:\Users\c-gagkau\Documents\OnboardingApprove\services\webconnector\dsl -Dincludemiddleware=false -Dnewlibs= -Dexcludemiddlewarelib= -Dnewlibswithoutpath= -Dconflictlibs= -Dcloudthirdparty.version=9.2.1.GA_v202106210957_r5 -Dcloudmiddleware.version=9.2.1.GA_v202106210957_r5 -Dsystemlibs= -Dsystemlibswithoutpath= -Dcerts_trust_store_file= -Dcerts_key_store_file= -Dcerts_key_store_type=JKS -Dcerts_trust_store_type=JKS -Dcerts_ssl_algorithm=TLS -f C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\ant_scripts\buildEar.xml -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\ant-contrib-0.6.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\AntelopeTasks_3.4.0.jar -lib C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\lib\antlr-3.3-complete.jar makeCloudArchive
+[2021-07-26 16:03:46.444] [INFO] ci - Unable to locate tools.jar. Expected to find it in C:\Java\lib\tools.jar
+[2021-07-26 16:03:46.650] [INFO] ci - Buildfile: C:\Users\c-gagkau\Documents\bundles\com.pat.tool.keditor\ant_scripts\buildEar.xml
+[2021-07-26 16:03:47.167] [INFO] ci - init:
+[2021-07-26 16:03:47.288] [INFO] ci - makeCloudArchive:
+[2021-07-26 16:03:47.310] [INFO] ci - [mkdir] Created dir: C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo
+[2021-07-26 16:03:47.310] [INFO] ci - 
+[2021-07-26 16:03:47.358] [INFO] ci - [echo] Unzipping mobileweb WAR
+[2021-07-26 16:03:47.373] [INFO] ci - [unzip] Expanding: C:\Users\c-gagkau\Documents\temp\OnboardingApprove\build\wap\build\HIDApproveDemo-local.war into C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo
+[2021-07-26 16:03:47.374] [INFO] ci - 
+[2021-07-26 16:03:51.191] [INFO] ci - [echo] Unzipping middleware WAR
+[2021-07-26 16:03:51.199] [INFO] ci - [unzip] Expanding: C:\Users\c-gagkau\Documents\bundles\com.kony.cloudmiddleware\middleware.war into C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo
+[2021-07-26 16:03:51.345] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo\WEB-INF\middleware\middleware-bootconfig\tc
+[2021-07-26 16:03:51.385] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo\WEB-INF\lib
+[2021-07-26 16:03:51.406] [INFO] ci - [delete] Deleting: C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo\WEB-INF\web.xml
+[2021-07-26 16:03:51.408] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo\WEB-INF
+[2021-07-26 16:03:51.417] [INFO] ci - [echo] Service def file doesn't exist
+[2021-07-26 16:03:51.420] [INFO] ci - [echo] Certs folder doesn't exist
+[2021-07-26 16:03:51.422] [INFO] ci - [echo] Copying custom jars
+[2021-07-26 16:03:51.427] [INFO] ci - [echo] Copying system libs
+[2021-07-26 16:03:52.077] [INFO] ci - [touch] Creating C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo\WEB-INF\middleware\middleware-bootconfig\tc\HIDApproveDemo.properties
+[2021-07-26 16:03:52.400] [INFO] ci - [zip] Building zip: C:\Users\c-gagkau\Documents\OnboardingApprove\.temp\context\HIDApproveDemo.war
+[2021-07-26 16:03:56.684] [INFO] ci - [copy] Copying 1 file to C:\Users\c-gagkau\Documents\temp\OnboardingApprove\middleware_mobileweb
+[2021-07-26 16:03:57.159] [INFO] ci - BUILD SUCCESSFUL
+Total time: 10 seconds
+[2021-07-26 16:03:57.201] [INFO] ci - 
+[2021-07-26 16:03:57.361] [INFO] ci - Platform:spa , build status : COMPLETED
+[2021-07-26 16:03:57.945] [INFO] ci - Binary successfully copied to C:\Users\c-gagkau\Documents\OnboardingApprove\binaries\desktopweb\OnboardingApprove-debug.war
+[2021-07-26 16:03:57.946] [INFO] ci - 
+---❏ Upload web archive ---
+
+[2021-07-26 16:03:57.947] [INFO] ci - AppUpload: Service config is not provided!
+[2021-07-26 16:03:57.951] [INFO] ci - ‼︎ Service config is not provided. Skip setting service doc.
+[2021-07-26 16:03:57.955] [INFO] ci - Done!
+[2021-07-26 16:03:57.956] [INFO] ci - 
+
+----------------------------------------------------------------
+BUILD SUMMARY
+----------------------------------------------------------------
+desktopweb .................. COMPLETED [87.791 s]
+Upload Web Archive .......... Service config isn't set.
+Fabric App .................. Skip. Publish mode isn't set!
+Total time .................. 00:02:00.792
+Finished at ................. "2021-07-26T10:33:57.955Z"
+Dist ........................ C:\Users\c-gagkau\Documents\OnboardingApprove\binaries
+Build summary file .......... C:\Users\c-gagkau\Documents\OnboardingApprove\.cilogs\BuildResult.json
+----------------------------------------------------------------

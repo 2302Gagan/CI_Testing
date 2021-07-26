@@ -34,19 +34,15 @@
         "type": "string",
         "value": "100%"
     },
-    "autogrowmode": 0,
     "canUpdateUI": true,
-    "clipbounds": true,
     "containerweight": 0,
     "data": {},
-    "enablescrolling": true,
     "id": "transactionSigning",
     "info": null,
     "iscustomlayout": false,
     "issegmentchild": false,
     "isvisible": true,
     "kuid": "gd4a6a5450364d7fa864e500166eda31",
-    "layouttype": 2,
     "masterType": 1,
     "name": "kony.ui.UserWidgetInstance",
     "parent": "flxMainTS",
@@ -54,8 +50,6 @@
     "retaincontentalignment": false,
     "retainflexpositionproperties": false,
     "retainflowhorizontalalignment": false,
-    "snapgridsize": 10,
-    "snaptogrid": true,
     "sourceUserWidget": "a4c6316cb0aa4c509b6bb332eb379120",
     "wType": "UserWidgetInstance"
 }

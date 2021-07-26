@@ -475,7 +475,7 @@
 								</params>
 							</mapping>
 						</mappings>
-					</instancemethod>					
+					</instancemethod>						
 				</instancemethods>
 			</jsclass>
 			<jsclass name="OfflineSDKObjectService">
@@ -675,6 +675,76 @@
 					</mapping>
 				</mappings>
 			</jsfunction>
+			<jsfunction name="setGlobalRequestParam" returntype="void">
+				<params>
+				    <param name="paramName" type="String"/>
+				    <param name="paramValue" type="String"/>
+				    <param name="paramType" type="String"/>
+				</params>
+				<mappings>
+					<mapping platform="winphone10" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="SetGlobalRequestParam" returntype="System.Void"  frameworks="">
+						<params>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						</params>
+					</mapping>
+					<mapping platform="windows10" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="SetGlobalRequestParam" returntype="System.Void"  frameworks="">
+						<params>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						</params>
+					</mapping>
+					<mapping platform="desktop_kiosk" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="SetGlobalRequestParam" returntype="System.Void"  frameworks="">
+						<params>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						</params>
+					</mapping>
+				</mappings>
+			</jsfunction>
+			<jsfunction name="removeGlobalRequestParam" returntype="void">
+				<params>
+				    <param name="paramName" type="String"/>
+				    <param name="paramType" type="String"/>
+				</params>
+				<mappings>
+					<mapping platform="winphone10" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="RemoveGlobalRequestParam" returntype="System.Void"  frameworks="">
+						<params>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						</params>
+					</mapping>
+					<mapping platform="windows10" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="RemoveGlobalRequestParam" returntype="System.Void"  frameworks="">
+						<params>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						</params>
+					</mapping>
+					<mapping platform="desktop_kiosk" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="RemoveGlobalRequestParam" returntype="System.Void"  frameworks="">
+						<params>
+						   <param type="System.String"/>
+						   <param type="System.String"/>
+						</params>
+					</mapping>
+				</mappings>
+			</jsfunction>
+			<jsfunction name="resetGlobalRequestParams" returntype="void">
+				<params></params>
+				<mappings>
+					<mapping platform="winphone10" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="ResetGlobalRequestParams" returntype="System.Void"  frameworks="">
+						<params></params>
+					</mapping>
+					<mapping platform="windows10" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="ResetGlobalRequestParams" returntype="System.Void"  frameworks="">
+						<params></params>
+					</mapping>
+					<mapping platform="desktop_kiosk" library="offlineobjects.zip" namespace="OfflineObjects.FFI" class="GlobalRequestParamsFFI" static="true" method="ResetGlobalRequestParams" returntype="System.Void"  frameworks="">
+						<params></params>
+					</mapping>
+				</mappings>
+			</jsfunction>
 			<jsfunction name="setToken" returntype="void">
 				<params>
 					<param name="token" type="String"/>
@@ -722,7 +792,7 @@
 						</params>
 					</mapping>
 				</mappings>
-			</jsfunction>			
+			</jsfunction>
 			<jsfunction name="setReportingParams" returntype="void">
 				<params>
 					<param name="token" type="String"/>

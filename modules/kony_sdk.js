@@ -1,5 +1,5 @@
  /*
-  * kony-sdk-ide Version 9.1.5
+  * kony-sdk-ide Version 9.2.24
   */
         
 //#ifdef iphone
@@ -297,20 +297,11 @@
 //#define PLATFORM_NATIVE_WINDOWS_AND_SPA
 //#endif
 
-//#ifdef iphone
-//#define PLATFORM_NATIVE_IOS_WINDOWS
+//#ifdef universalwindows_offlineobjects
+//#define PLATFORM_NATIVE_WINDOWS
 //#endif
-//#ifdef ipad
-//#define PLATFORM_NATIVE_IOS_WINDOWS
-//#endif
-//#ifdef winphone8
-//#define PLATFORM_NATIVE_IOS_WINDOWS
-//#endif
-//#ifdef windows8
-//#define PLATFORM_NATIVE_IOS_WINDOWS
-//#endif
-//#ifdef desktop_kiosk
-//#define PLATFORM_NATIVE_IOS_WINDOWS
+//#ifdef universalwindows_offlineobjects
+//#define OFFLINE_OBJECTS_SUPPORT
 //#endif
 /**
  * Kony namespace
@@ -412,18 +403,30 @@ kony.sdk = function() {
             }else if(paramType === currentObj.globalRequestParamType.bodyParams){
                 currentObj.globalRequestParams.bodyparams[paramName] = paramValue;
             }
+
+            if(!(kony.sdk.getAType() === kony.sdk.constants.SDK_ATYPE_SPA || kony.sdk.getAType() === "watch")){
+                //invoke NFI only for android,ios and FFI for windows and logger
+                kony.sdk.sdkCommons.setGlobalRequestParam(paramName, paramValue, paramType);
+                kony.logger.setGlobalRequestParam(paramName, paramValue, paramType);
+            }
         }
     };
 
     this.removeGlobalRequestParam = function(paramName, paramType){
         kony.sdk.logsdk.trace("Entering removeGlobalRequestParam");
         if(typeof(paramName) === 'string' && typeof(paramType) === 'string'){
-            if(paramType.toLowerCase() === currentObj.globalRequestParamType.headers && !kony.sdk.isNullOrUndefined(currentObj.globalRequestParams.headers[paramName])){
+            if(paramType === currentObj.globalRequestParamType.headers && !kony.sdk.isNullOrUndefined(currentObj.globalRequestParams.headers[paramName])){
                 delete currentObj.globalRequestParams.headers[paramName];
-            }else if(paramType.toLowerCase() === currentObj.globalRequestParamType.queryParams && !kony.sdk.isNullOrUndefined(currentObj.globalRequestParams.queryparams[paramName])){
+            }else if(paramType === currentObj.globalRequestParamType.queryParams && !kony.sdk.isNullOrUndefined(currentObj.globalRequestParams.queryparams[paramName])){
                 delete currentObj.globalRequestParams.queryparams[paramName];
-            }else if(paramType.toLowerCase() === currentObj.globalRequestParamType.bodyParams && !kony.sdk.isNullOrUndefined(currentObj.globalRequestParams.bodyparams[paramName])){
+            }else if(paramType === currentObj.globalRequestParamType.bodyParams && !kony.sdk.isNullOrUndefined(currentObj.globalRequestParams.bodyparams[paramName])){
                 delete currentObj.globalRequestParams.bodyparams[paramName];
+            }
+
+            if(!(kony.sdk.getAType() === kony.sdk.constants.SDK_ATYPE_SPA || kony.sdk.getAType() === "watch")){
+                //invoke NFI only for android,ios and FFI for windows and logger
+                kony.sdk.sdkCommons.removeGlobalRequestParam(paramName, paramType);
+                kony.logger.removeGlobalRequestParam(paramName, paramType);
             }
         }
     };
@@ -435,6 +438,12 @@ kony.sdk = function() {
             "queryparams":{},
             "bodyparams":{}
         };
+
+        if(!(kony.sdk.getAType() === kony.sdk.constants.SDK_ATYPE_SPA || kony.sdk.getAType() === "watch")){
+            //invoke NFI only for android,ios and FFI for windows and logger
+            kony.sdk.sdkCommons.resetGlobalRequestParams();
+            kony.logger.resetGlobalRequestParams();
+        }
     };
 
     this.appendGlobalHeaders = function(headers){
@@ -527,7 +536,7 @@ kony.sdk.currentInstance = null;
 kony.sdk.isLicenseUrlAvailable = true;
 kony.sdk.isOAuthLogoutInProgress = false;
 kony.sdk.constants = kony.sdk.constants || {};
-kony.sdk.version = "9.1.5";
+kony.sdk.version = "9.2.24";
 kony.sdk.logsdk = new konySdkLogger();
 kony.sdk.syncService = null;
 kony.sdk.dataStore = kony.sdk.dataStore || new konyDataStore();
@@ -609,12 +618,15 @@ kony.sdk.claimsAndProviderTokenRefresh = function(callback, failureCallback) {
  * @param callback{function} callback to be invoked.
  */
 function getLatestServiceDocIfAvailable(data, callback){
-    //Disabling this for phonegap and plain-js as there is not concept of auto-init there
-    if(kony.sdk.getSdkType() !== kony.sdk.constants.SDK_TYPE_IDE){
+    // Disabling this for phonegap and plain-js as there is no concept of auto-init there
+    // Also, If konyRef.mainRef.config is not defined which means init is called again or konyRef is in invalid state.
+    // Hence skipping service doc call.
+    if(kony.sdk.getSdkType() !== kony.sdk.constants.SDK_TYPE_IDE
+        || kony.sdk.isNullOrUndefined(konyRef.mainRef.config)){
         kony.sdk.verifyAndCallClosure(callback);
         return;
     }
-    var currentETag = kony.sdk.getCurrentInstance().mainRef.config.service_doc_etag;
+    var currentETag = konyRef.mainRef.config.service_doc_etag;
     var serverETag = data.service_doc_etag;
 
     if (!kony.sdk.isNullOrUndefined(serverETag) &&
@@ -669,8 +681,27 @@ kony.sdk.fetchClaimsTokenFromServer = function(isBackendTokenRefreshRequired, ca
     kony.sdk.logsdk.debug("claims token has expired. fetching new token and isBackendTokenRefreshRequired :" ,isBackendTokenRefreshRequired);
     var _serviceUrl = stripTrailingCharacter(konyRef.rec.url, "/");
     var _url = _serviceUrl + "/claims";
-    if(isBackendTokenRefreshRequired){
+    var bodyParams = {};
+    var refreshLoginTokenStoreUtilityObject = kony.sdk.util.getRefreshLoginTokenStoreUtility();
+
+    if (isBackendTokenRefreshRequired) {
+        kony.sdk.logsdk.debug('isBackendTokenRefreshRequired is ' + isBackendTokenRefreshRequired +
+                                  ' in claims refresh');
         _url = _url + "?refresh=true";
+        bodyParams[kony.sdk.constants.ENABLE_REFRESH_LOGIN] = true;
+
+        //retrieve custom params
+        if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh)) {
+            var customOAuthParams = {};
+            for (var provider in kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh) {
+                for (var paramKey in kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[provider]) {
+                    customOAuthParams[paramKey] = kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[provider][paramKey];
+                }
+            }
+
+            //populating custom oAuth params
+            kony.sdk.util.populateCustomOAuthParams(bodyParams, customOAuthParams);
+        }
     }
     kony.sdk.logsdk.debug("service url is " + _url);
     if (konyRef.currentRefreshToken === null) {
@@ -681,17 +712,36 @@ kony.sdk.fetchClaimsTokenFromServer = function(isBackendTokenRefreshRequired, ca
         headers[kony.sdk.constants.KONY_AUTHORIZATION_HEADER] = konyRef.currentRefreshToken;
         headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED;
         kony.sdk.logsdk.perf("Executing network call for fetchClaimsTokenFromServer");
-        networkProvider.post(_url, {}, headers,
-            function(tokens) {
+        networkProvider.post(_url, bodyParams, headers,
+            function(identityResponse) {
                 kony.sdk.logsdk.perf("Executing Finished network call for fetchClaimsTokenFromServer");
                 kony.sdk.logsdk.perf("Executing Finished kony.sdk.fetchClaimsTokenFromServer : refresh success");
-                var response = kony.sdk.processClaimsSuccessResponse(tokens,konyRef,false);
+                var response = kony.sdk.processClaimsSuccessResponse(identityResponse, konyRef, false);
 
                 function serviceDocCallback(){
+                    if (!kony.sdk.isNullOrUndefined(identityResponse[kony.sdk.constants.LOGIN_PROFILES])) {
+                        kony.sdk.logsdk.debug("login profiles present in claims refresh");
+                        var listOfLoginProfiles = Object.keys(identityResponse[kony.sdk.constants.LOGIN_PROFILES]);
+                        refreshLoginTokenStoreUtilityObject.setInternalRefreshToken(listOfLoginProfiles,
+                                                                                    konyRef.currentRefreshToken);
+                    }
+
+                    if (isBackendTokenRefreshRequired &&
+                        !kony.sdk.isNullOrUndefined(identityResponse[kony.sdk.constants.BACKEND_REFRESH_TOKENS])) {
+                        kony.sdk.logsdk.debug("trying to update backend tokens securely");
+                        var providerToLocalTokenObjectJSON = refreshLoginTokenStoreUtilityObject.getAllPersistedRefreshLoginProviderTokens();
+                        if (!kony.sdk.isNullOrUndefined(providerToLocalTokenObjectJSON)) {
+                            kony.sdk.logsdk.debug("retrieved local tokens securely");
+                            var providerToBackendResponseTokenJSON = identityResponse[kony.sdk.constants.BACKEND_REFRESH_TOKENS];
+                            //updating backend refresh tokens of the providers
+                            refreshLoginTokenStoreUtilityObject.setBulkBackendRefreshTokens(providerToBackendResponseTokenJSON);
+                        }
+                    }
+                    
                     kony.sdk.verifyAndCallClosure(callback, response);
                 }
 
-                getLatestServiceDocIfAvailable(tokens, serviceDocCallback);
+                getLatestServiceDocIfAvailable(identityResponse, serviceDocCallback);
             },
             function(data) {
                 kony.sdk.logsdk.perf("Executing Finished network call for fetchClaimsTokenFromServer");
@@ -762,6 +812,9 @@ kony.sdk.prototype.init = function(appKey, appSecret, serviceUrl, successCallbac
 
     // removing app metadata with key for the latest app metadata
     kony.sdk.logsdk.perf("Executing kony.sdk.prototype.init");
+
+    kony.sdk.util.clearExistingWebsocketObject();
+
     kony.sdk.util.deleteMetadatafromDs();
 
     if (!(appKey && appSecret && serviceUrl)) {
@@ -1069,7 +1122,7 @@ kony.sdk.prototype.sessionChangeHandler = function(changes) {
     konyRef.getMetricsService();
     var sessionId = null;
     var userId = null;
-    if (changes["sessionId"] != undefined) {
+    if (!kony.sdk.util.isNullOrEmptyString(changes["sessionId"])) {
         sessionId = changes["sessionId"];
         konyRef.setSessionId(sessionId);
         if(konyRef.internalSdkObject) {
@@ -1196,7 +1249,6 @@ kony.sdk.ClientCache = function(size){
 
     kony.sdk.ClientCache.instance = this;
 }
-
 /**
  * MFSDK
  * Created by KH1969 on 18-01-2018.
@@ -1437,7 +1489,6 @@ lruCache = function(size){
         this.capacity = size;
     }
 }
-
 /**
  * Method to create the configuration service instance
  * @returns {ConfigurationService} Configuration service instance
@@ -1542,6 +1593,7 @@ kony.sdk.constants =
         GET_CLIENT_PROPERTY_URL : "/metadata/configurations/client/properties",
         DEFAULT_CACHE_EXPIRY_TIME : 0, //Which means it doesn't expire in the application session.
         QUERY_PARAMS : "queryParams",
+        BODY_PARAMS : "bodyParams",
 
         /**Service ID's for Identity Calls**/
         GET_BACKEND_TOKEN : "getBackendToken",
@@ -1549,6 +1601,21 @@ kony.sdk.constants =
         GET_USER_ATTRIBUTES : "getUserAttributes",
         GET_USER_DATA : "getUserData",
         GET_PROFILE : "getProfile",
+        KEY_PROVIDER : "provider",
+        KEY_INCLUDE_PROFILE : "include_profile",
+        OAUTH_TOKEN_URL : "/oauth2/token",
+        KEY_HTTP_REQUEST_OPTIONS : "httpRequestOptions",
+        KEY_XML_HTTP_REQUEST_OPTIONS :"xmlHttpRequestOptions",
+        KEY_GRANT_TYPE : "grant_type",
+        KEY_REFRESH_TOKEN : "refresh_token",
+        KEY_BACKEND_REFRESH_TOKEN : "backend_refresh_token",
+        KEY_AUTH_REFRESH_TOKEN : "auth_refresh_token",
+        KEY_URL:"url",
+        CODE_CHALLENGE: "code_challenge",
+        KEY_CODE_CHALLENGE_METHOD: "code_challenge_method",
+        CODE_VERIFIER: "code_verifier",
+        CODE_CHALLENGE_METHOD_VALUE: "S256",
+        PKCE_CODE_MAX_LENGTH: 128,
 
         /** Identity Options**/
         OAUTH_REDIRECT_SUCCESS_URL: "success_url",
@@ -1580,6 +1647,8 @@ kony.sdk.constants =
 
         /**Content Type Value Constants**/
         CONTENT_TYPE_FORM_URL_ENCODED   : "application/x-www-form-urlencoded",
+        //Added a new content-type based on the bug MFSDK-5665
+        CONTENT_TYPE_FORM_URL_ENCODED_CHARSET_UTF8 : "application/x-www-form-urlencoded;charset=utf-8",
         CONTENT_TYPE_JSON               : "application/json",
         //Added a new content-type based on the bug MFSDK-4096
         CONTENT_TYPE_JSON_CHARSET_UTF8  : "application/json;charset=utf-8",
@@ -1645,6 +1714,10 @@ kony.sdk.constants =
         MF_ERROR_MSG : "errmsg",
         MF_ERROR_CODE : "errcode",
         MF_SERVICE : "service",
+        KEY_RESPONSE_CODE : "responsecode",
+        KEY_HTTP_RESPONSE : "httpresponse",
+        HTTP_CODE_400 : 400,
+        HTTP_CODE_401 : 401,
 
         /**Engagement service API constants**/
         SUBSCRIBE_AUDIENCE : "/subscribeaudience",
@@ -1655,8 +1728,6 @@ kony.sdk.constants =
         AUTH_TOKEN: "authToken",
         DEVICE_AUTHTOKEN_HEADER: "X-Device-AuthToken",
         FUNCTION_STRING : "function",
-        SUCCESS_STRING : "SUCCESS",
-        ERROR_STRING : "ERROR",
 
         /**Parsed Template Constants**/
         PROCESSED_TEMPLATE: "processedTemplate",
@@ -1669,7 +1740,6 @@ kony.sdk.constants =
         FILE_NAME: "fileName",
 
         /**Miscellaneous**/
-        SSO_TOKEN_KEY : "ssoTokenKey",
         KONYUUID : "konyUUID",
         BROWSER_WIDGET : "browserWidget",
         INIT_FAILURE_MESSAGE : "SDK is not initialized, call init before invoking any operation on",
@@ -1694,7 +1764,11 @@ kony.sdk.constants =
         /** Encryption Constants **/
         ENCRYPTION_ALGO_AES : "aes",
         HASH_FUNCTION_MD5 : "md5",
+        HASH_FUNCTION_SHA2 : "sha2",
         ENC_TYPE_PASSPHRASE : "passphrase",
+        ENC_PASSPHRASE_HASH_ALGO : "passphrasehashalgo",
+        AES_ALGO_KEY_STRENGTH_128 : 128,
+        AES_ALGO_KEY_STRENGTH_256 : 256,
         ENCRYPTION_APPCONFIG_FLAG : "appConfig_v1",
         SHARED_CLIENT_IDENTIFIER : "shared_client_identifier",
         MOBILE_FABRIC_SERVICE_DOC : "mobileFabricServiceDoc",
@@ -1706,19 +1780,48 @@ kony.sdk.constants =
         /**Persist login constants**/
         PERSISTED_AUTH_RESPONSE : "persistedAuthResponse",
         PERSIST_LOGIN_RESPONSE_FLAG : "persistLoginResponseFlag",
+        CUSTOM_DATA_SAVE_HANDLE : "customDataSaveHandle",
+
+        /**single window login constants**/
+        NO_POP_UP : "noPopup",
+        LOGIN_OPTIONS : "loginOptions",
+        URL_TYPE : "url_type",
+        METADATA_MANAGER_FOR_LOGIN_IN_SAME_WINDOW_OBJECT : "metadata_manager_for_login_in_same_window_object",
+        CODE_VERIFIER_MW_STORE_ENDPOINT : "/ClientState",
+        IS_ERROR : "isError",
+        LOGIN_RESPONSE : "LOGIN_RESPONSE",
+        SINGLE_WINDOW_LOGIN_BODY_PARAMS : "single_window_login_body_params",
+        KEY_IS_SAME_WINDOW : "isSameWindow",
+        KEY_METADATA_SDK_LOGIN_FOR_SAME_WINDOW : "key_metadata_sdk_login_for_same_window",
+
+        /**Offline login constants**/
+        OFFLINE_LOGIN_AUTH_RESPONSE: "authResponse",
 
         /** Passthrough constant **/
         PASSTHROUGH_RESPONSE_HEADER : "X-Kony-Passthrough",
         
         /**Server events constants**/
         SERVER_EVENTS_URL_ENDPOINT : "ServerEvents/Stream",
+        SERVER_EVENTS_CLOSE_CONNECTION : "closeConnection",
+        PERSISTED_REFRESH_LOGIN_PROVIDER_TOKENS : "persistedRefreshLoginProviderTokens",
+        INTERNAL_REFRESH_TOKEN : "internalRefreshToken",
+        BACKEND_REFRESH_TOKEN : "backendRefreshToken",
+        ENABLE_REFRESH_LOGIN : "enable_refresh_login",
+        BACKEND_REFRESH_TOKENS : "backend_refresh_tokens",
+        RETAIN_BACKEND_REFRESH_TOKEN : "retain_backend_refresh_token",
+        LOGIN_PROFILES : "profiles",
+        LOGIN_PROVIDER_TYPE : "provider_type",
 
         /**Integration service constants**/
         INTEGRATION_SERVICE_KEY : "integsvc",
         INTEGRATION_INTERNAL_LOGOUT_URL :"_internal_logout",
-        INTEGRATION_INTERNAL_CLEAR_SESSION_ENDPOINT  :"clearSession"
-    };
+        INTEGRATION_INTERNAL_CLEAR_SESSION_ENDPOINT  :"clearSession",
 
+        /**custom params for oauth**/
+        CUSTOM_QUERY_PARAMS_FOR_OAUTH : "customQueryParamsForOAuth",
+        CUSTOM_OAUTH_PARAMS : "customOAuthParams",
+        LOGOUT_OPTIONS : "logoutOptions"
+    };
 if (typeof(kony.sdk) === "undefined") {
 	kony.sdk = {};
 }
@@ -2034,6 +2137,25 @@ kony.sdk.errormessages.cliams_token_null = "Claims Token is Unavialable";
 kony.sdk.errorcodes.identity_session_inactive= 107;
 kony.sdk.errormessages.identity_session_inactive = "Identity Provider's sessions is not active. Please login";
 
+kony.sdk.errorcodes.refresh_login_tokens_null_or_undefined = 108;
+kony.sdk.errormessages.refresh_login_tokens_null_or_undefined = "Required refresh tokens to enable refresh login are null or undefined";
+
+kony.sdk.errorcodes.code_verifier_save_failed = 109;
+kony.sdk.errormessages.code_verifier_save_failed = "Unable to store code verifier at middleware server";
+
+kony.sdk.errorcodes.code_verifier_retrieve_failed = 110;
+kony.sdk.errormessages.code_verifier_retrieve_failed = "Unable to retrieve code verifier from middleware server";
+
+kony.sdk.errorcodes.invalid_custom_data_save_handle = 111;
+kony.sdk.errormessages.invalid_custom_data_save_handle = "CustomDataSaveHandle should be function and should " +
+                                                            "accept successCallback and failureCallback";
+
+kony.sdk.errorcodes.custom_data_save_handle_failed = 112;
+kony.sdk.errormessages.custom_data_save_handle_failed = "CustomDataSaveHandle failed by user";
+
+kony.sdk.errorcodes.partial_login_error = 113;
+kony.sdk.errormessages.partial_login_error = "The application was launched with code query param but is not a continued login process";
+
 kony.sdk.errorcodes.default_code = 100;
 kony.sdk.errormessages.default_message = "UnhandledMFcode";
 
@@ -2131,16 +2253,86 @@ kony.sdk.errorConstants = {
     INTEGRITY_FAILURE: "INTEGRITY_FAILURE",
     INVALID_API_FAILURE:"INVALID_API_FAILURE"
 };
+
+kony.sdk.offline = kony.sdk.offline || {};
+kony.sdk.sso = kony.sdk.sso || {};
+kony.sdk.isSSOLoginSuccess = kony.sdk.isSSOLoginSuccess || true;
+kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh = {};
+
+/**
+ * This function will resume the oauth2 login process after oauth code retrieval part.
+ * This function takes auth code as input and will call loginCompleteCallback with appropriate repsonse
+ * @param code
+ * @param loginCompleteCallback
+ */
+kony.sdk.completeSingleWindowLogin = function (code, loginCompleteCallback) {
+	kony.sdk.logsdk.info("Entering completeSingleWindowLogin");
+	kony.application.removeQueryParamsByKey(kony.sdk.constants.DEEPLINK_VALID_PARAM);
+	if (kony.sdk.isNullOrUndefined(code)) {
+		kony.sdk.logsdk.info("code is undefined");
+		return loginCompleteCallback();
+	}
+
+	var bodyParams = {};
+	var loginOptions = null;
+	var metaDataManagerForLoginInSameWindow = kony.sdk.util.getMetaDataManagerForLoginInSameWindow();
+
+	function performTokenCall(networkResponseJSON) {
+		kony.sdk.logsdk.info("Entering performTokenCall");
+		bodyParams[kony.sdk.constants.CODE_VERIFIER] = networkResponseJSON[kony.sdk.constants.CODE_VERIFIER];
+		bodyParams[kony.sdk.constants.DEEPLINK_VALID_PARAM] = code;
+
+		delete loginOptions[kony.sdk.constants.NO_POP_UP]; //avoiding circular logins
+
+		//make login
+		var options = {};
+		options[kony.sdk.constants.LOGIN_OPTIONS] = loginOptions;
+		options[kony.sdk.constants.SINGLE_WINDOW_LOGIN_BODY_PARAMS] = bodyParams; //this param will tell us to by pass auth code process
+		var provider = metaDataManagerForLoginInSameWindow.getItem(kony.sdk.constants.KEY_PROVIDER);
+		var sdkInstance = kony.sdk.getDefaultInstance();
+		var identityInstance = sdkInstance.getIdentityService(provider);
+		identityInstance.login(options, successCallback, failureCallback);
+	}
+
+	function successCallback(successResponse) {
+		var successLoginResponse = {};
+		successLoginResponse[kony.sdk.constants.IS_ERROR] = false;
+		successLoginResponse[kony.sdk.constants.LOGIN_RESPONSE] = successResponse;
+		kony.sdk.logsdk.info("Exiting completeSingleWindowLogin with success");
+		kony.sdk.verifyAndCallClosure(loginCompleteCallback, successLoginResponse)
+	}
+
+	function failureCallback(errorObject) {
+		var errorLoginResponse = {};
+		errorLoginResponse[kony.sdk.constants.IS_ERROR] = true;
+		errorLoginResponse[kony.sdk.constants.LOGIN_RESPONSE] = errorObject;
+		kony.sdk.logsdk.info("Exiting completeSingleWindowLogin with failure");
+		kony.sdk.verifyAndCallClosure(loginCompleteCallback, errorLoginResponse)
+	}
+
+	metaDataManagerForLoginInSameWindow.initialize();
+	metaDataManagerForLoginInSameWindow.loadSavedMetaData(); //gets the saved data from local
+
+	loginOptions = metaDataManagerForLoginInSameWindow.getItem(kony.sdk.constants.LOGIN_OPTIONS);
+	if(kony.sdk.isNullOrUndefined(loginOptions)){
+		kony.sdk.logsdk.error(kony.sdk.errormessages.partial_login_error);
+		var errorObject = {};
+		errorObject.code = kony.sdk.errorcodes.partial_login_error;
+		errorObject.message = kony.sdk.errormessages.partial_login_error;
+		kony.sdk.verifyAndCallClosure(failureCallback,errorObject);
+		return;
+	}
+
+	metaDataManagerForLoginInSameWindow.retrieveCodeVerifier(performTokenCall, failureCallback);
+
+}
+
 /**
  * Method to create the Identity service instance with the provided provider name.
  * @param {string} providerName - Name of the provider
  * @returns {IdentityService} Identity service instance
  */
 
-kony.sdk.offline = kony.sdk.offline || {};
-kony.sdk.sso = kony.sdk.sso || {};
-kony.sdk.isSSOLoginSuccess = kony.sdk.isSSOLoginSuccess || true;
- 
 kony.sdk.prototype.getIdentityService = function(providerName) {
 	kony.sdk.logsdk.perf("Executing kony.sdk.prototype.getIdentityService");
 	if (!kony.sdk.isInitialized) {
@@ -2199,8 +2391,13 @@ function IdentityService(konyRef, rec) {
 	var _type = serviceObj.type;
 	var _serviceUrl = stripTrailingCharacter(serviceObj.url, "/");
 	var _providerName = serviceObj.prov;
+	//refresh login changes
+	var refreshLoginEnabled = false;
+	var refreshLoginTokenStoreUtilityObject = kony.sdk.util.getRefreshLoginTokenStoreUtility();
+	var metaDataManagerForLoginInSameWindow = kony.sdk.util.getMetaDataManagerForLoginInSameWindow();
+	var providerType = rec[kony.sdk.constants.LOGIN_PROVIDER_TYPE];
 
-    kony.sdk.logsdk.debug("### AuthService:: initialized for provider " + _providerName + " with type " + _type);
+	kony.sdk.logsdk.debug("### AuthService:: initialized for provider " + _providerName + " with type " + _type);
 
     function isLoggedIn() {
         if (kony.sdk.getCurrentInstance() &&
@@ -2282,6 +2479,69 @@ function IdentityService(konyRef, rec) {
         kony.sdk.claimsRefresh(invokeSignUp, failureCallback);
 	};
 
+	function genericPostLoginSuccessCallback(networkResponse, successCallback) {
+		var response = processLoginSuccessResponse(networkResponse, konyRef, false);
+		if (!kony.sdk.isNullOrUndefined(response.mfa_response) &&
+			!kony.sdk.isNullOrUndefined(response.mfa_response[kony.sdk.constants.IS_MFA_ENABLED])) {
+			is_mfa_enabled = response.mfa_response[kony.sdk.constants.IS_MFA_ENABLED];
+			mfa_meta = response.mfa_response[kony.sdk.constants.MFA_META];
+			delete response.mfa_response;
+		}
+
+		function serviceDocCallback() {
+			//if refresh login is enabled, store the required internal refresh and backend refresh tokens in data store
+			if (refreshLoginEnabled) {
+				storeRefreshLoginTokens(networkResponse);
+			}
+			kony.sdk.verifyAndCallClosure(successCallback, response);
+		}
+
+		/**
+		 * This function checks whether the required refresh tokens exist as part of login response
+		 * @param {Object} data - containing login response containing security attributes as well
+		 * @returns {boolean} - true if the required refresh tokens available to make refresh login else false
+		 */
+		function areRequiredRefreshTokensForRefreshLoginAvailable(data) {
+			if(kony.sdk.isNullOrUndefined(konyRef.currentRefreshToken) ||
+				kony.sdk.isNullOrUndefined(data[kony.sdk.constants.BACKEND_REFRESH_TOKENS]) ||
+				kony.sdk.isNullOrUndefined(data[kony.sdk.constants.BACKEND_REFRESH_TOKENS][_providerName])) {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
+		 * This function stores backend and internal refresh tokens in data store for subsequent refresh login
+		 * @param data containing security attributes
+		 */
+		function storeRefreshLoginTokens(data) {
+			kony.sdk.logsdk.info("Entering storeRefreshLoginTokens");
+			if(!areRequiredRefreshTokensForRefreshLoginAvailable(data)) {
+				kony.sdk.logsdk.error("required refresh tokens doesn't exist in data store to enable refresh login");
+				var errObject = kony.sdk.error.getClientErrObj(kony.sdk.errorcodes.refresh_login_tokens_null_or_undefined,
+					kony.sdk.errormessages.refresh_login_tokens_null_or_undefined);
+				//adding errObject to login response
+				Object.assign(response, errObject);
+				return;
+			}
+
+			var tokensData = {};
+			tokensData[kony.sdk.constants.INTERNAL_REFRESH_TOKEN] = konyRef.currentRefreshToken;
+			tokensData[kony.sdk.constants.BACKEND_REFRESH_TOKEN] = data[kony.sdk.constants.BACKEND_REFRESH_TOKENS][_providerName];
+			kony.sdk.logsdk.info("storing provider specific internal and backend refresh tokens");
+			refreshLoginTokenStoreUtilityObject.storeTokens(_providerName, tokensData);
+			//setting the internal refresh token for current loggedin providers in data store based on login profiles
+			if (!kony.sdk.isNullOrUndefined(data[kony.sdk.constants.LOGIN_PROFILES])) {
+				var listOfLoginProfiles = Object.keys(data[kony.sdk.constants.LOGIN_PROFILES]);
+				refreshLoginTokenStoreUtilityObject.setInternalRefreshToken(listOfLoginProfiles,
+																			konyRef.currentRefreshToken);
+			}
+		}
+
+		getLatestServiceDocIfAvailable(networkResponse, serviceDocCallback);
+	}
+
 	/**
 	 * Login with the given credentials asynchronously and executes the given callback.
 	 * @param {object} options - User name and password
@@ -2292,6 +2552,9 @@ function IdentityService(konyRef, rec) {
 		kony.sdk.logsdk.perf("Executing Login");
 		var continueOnRefreshError = true;
 		var customQueryParamsForOAuth = null;
+		var customOAuthParams = null;
+		var isSingleWindowLoginEnabled = false;
+		var customDaveSaveHandleFunction = null;
 
 		function invokeAjaxCall(url, params, headers) {
 
@@ -2317,6 +2580,11 @@ function IdentityService(konyRef, rec) {
 			headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED;
 
 			populateHeaderWithFabricAppVersion(headers);
+
+			//populating custom oAuth params
+			if (providerType === kony.sdk.constants.AUTH_PROVIDER_TYPE_OAUTH2) {
+				kony.sdk.util.populateCustomOAuthParams(params, customOAuthParams);
+			}
 
 			if(konyRef.reportingheaders_allowed) {
 				// get reporting data for login operation
@@ -2370,21 +2638,16 @@ function IdentityService(konyRef, rec) {
 				if (!kony.sdk.isNullOrUndefined(options["include_profile"])) {
 					params["include_profile"] = params["include_profile"] ? params["include_profile"] : options["include_profile"];
 				}
+
+				//Passing enable_refresh_login as body param to login call to get the backend refresh token as part of initial login response
+				if(refreshLoginEnabled) {
+					params[kony.sdk.constants.ENABLE_REFRESH_LOGIN] = true;
+				}
 			}
 
 			networkProvider.post(endPointUrl, params, headers,
 				function(data) {
-					var response = processLoginSuccessResponse(data, konyRef, false);
-					if(!kony.sdk.isNullOrUndefined(response.mfa_response) && !kony.sdk.isNullOrUndefined(response.mfa_response[kony.sdk.constants.IS_MFA_ENABLED])) {
-						is_mfa_enabled = response.mfa_response[kony.sdk.constants.IS_MFA_ENABLED];
-						mfa_meta = response.mfa_response[kony.sdk.constants.MFA_META];
-						delete response.mfa_response;
-					}
-					function serviceDocCallback() {
-						kony.sdk.verifyAndCallClosure(successCallback, response);
-					}
-
-					getLatestServiceDocIfAvailable(data, serviceDocCallback);
+					genericPostLoginSuccessCallback(data, successCallback);
 				},
 				function(data) {
 					processLoginErrorResponse(data,konyRef,true,failureCallback)
@@ -2392,13 +2655,17 @@ function IdentityService(konyRef, rec) {
 				null, networkOptions);
 		}
 
-		function loginHelper(url,params,headers,isError){
+		function loginHelper(url, params, headers, isError, errorObject) {
 			kony.sdk.logsdk.trace("Entering loginHelper, isError = " + isError);
 			if(isError) {
 				var err = {};
-				err.message = "Login Failed";
-				err.opstatus = kony.sdk.errorcodes.transient_login_fail;
-				err.code = (params && params.error)? params.error : "";
+				if (!kony.sdk.isNullOrUndefined(errorObject)) {
+					err = errorObject;
+				} else {
+					err.message = "Login Failed";
+					err.opstatus = kony.sdk.errorcodes.transient_login_fail;
+					err.code = (params && params.error) ? params.error : "";
+				}
 				kony.sdk.verifyAndCallClosure(failureCallback,err);
 				return;
 			}
@@ -2445,7 +2712,7 @@ function IdentityService(konyRef, rec) {
 				offlineEnabled = loginOptions["isOfflineEnabled"] || false;
 				kony.sdk.offline.isOfflineEnabled = kony.sdk.offline.isOfflineEnabled || offlineEnabled;
 				kony.sdk.sso.isSSOEnabled = loginOptions["isSSOEnabled"] || false;
-				customQueryParamsForOAuth = loginOptions["customQueryParamsForOAuth"];
+				customQueryParamsForOAuth = loginOptions[kony.sdk.constants.CUSTOM_QUERY_PARAMS_FOR_OAUTH];
 
 				if(loginOptions["continueOnRefreshError"] === false) {
 					continueOnRefreshError  = false;
@@ -2456,6 +2723,42 @@ function IdentityService(konyRef, rec) {
 					kony.sdk.offline.persistToken = true;
 				}
 
+				refreshLoginEnabled = false;
+				if (providerType === kony.sdk.constants.AUTH_PROVIDER_TYPE_OAUTH2) {
+					//Extracting enable_refresh_login flag from login options
+					if (typeof loginOptions[kony.sdk.constants.ENABLE_REFRESH_LOGIN] === "boolean") {
+						refreshLoginEnabled = loginOptions[kony.sdk.constants.ENABLE_REFRESH_LOGIN];
+					} else {
+						kony.sdk.logsdk.warn("the value of " + kony.sdk.constants.ENABLE_REFRESH_LOGIN
+							+ " should be of boolean type");
+					}
+
+					//Extracting customOAuthParams from login options
+					customOAuthParams = loginOptions[kony.sdk.constants.CUSTOM_OAUTH_PARAMS];
+					if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(customOAuthParams)) {
+						kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName] = {};
+						//populating custom oAuth params in global kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh object so that these
+						// params will be used in /claims?refresh=true call which happens when server throws 401 status code incase of service call
+						// failure
+						kony.sdk.util.populateCustomOAuthParams(kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName], customOAuthParams);
+					}
+				}
+
+				//nopop of single window login are only meant for SPA/DW apps
+				if (kony.sdk.getPlatformName() === kony.sdk.constants.PLATFORM_THIN_CLIENT
+					&& loginOptions[kony.sdk.constants.NO_POP_UP] === true
+					&& !kony.sdk.isNullOrUndefined(kony.license.saveCurrentSessionForReuse))
+				{
+					isSingleWindowLoginEnabled = true;
+					customDaveSaveHandleFunction = loginOptions[kony.sdk.constants.CUSTOM_DATA_SAVE_HANDLE];
+
+					kony.license.saveCurrentSessionForReuse();
+					
+					metaDataManagerForLoginInSameWindow.initialize();
+					metaDataManagerForLoginInSameWindow.setItem(kony.sdk.constants.LOGIN_OPTIONS, loginOptions);
+					metaDataManagerForLoginInSameWindow.setItem(kony.sdk.constants.KEY_PROVIDER, _providerName);
+					metaDataManagerForLoginInSameWindow.setItem(kony.sdk.constants.URL_TYPE, "/" + _type + "/token");
+				}
 			} else {
 				kony.sdk.sso.isSSOEnabled = false;
 			}
@@ -2463,7 +2766,7 @@ function IdentityService(konyRef, rec) {
 
 		function extractOauthOptions(authOptions) {
 			var _oauthOptions = {};
-			_oauthOptions["customQueryParamsForOAuth"] =  customQueryParamsForOAuth;
+			_oauthOptions[kony.sdk.constants.CUSTOM_QUERY_PARAMS_FOR_OAUTH] =  customQueryParamsForOAuth;
 			if (kony.sdk.getSdkType() === kony.sdk.constants.SDK_TYPE_PLAIN_JS) {
 				_oauthOptions["appSecret"] = mainRef.appSecret;
 				_oauthOptions["serviceDoc"] = mainRef.config;
@@ -2497,6 +2800,15 @@ function IdentityService(konyRef, rec) {
 						}
 						_oauthOptions[kony.sdk.constants.OAUTH_REDIRECT_SUCCESS_URL] = success_url;
 					}
+				}
+
+				//nopop of single window login are only meant for SPA/DW apps
+				if (kony.sdk.getPlatformName() === kony.sdk.constants.PLATFORM_THIN_CLIENT
+					&& isSingleWindowLoginEnabled === true)
+				{
+					_oauthOptions[kony.sdk.constants.NO_POP_UP] = isSingleWindowLoginEnabled;
+					_oauthOptions[kony.sdk.constants.CUSTOM_DATA_SAVE_HANDLE] = customDaveSaveHandleFunction;
+					_oauthOptions[kony.sdk.constants.METADATA_MANAGER_FOR_LOGIN_IN_SAME_WINDOW_OBJECT] = metaDataManagerForLoginInSameWindow;
 				}
 			}
 			return _oauthOptions;
@@ -2564,9 +2876,18 @@ function IdentityService(konyRef, rec) {
 								isMFVersionCompatible());
 						}
 					} else {
-						OAuthHandler(_serviceUrl, _providerName, mainRef.appKey, loginHelper, _type,
-							extractOauthOptions(authOptions),
-							isMFVersionCompatible());
+						//only for thin clients where code is already present and we need to do token call
+						if (kony.sdk.getPlatformName() === kony.sdk.constants.PLATFORM_THIN_CLIENT
+							&& !kony.sdk.isNullOrUndefined(authOptions[kony.sdk.constants.SINGLE_WINDOW_LOGIN_BODY_PARAMS])){
+							var bodyParams = authOptions[kony.sdk.constants.SINGLE_WINDOW_LOGIN_BODY_PARAMS];
+							var urlType = metaDataManagerForLoginInSameWindow.getItem(kony.sdk.constants.URL_TYPE);
+							metaDataManagerForLoginInSameWindow.destroy(); // no longer needed saved data
+							loginHelper(urlType,bodyParams, {}); //token call
+						}else{
+							OAuthHandler(_serviceUrl, _providerName, mainRef.appKey, loginHelper, _type,
+								extractOauthOptions(authOptions),
+								isMFVersionCompatible());
+						}
 					}
 				}
 			}
@@ -2892,6 +3213,7 @@ function IdentityService(konyRef, rec) {
 	 */
 	this.logout = function(successCallback, failureCallback, options) {
 		kony.sdk.logsdk.trace("Entering logout");
+
 		function logoutHandler() {
 			_logout(successCallback, failureCallback, options);
 		}
@@ -2908,6 +3230,16 @@ function IdentityService(konyRef, rec) {
 	};
 
 	function _logout(successCallback, failureCallback, options) {
+		var customOAuthParams = null;
+
+		function extractLogoutOptions(logoutOptions) {
+			if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(logoutOptions)){
+				if(providerType === kony.sdk.constants.AUTH_PROVIDER_TYPE_OAUTH2) {
+					customOAuthParams = logoutOptions[kony.sdk.constants.CUSTOM_OAUTH_PARAMS];
+				}
+			}
+		}
+
 	    function invokeLogoutHelper(formData, invokeLogoutSuccess, invokeLogoutFailure){
 
             var claimsTokenValue = null;
@@ -2941,6 +3273,11 @@ function IdentityService(konyRef, rec) {
                     }
                 }
             }
+
+			//populating custom oAuth params
+            if(providerType === kony.sdk.constants.AUTH_PROVIDER_TYPE_OAUTH2) {
+				kony.sdk.util.populateCustomOAuthParams(formData, customOAuthParams);
+			}
 
             populateHeaderWithFabricAppVersion(headers);
             networkProvider.post(url, formdata, headers,
@@ -2978,6 +3315,11 @@ function IdentityService(konyRef, rec) {
 				processMultipleProvidersResponse(data);
 				konyRef.isAnonymousProvider = false;
 				doesSessionNeedsToBeCleanedAtMW = false;
+				if (!kony.sdk.isNullOrUndefined(data[kony.sdk.constants.LOGIN_PROFILES])) {
+					var listOfLoginProfiles = Object.keys(data[kony.sdk.constants.LOGIN_PROFILES]);
+					//setting the internal refresh token for current logged-in providers in secured storage based on login profiles
+					refreshLoginTokenStoreUtilityObject.setInternalRefreshToken(listOfLoginProfiles, konyRef.currentRefreshToken);
+				}
 			}
 
             if(offlineEnabled){
@@ -3002,6 +3344,12 @@ function IdentityService(konyRef, rec) {
                 kony.sdk.util.deleteSSOTokenForProvider(_providerName);
             }
 
+            //reset global customOAuthParams for the logged out provider from global kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh
+			if((providerType === kony.sdk.constants.AUTH_PROVIDER_TYPE_OAUTH2) &&
+				!kony.sdk.util.isNullOrUndefinedOrEmptyObject(kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName])) {
+				kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName] = {};
+			}
+
 			if (doesSessionNeedsToBeCleanedAtMW) {
 				//user has no active provider logged in left, we should go for session deletion with MW
 				var middlewareSessionInvalidationURL = konyRef[kony.sdk.constants.INTEGRATION_SERVICE_KEY]
@@ -3010,6 +3358,9 @@ function IdentityService(konyRef, rec) {
 				var headers = {};
 				headers[kony.sdk.constants.KONY_AUTHORIZATION_HEADER] = pastClaimsToken;
 
+				var options = {};
+				options[kony.sdk.constants.IGNORE_MESSAGE_INTEGRITY] = true;
+				
 				networkProvider.post(middlewareSessionInvalidationURL,
 									 null,
 									 headers,
@@ -3029,7 +3380,7 @@ function IdentityService(konyRef, rec) {
 										 errObject[kony.sdk.constants.KEY_MESSAGE] = 'Failed to invalidate session with middleware,' +
 											 ' It\'s good idea to close all browser windows.';
 										 kony.sdk.verifyAndCallClosure(failureCallback, errObject);
-									 });
+									 },null,options);
 			} else {
 				kony.sdk.isOAuthLogoutInProgress = false;
 				kony.sdk.verifyAndCallClosure(successCallback, {});
@@ -3043,6 +3394,11 @@ function IdentityService(konyRef, rec) {
 		}
         var formdata = {};
         formdata = {"slo": slo};
+
+        //extract logout options
+		if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(options)) {
+			extractLogoutOptions(options[kony.sdk.constants.LOGOUT_OPTIONS]);
+		}
 
 		if(!isLoggedIn()){
 			kony.sdk.verifyAndCallClosure(failureCallback, kony.sdk.error.getIdentitySessionInactiveErrObj());
@@ -3073,6 +3429,7 @@ function IdentityService(konyRef, rec) {
 			if(kony.sdk.util.hasBrowserWidget(options)) {
 				oauthOptions[kony.sdk.constants.BROWSER_WIDGET] = options[kony.sdk.constants.BROWSER_WIDGET];
 			}
+
             OAuthHandler(_serviceUrl, _providerName, mainRef.appKey, oAuthCallback, _type, oauthOptions);
           }
         }else {
@@ -3110,7 +3467,25 @@ function IdentityService(konyRef, rec) {
 			if (persistToken || kony.sdk.offline.persistToken || kony.sdk.offline.isPersistentLoginResponseEnabled()) {
 				kony.sdk.offline.updatePersistedToken(kony.sdk.constants.PERSISTED_AUTH_RESPONSE, token);
 			}
-            kony.sdk.verifyAndCallClosure(successCallback,konyRef.tokens[_providerName].provider_token);
+			//if the provider has refresh tokens , we should update internal refresh tokens
+			if (!kony.sdk.isNullOrUndefined(refreshLoginTokenStoreUtilityObject.getInternalRefreshToken(_providerName))) {
+				// update current provider's internal refresh token
+				refreshLoginTokenStoreUtilityObject.setInternalRefreshToken(_providerName, konyRef.currentRefreshToken);
+
+				// we need to update tokens for for multiple providers
+				if (!kony.sdk.isNullOrUndefined(token[kony.sdk.constants.LOGIN_PROFILES])) {
+					var listOfLoginProfiles = Object.keys(token[kony.sdk.constants.LOGIN_PROFILES]);
+					//for multiple providers setting the internal refresh token for current logged-in providers in secured storage based on login profiles
+					refreshLoginTokenStoreUtilityObject.setInternalRefreshToken(listOfLoginProfiles, konyRef.currentRefreshToken);
+				}
+				//if user gave options to refresh backend refresh tokens, we should update backend tokens as well
+				if (doesStoredRefreshTokensNeedsUpdate) {
+					var providerToBackendResponseTokenJSON = token[kony.sdk.constants.BACKEND_REFRESH_TOKENS];
+					//updating backend refresh tokens of the providers
+					refreshLoginTokenStoreUtilityObject.setBulkBackendRefreshTokens(providerToBackendResponseTokenJSON);
+				}
+			}
+			kony.sdk.verifyAndCallClosure(successCallback,konyRef.tokens[_providerName].provider_token);
 		}
 
 		function _claimsRefreshFailure(error){
@@ -3127,12 +3502,37 @@ function IdentityService(konyRef, rec) {
 			kony.sdk.verifyAndCallClosure(failureCallback, kony.sdk.error.getIdentitySessionInactiveErrObj());
 		}
 		var claimsOptions = null;
+		var doesStoredRefreshTokensNeedsUpdate = false;
 		if(options && options.refresh && options.refresh === true){
             claimsOptions = {
 				"requestParams": {
 					"refresh": "true"
 				}
 			};
+
+			claimsOptions[kony.sdk.constants.BODY_PARAMS] = {};
+			if (!kony.sdk.isNullOrUndefined(refreshLoginTokenStoreUtilityObject.getBackendRefreshToken(_providerName))) {
+				doesStoredRefreshTokensNeedsUpdate = true;
+				claimsOptions[kony.sdk.constants.BODY_PARAMS][kony.sdk.constants.ENABLE_REFRESH_LOGIN] = true;
+			}
+
+			//populating custom oAuth params
+			if(providerType === kony.sdk.constants.AUTH_PROVIDER_TYPE_OAUTH2) {
+				//reset earlier oAuth params in kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh for the current provider
+				if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(options[kony.sdk.constants.CUSTOM_OAUTH_PARAMS])) {
+					kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName] = {};
+					//populating custom oAuth params in global kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh object so that
+					// these params will be used in /claims?refresh=true call which happens when server throws 401 status code incase
+					// of service call failure
+					kony.sdk.util.populateCustomOAuthParams(kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName],
+						options[kony.sdk.constants.CUSTOM_OAUTH_PARAMS]);
+				}
+
+				//populating custom oAuth params in body params for this refresh call
+				if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName])) {
+					kony.sdk.util.populateCustomOAuthParams(claimsOptions[kony.sdk.constants.BODY_PARAMS], kony.sdk.customOAuthParmsForClaimsAndBackendTokenRefresh[_providerName]);
+				}
+			}
 		}
 
 		if (fromserver != undefined && fromserver === true) {
@@ -3262,6 +3662,158 @@ function IdentityService(konyRef, rec) {
 	};
 
 	/**
+	 * Refresh the already created Login
+	 * @param {function} successCallback  - Callback method on success
+	 * @param {function} failureCallback - Callback method on failure
+	 * @param {object} options - network options
+	 */
+	this.refreshLogin = function(successCallback, failureCallback, options) {
+		kony.sdk.logsdk.perf("Executing refreshLogin");
+		var internalRefreshToken = refreshLoginTokenStoreUtilityObject.getInternalRefreshToken(_providerName);
+		if (kony.sdk.isNullOrUndefined(internalRefreshToken)) {
+			kony.sdk.logsdk.perf("Executing finished refreshLogin");
+			kony.sdk.logsdk.error("Tokens absent for refreshing login provider" + _providerName);
+			kony.sdk.verifyAndCallClosure(failureCallback, kony.sdk.error.getIdentitySessionInactiveErrObj());
+		} else {
+			var urlObject = {};
+			urlObject[kony.sdk.constants.KEY_URL] = null;
+			var headers = {};
+			var bodyParams = {};
+			var networkOptions = {};
+
+			function checkClaimsRefreshAndSetNetworkParameters(urlObject, headers, bodyParams, networkOptions, setterCompletionCallback) {
+				kony.sdk.logsdk.perf("Executing checkClaimsRefreshAndSetNetworkParameters");
+				function setNetworkParameters() {
+					kony.sdk.logsdk.perf("Executing setNetworkParameters");
+                    headers[kony.sdk.constants.APP_KEY_HEADER] = mainRef.appKey;
+                    headers[kony.sdk.constants.APP_SECRET_HEADER] = mainRef.appSecret;
+					headers[kony.sdk.constants.SDK_TYPE_HEADER] = kony.sdk.getSdkType();
+					headers[kony.sdk.constants.SDK_VERSION_HEADER] = kony.sdk.version;
+					headers[kony.sdk.constants.PLATFORM_TYPE_HEADER] = kony.sdk.getPlatformName();
+					headers[kony.sdk.constants.HTTP_REQUEST_HEADER_ACCEPT] = kony.sdk.constants.CONTENT_TYPE_JSON;
+					headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED;
+
+					populateHeaderWithFabricAppVersion(headers);
+
+					if (konyRef.reportingheaders_allowed) {
+						try {
+							var reportingData = kony.sdk.getEncodedReportingParamsForSvcid('refreshLogin_' + _providerName);
+							if (!kony.sdk.isNullOrUndefined(reportingData)) {
+								headers[kony.sdk.constants.REPORTING_HEADER] = reportingData;
+							}
+						} catch (error) {
+							kony.sdk.logsdk.error('### login::error while parsing metrics payload in refresh login' + error);
+						}
+					}
+
+					if (!kony.sdk.isNullOrUndefined(options)) {
+						if (!kony.sdk.isNullOrUndefined(options[kony.sdk.constants.KEY_INCLUDE_PROFILE]) &&
+							options[kony.sdk.constants.KEY_INCLUDE_PROFILE] instanceof Object) {
+							networkOptions[kony.sdk.constants.KEY_INCLUDE_PROFILE] = options[kony.sdk.constants.KEY_INCLUDE_PROFILE];
+						}
+						if (!kony.sdk.isNullOrUndefined(options[kony.sdk.constants.KEY_HTTP_REQUEST_OPTIONS]) &&
+							options[kony.sdk.constants.KEY_HTTP_REQUEST_OPTIONS] instanceof Object) {
+							networkOptions[kony.sdk.constants.KEY_HTTP_REQUEST_OPTIONS] = options[kony.sdk.constants.KEY_HTTP_REQUEST_OPTIONS];
+						}
+						if (!kony.sdk.isNullOrUndefined(options[kony.sdk.constants.KEY_INCLUDE_PROFILE])) {
+							bodyParams[kony.sdk.constants.KEY_INCLUDE_PROFILE] = options[kony.sdk.constants.KEY_INCLUDE_PROFILE];
+						}
+					}
+
+					//populating custom oAuth params
+					if(!kony.sdk.util.isNullOrUndefinedOrEmptyObject(options)) {
+						kony.sdk.util.populateCustomOAuthParams(bodyParams, options[kony.sdk.constants.CUSTOM_OAUTH_PARAMS]);
+					}
+					bodyParams[kony.sdk.constants.KEY_PROVIDER] = _providerName;
+					bodyParams[kony.sdk.constants.KEY_GRANT_TYPE] = kony.sdk.constants.KEY_REFRESH_TOKEN;
+					bodyParams[kony.sdk.constants.KEY_BACKEND_REFRESH_TOKEN] = refreshLoginTokenStoreUtilityObject.getBackendRefreshToken(_providerName);
+					bodyParams[kony.sdk.constants.KEY_AUTH_REFRESH_TOKEN] = internalRefreshToken;
+					bodyParams[kony.sdk.constants.ENABLE_REFRESH_LOGIN] = true;
+					refreshLoginEnabled = true;
+
+					urlObject[kony.sdk.constants.KEY_URL] = _serviceUrl + kony.sdk.constants.OAUTH_TOKEN_URL +
+						'?' + kony.sdk.constants.KEY_PROVIDER + '=' + _providerName;
+
+					kony.sdk.logsdk.perf("Executing finished setNetworkParameters & checkClaimsRefreshAndSetNetworkParameters");
+					setterCompletionCallback();
+				}
+
+				kony.sdk.claimsRefresh(function(response) {
+					headers[kony.sdk.constants.KONY_AUTHORIZATION_HEADER] = konyRef.currentClaimToken;
+					setNetworkParameters();
+				}, function(error) {
+					setNetworkParameters();
+				});
+
+			}
+
+			checkClaimsRefreshAndSetNetworkParameters(urlObject, headers, bodyParams, networkOptions, makeRefreshLoginCallToIdentity);
+
+			/**
+			 * checks if network status is 400 or 401 then we have to delete secured stored refresh login tokens
+			 * @param networkResponse
+			 * @return boolean
+			 */
+			function doesStoredTokensNeedsToBeRemoved(networkResponse) {
+				var deleteRefreshToken = false;
+				if (!kony.sdk.isNullOrUndefined(options) && !kony.sdk.isNullOrUndefined(options[kony.sdk.constants.RETAIN_BACKEND_REFRESH_TOKEN])) {
+					if (typeof options[kony.sdk.constants.RETAIN_BACKEND_REFRESH_TOKEN] === "boolean" && options[kony.sdk.constants.RETAIN_BACKEND_REFRESH_TOKEN]) {
+						kony.sdk.logsdk.debug("Not deleting refresh token as retain_backend_refresh_token flag is set to true.");
+						return deleteRefreshToken;
+					}
+				}
+				if (!kony.sdk.isNullOrUndefined(networkResponse)) {
+					if (networkResponse.hasOwnProperty(kony.sdk.constants.HTTP_STATUS_CODE)) {
+						//check for status in httpStatusCode
+						if (networkResponse[kony.sdk.constants.HTTP_STATUS_CODE] == kony.sdk.constants.HTTP_CODE_400) {
+							deleteRefreshToken = true;
+							kony.sdk.logsdk.error("got httpStatusCode as 400");
+						} else if (networkResponse[kony.sdk.constants.HTTP_STATUS_CODE] == kony.sdk.constants.HTTP_CODE_401) {
+							deleteRefreshToken = true;
+							kony.sdk.logsdk.error("got httpStatusCode as 401");
+						}
+					} else if (networkResponse.hasOwnProperty(kony.sdk.constants.KEY_HTTP_RESPONSE)
+						&& networkResponse[kony.sdk.constants.KEY_HTTP_RESPONSE].hasOwnProperty(kony.sdk.constants.KEY_RESPONSE_CODE)) {
+						//if we didnt get status in httpStatusCode, we might get status under httpresponse object in responsecode
+						if (networkResponse[kony.sdk.constants.KEY_HTTP_RESPONSE][kony.sdk.constants.KEY_RESPONSE_CODE] == kony.sdk.constants.HTTP_CODE_400) {
+							deleteRefreshToken = true;
+							kony.sdk.logsdk.error("got httpresponse.responsecode as 400");
+						} else if (networkResponse[kony.sdk.constants.KEY_HTTP_RESPONSE][kony.sdk.constants.KEY_RESPONSE_CODE] == kony.sdk.constants.HTTP_CODE_401) {
+							deleteRefreshToken = true;
+							kony.sdk.logsdk.error("got httpresponse.responsecode as 401");
+						}
+					}
+				}
+
+				return deleteRefreshToken;
+			}
+
+			function makeRefreshLoginCallToIdentity() {
+				kony.sdk.logsdk.perf("Executing makeRefreshLoginCallToIdentity");
+				networkProvider.post(urlObject[kony.sdk.constants.KEY_URL], bodyParams, headers,
+									 function(loginResponse) {
+										 kony.sdk.logsdk.perf("Executing finished makeRefreshLoginCallToIdentity");
+										 kony.sdk.logsdk.debug("refresh login success");
+										 genericPostLoginSuccessCallback(loginResponse, successCallback);
+										 kony.sdk.logsdk.perf("Executing finished refreshLogin");
+									 },
+									 function(failureResponse) {
+										 kony.sdk.logsdk.perf("Executing finished makeRefreshLoginCallToIdentity");
+										 kony.sdk.logsdk.error("refresh login failed");
+										if (doesStoredTokensNeedsToBeRemoved(failureResponse))
+										{
+											kony.sdk.logsdk.debug("removing stored refresh tokens for provider -" + _providerName);
+											refreshLoginTokenStoreUtilityObject.removeTokens(_providerName);
+										}
+										 processLoginErrorResponse(failureResponse, konyRef, true, failureCallback);
+										 kony.sdk.logsdk.perf("Executing finished refreshLogin");
+									 }, null, networkOptions);
+			}
+
+		}
+	};
+
+	/**
 		utility method to get session data
 		@private
 	*/
@@ -3335,6 +3887,11 @@ function IdentityService(konyRef, rec) {
 			}
 			_url = stripTrailingCharacter(_url, "&");
 		}
+
+		var bodyParams = {};
+		if (!kony.sdk.isNullOrUndefined(options) && kony.sdk.util.isJsonObject(options[kony.sdk.constants.BODY_PARAMS])) {
+			bodyParams = options[kony.sdk.constants.BODY_PARAMS];
+		}
 		if (refreshToken) {
             kony.sdk.logsdk.info("### AuthService::_claimsRefresh making POST request to claims endpoint");
             var headers = {};
@@ -3353,7 +3910,7 @@ function IdentityService(konyRef, rec) {
 
             populateHeaderWithFabricAppVersion(headers);
 
-			networkProvider.post(_url, {}, headers,
+			networkProvider.post(_url, bodyParams, headers,
 				function(data) {
 					data = kony.sdk.formatSuccessResponse(data);
                     kony.sdk.logsdk.info("### AuthService::_claimsRefresh Fetching claims succcessfull");
@@ -3418,7 +3975,6 @@ function IdentityService(konyRef, rec) {
 		}
 	};
 }
-
 function konySdkLogger()
 {
 
@@ -3630,7 +4186,6 @@ kony.sdk.LogicService = function(konyRef, serviceName){
         }
     };
 };
-
 kony.sdk.prototype.registerObjectService = function(objectServiceType, objectServiceClass) {
     kony.sdk.logsdk.trace("Entering kony.sdk.prototype.registerObjectService");
     kony.sdk.registeredobjsvcs = kony.sdk.registeredobjsvcs || {};
@@ -6016,7 +6571,6 @@ kony.sdk.util.setPackagedMetadata = function(metadataJson){
     }
 };
 
-
 stripTrailingCharacter = function(str, character) {
     kony.sdk.logsdk.trace("Entering into stripTrailingCharacter");
     if (str.substr(str.length - 1) === character) {
@@ -6374,7 +6928,8 @@ kony.sdk.util.populateAuthorizationHeaderForLogin = function (headers, _provider
         } else {
             kony.sdk.logsdk.warn("SSO Token retrieved is empty.");
         }
-    } else if (!kony.sdk.isNullOrUndefined(konyRef.currentClaimToken) && !kony.sdk.isClaimsTokenExpired(konyRef.claimTokenExpiry)) {
+    }
+    if (!kony.sdk.isNullOrUndefined(konyRef.currentClaimToken) && !kony.sdk.isClaimsTokenExpired(konyRef.claimTokenExpiry)) {
         headers[kony.sdk.constants.KONY_AUTHORIZATION_HEADER] = konyRef.currentClaimToken;
     }
 };
@@ -6650,7 +7205,7 @@ kony.sdk.util.isMobileDevice = function() {
 
 /**
  * Utility method to open a new browser window as popup in the center of device screen
- * @returns {WindowProxyObject on success of window open and null on failure}
+ * @returns {Object} WindowProxyObject on success of window open and null on failure
  */
 kony.sdk.util.openPopupWindow = function(url, title) {
     var height = (screen.height*75)/100;
@@ -6667,6 +7222,56 @@ kony.sdk.util.openPopupWindow = function(url, title) {
  */
 kony.sdk.util.prefixAppid = function(str) {
     return appConfig.appId + "_" + str;
+};
+
+/**
+ * Utility method to clear any existing internal objects
+ */
+kony.sdk.util.clearExistingWebsocketObject = function() {
+    var options = {};
+    options[kony.sdk.constants.SERVER_EVENTS_CLOSE_CONNECTION] = true;
+    if (kony.sdk.websocket && kony.sdk.websocket.isWebSocketAvailable()) {
+        kony.sdk.websocket.unSubscribeServerEvents("", function() {
+            kony.sdk.logsdk.info("Existing websocket connection closed!");
+        }, options);
+    }
+};
+
+/**
+ * Utility method to get key from value of an object
+ */
+kony.sdk.util.getKeyByValue = function(obj, value) {
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            if (obj[prop] === value)
+                return prop;
+        }
+    }
+};
+
+/***
+ * Utility function to populate custom oAuth params in body params
+ * @param {Object} bodyParams : body params to be populated
+ * @param {Object} customOAuthParams : custom oAuth params to populate
+ */
+kony.sdk.util.populateCustomOAuthParams = function (bodyParams, customOAuthParams) {
+    if(kony.sdk.util.isNullOrUndefinedOrEmptyObject(customOAuthParams)) {
+        return;
+    }
+
+    if(kony.sdk.isNullOrUndefined(bodyParams)) {
+        bodyParams = {};
+    }
+
+    for (var customOAuthParamKey in customOAuthParams) {
+        var customOAuthParamValue = customOAuthParams[customOAuthParamKey];
+        if(typeof customOAuthParamValue === "boolean") {
+            customOAuthParamValue = customOAuthParamValue.toString();
+            bodyParams[customOAuthParamKey] = customOAuthParamValue;
+        } else if(!kony.sdk.util.isNullOrEmptyString(customOAuthParamValue)){
+            bodyParams[customOAuthParamKey] = customOAuthParamValue;
+        }
+    }
 }
 kony.sdk.serviceDoc = function() {
 	kony.sdk.logsdk.trace("Entering into kony.sdk.serviceDoc");
@@ -6832,7 +7437,6 @@ kony.sdk.serviceDoc = function() {
 	};
 
 };
-
 kony.logger = kony.logger || {};
 
 kony.logger = {
@@ -6980,6 +7584,25 @@ kony.logger = {
         }
     },
 
+    //Setting, removing and resetting global params
+    setGlobalRequestParam: function(paramName, paramValue, paramType) {
+        if (kony.logger.isNativeLoggerAvailable()) {
+            KonyLogger.setGlobalRequestParam(paramName, paramValue, paramType);
+        }
+    },
+
+    removeGlobalRequestParam: function(paramName, paramType) {
+        if (kony.logger.isNativeLoggerAvailable()) {
+            KonyLogger.removeGlobalRequestParam(paramName, paramType);
+        }
+    },
+
+    resetGlobalRequestParams: function() {
+        if (kony.logger.isNativeLoggerAvailable()) {
+            KonyLogger.resetGlobalRequestParams();
+        }
+    },
+    
 
     createLoggerObject: function(loggerName, loggerConfig) {
         var loggerObj = {};
@@ -7572,7 +8195,6 @@ kony.sdk.OfflineObjects = function(objServiceList){
 };
 
 //#endif
-
 //#ifdef OFFLINE_OBJECTS_SUPPORT
 
 kony.sdk.OfflineObjects.BinaryStatus = {
@@ -7910,32 +8532,65 @@ kony.sdk.KonyWebSocketClasses = (function () {
     function createInstance() {
         kony.sdk.logsdk.trace(LOG_PREFIX + ": Creating instance of KonyWebSocketClasses");
         var obj = {};
-        obj.KonyWebSocketInterface = java.import("com.kony.konywebsocket.KonyWebSocket");
+        obj.KonyWebSocketInterface = java.import("com.kony.konywebsocket.websocketinterface.KonyWebSocket");
 
-        obj.OnMessage = java.newClass("IOnMessageCallback", "java.lang.Object", ["com.kony.konywebsocket.KonyWebSocketCallback.IOnMessageCallback"], {
+        obj.MessageCallback = java.newClass("IMessageCallback", "java.lang.Object", ["com.kony.konywebsocket.callbacks.IMessageCallback"], {
             onMessageCallback: undefined,
             onMessageLog: "onMessage",
+
             onMessage: function(res) {
                 kony.sdk.logsdk.trace("Kony Websocket onMessage Callback : " + this.onMessageLog);
-                this.OnMessage(res);
+                this.onMessageCallback(res);
             }
         });
 
-        obj.OnError = java.newClass("IOnErrorCallback", "java.lang.Object", ["com.kony.konywebsocket.KonyWebSocketCallback.IOnErrorCallback"], {
+        obj.ErrorCallback = java.newClass("IErrorCallback", "java.lang.Object", ["com.kony.konywebsocket.callbacks.IErrorCallback"], {
             onErrorCallback: undefined,
             onErrorLog: "onError",
+
             onError: function(err) {
-                kony.sdk.logsdk.trace("Kony WebSocket onError Callback : " + this.onErrorLog);
-                this.OnError(err);
+                kony.sdk.logsdk.trace("Kony Websocket onError Callback : " + this.onErrorLog);
+                this.onErrorCallback(err);
             }
         });
-        
-        obj.OnClose = java.newClass("IOnCloseCallback", "java.lang.Object", ["com.kony.konywebsocket.KonyWebSocketCallback.IOnCloseCallback"], {
+
+        obj.CloseCallback = java.newClass("ICloseCallback", "java.lang.Object", ["com.kony.konywebsocket.callbacks.ICloseCallback"], {
             onCloseCallback: undefined,
             onCloseLog: "onClose",
+
             onClose: function(res) {
-                kony.sdk.logsdk.trace("Kony WebSocket onClose Callback : " + this.onCloseLog);
-                this.OnClose(res);
+                kony.sdk.logsdk.trace("Kony Websocket onClose Callback : " + this.onCloseLog);
+                this.onCloseCallback(res);
+            }
+        });
+
+        obj.SubscribeCallback = java.newClass("ISubscribeCallback", "java.lang.Object", ["com.kony.konywebsocket.callbacks.ISubscribeCallback"], {
+            onSubscribeCallback: undefined,
+            onSubscribeLog: "onSubscribe",
+
+            onSubscribe: function(res) {
+                kony.sdk.logsdk.trace("Kony Websocket onSubscribe Callback : " + this.onSubscribeLog);
+                this.onSubscribeCallback(res);
+            }
+        });
+
+        obj.UnSubscribeCallback = java.newClass("IUnSubscribeCallback", "java.lang.Object", ["com.kony.konywebsocket.callbacks.IUnSubscribeCallback"], {
+            onUnSubscribeCallback: undefined,
+            onUnSubscribeLog: "onUnsubscribe",
+
+            onUnsubscribe: function(res) {
+                kony.sdk.logsdk.trace("Kony WebSocket onUnSubscribe Callback : " + this.onUnSubscribeLog);
+                this.onUnSubscribeCallback(res);
+            }
+        });
+
+        obj.PublishCallback = java.newClass("IPublishCallback", "java.lang.Object", ["com.kony.konywebsocket.callbacks.IPublishCallback"], {
+            onPublishCallback: undefined,
+            onPublishLog: "onPublish",
+
+            onPublish: function(res) {
+                kony.sdk.logsdk.trace("Kony WebSocket onPublish Callback : " + this.onPublish);
+                this.onPublishCallback(res);
             }
         });
 
@@ -7952,8 +8607,30 @@ kony.sdk.KonyWebSocketClasses = (function () {
         }
     };
 })();
-//#endif
 
+kony.sdk.globalRequestParams = (function() {
+    var instance = null;
+    var LOG_PREFIX = "kony.sdk.GlobalRequestParams";
+
+    function createInstance() {
+        kony.sdk.logsdk.info(LOG_PREFIX + ": Creating instance of GlobalRequestParams");
+        var obj = {};
+        obj.clientGlobalRequestParams = java.import("com.kony.sdkcommons.Network.KNYGlobalRequestParams");
+        return obj;
+    }
+
+    return {
+        import : function() {
+            kony.sdk.logsdk.info(LOG_PREFIX + ": Importing native classes for GlobalRequestParams");
+            if(instance === null){
+                instance = createInstance();
+            }
+            return instance;
+        }
+    };
+
+})();
+//#endif
 //#ifdef PLATFORM_NATIVE_ANDROID
 
 kony.sdk.httpIntegrity = kony.sdk.httpIntegrity || {};
@@ -8044,6 +8721,42 @@ kony.net.removeClientCertificate = function() {
     konySDKRemoveClientCertificate();
     // Calling Framework's API
     return konyNetRemoveClientCertificate();
+};
+
+/*
+* API - Related to global request params.
+*/
+kony.sdk.sdkCommons = kony.sdk.sdkCommons || {};
+
+kony.sdk.sdkCommons.getClientGlobalRequestParams = function () {
+    var LOG_PREFIX = "kony.sdk.sdkCommons.getClientGlobalRequestParams";
+    kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+    var globalRequestParams = kony.sdk.globalRequestParams.import();
+    return globalRequestParams;
+};
+
+kony.sdk.sdkCommons.setGlobalRequestParam = function(paramName, paramValue, paramType) {
+    var LOG_PREFIX = "kony.sdk.sdkCommons.setGlobalRequestParam";
+    kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+
+    var importedClasses = kony.sdk.sdkCommons.getClientGlobalRequestParams();
+    importedClasses.clientGlobalRequestParams.setGlobalRequestParam(paramName, paramValue, paramType);
+};
+
+kony.sdk.sdkCommons.removeGlobalRequestParam = function(paramName, paramType) {
+    var LOG_PREFIX = "kony.sdk.sdkCommons.removeGlobalRequestParam";
+    kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+
+    var importedClasses = kony.sdk.sdkCommons.getClientGlobalRequestParams();
+    importedClasses.clientGlobalRequestParams.removeGlobalRequestParam(paramName, paramType);
+};
+
+kony.sdk.sdkCommons.resetGlobalRequestParams = function() {
+    var LOG_PREFIX = "kony.sdk.sdkCommons.resetGlobalRequestParam";
+    kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+
+    var importedClasses = kony.sdk.sdkCommons.getClientGlobalRequestParams();
+    importedClasses.clientGlobalRequestParams.resetGlobalRequestParams();
 };
 
 //#endif
@@ -9400,9 +10113,33 @@ kony.sdk.KonyWebSocketClasses = (function () {
     };
 })();
 
+kony.sdk.globalRequestParameters = (function() {
+    var instance = null;
+    var LOG_PREFIX = "kony.sdk.globalRequestParameters";
+
+    function createInstance(){
+        kony.sdk.logsdk.info(LOG_PREFIX+": Creating instance of KNYGlobalRequestParams");
+        var obj = {};
+        obj.globalRequestParams = objc.import("KNYGlobalRequestParams");
+        return obj;
+    }
+
+    return {
+        import : function(){
+            kony.sdk.logsdk.info(LOG_PREFIX+": Importing native classes for KNYGlobalRequestParams.");
+            if(instance === null){
+                instance = createInstance();
+            }
+            return instance;
+        }
+    };
+
+})();
+
 //#endif
 //#ifdef PLATFORM_NATIVE_IOS
 
+kony.sdk.sdkCommons = kony.sdk.sdkCommons || {};
 kony.sdk.httpIntegrity = kony.sdk.httpIntegrity || {};
 
 kony.sdk.httpIntegrity.getHTTPIntegrityManager = function(){
@@ -9438,6 +10175,37 @@ kony.sdk.httpIntegrity.removeIntegrityCheck = function() {
 	
 	var importedClasses = kony.sdk.httpIntegrity.getHTTPIntegrityManager();
     importedClasses.httpMessageIntegrityManager.removeIntegrityCheck();
+};
+
+kony.sdk.sdkCommons.getClientGlobalRequestParams = function(){
+	var LOG_PREFIX = "kony.sdk.sdkCommons.getClientGlobalRequestParams";
+	kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+	var globalRequestParameters = kony.sdk.globalRequestParameters.import();
+	return globalRequestParameters;
+};
+
+kony.sdk.sdkCommons.setGlobalRequestParam = function(paramName, paramValue, paramType){
+    var LOG_PREFIX = "kony.sdk.sdkCommons.setGlobalRequestParam";
+	kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+	
+	var importedClasses = kony.sdk.sdkCommons.getClientGlobalRequestParams();
+    importedClasses.globalRequestParams.setGlobalRequestParamParamValueParamType(paramName, paramValue, paramType);
+};
+
+kony.sdk.sdkCommons.removeGlobalRequestParam = function(paramName, paramType){
+    var LOG_PREFIX = "kony.sdk.sdkCommons.removeGlobalRequestParam";
+	kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+	
+	var importedClasses = kony.sdk.sdkCommons.getClientGlobalRequestParams();
+    importedClasses.globalRequestParams.removeGlobalRequestParamParamType(paramName, paramType);
+};
+
+kony.sdk.sdkCommons.resetGlobalRequestParams = function(){
+    var LOG_PREFIX = "kony.sdk.sdkCommons.resetGlobalRequestParams";
+	kony.sdk.logsdk.trace("Entering "+ LOG_PREFIX);
+	
+	var importedClasses = kony.sdk.sdkCommons.getClientGlobalRequestParams();
+    importedClasses.globalRequestParams.resetGlobalRequestParams();
 };
 
 /*
@@ -10081,8 +10849,16 @@ kony.logger.createNewLogger = function(loggerName, loggerConfig) {
     //Exposed object and it's methods
     var loggerObj = kony.logger.createLoggerObject(loggerName, loggerConfig);
     if (loggerObj.config !== null && loggerObj.config.overrideConfig === true){
-        kony.logger.currentLogLevel = loggerObj.config.logFilterConfig.logLevel;
+        for (var key in kony.logger.logLevel) {
+            if (kony.logger.logLevel.hasOwnProperty(key)) {
+                if (kony.logger.logLevel[key].value == loggerObj.config.logFilterConfig.logLevel) {
+                    kony.logger.currentLogLevel = kony.logger.logLevel[key];
+                    break;
+                }
+            }
+        }
     }
+
     var seperator = " ";
 
     //#ifdef KONYLOGGER_IOS
@@ -11483,27 +12259,6 @@ function MessagingService(konyRef) {
 
 	this.manageGeoBoundariesCallback = function(data){
 
-	//#endif
-	    //#ifdef PLATFORM_NATIVE_ANDROID
-        if(data.state.toLocaleUpperCase() === kony.sdk.constants.ERROR_STRING){
-            kony.sdk.logsdk.error("MessagingService::manageGeoBoundariesCallback: error while creating geofences: " + JSON.stringify(data));
-            kony.sdk.verifyAndCallClosure(KNYMessagingService.refreshBoundariesFailureCallback, data);
-            return;
-        }
-
-        if(data.state.toLocaleUpperCase() === kony.sdk.constants.SUCCESS_STRING){
-            kony.sdk.logsdk.info("MessagingService::manageGeoBoundariesCallback: Successfully created geoFences:" + JSON.stringify(data));
-            if(!kony.sdk.isNullOrUndefined(KNYMessagingService.geoBoundariesResponse)
-                && !kony.sdk.isNullOrUndefined(KNYMessagingService.refreshBoundariesSuccessCallback)
-                && typeof(KNYMessagingService.refreshBoundariesSuccessCallback) == kony.sdk.constants.FUNCTION_STRING) {
-                kony.sdk.verifyAndCallClosure(KNYMessagingService.refreshBoundariesSuccessCallback, KNYMessagingService.geoBoundariesResponse);
-                KNYMessagingService.geoBoundariesResponse = null;
-                KNYMessagingService.refreshBoundariesSuccessCallback = null;
-            }
-            return;
-        }
-        //#endif
-    //#ifdef PLATFORM_NATIVE_ANDROID_IOS_WINDOWS
         var geoBoundariesOptions = KNYMessagingService.getGeoBoundariesOptions();
         if(data.state.toLocaleUpperCase() === "ENTRY" || data.state.toLocaleUpperCase() === "ENTER"){
             if(data.geofenceID !== "refreshBoundary"){
@@ -11655,14 +12410,7 @@ function MessagingService(konyRef) {
                     );
                 }
                 kony.location.createGeofences(geoBoundaries);
-                //#endif
-                //#ifdef PLATFORM_NATIVE_ANDROID
-                currentObject.geoBoundariesResponse = res;
-                //#endif
-                //#ifdef PLATFORM_NATIVE_IOS_WINDOWS
                 kony.sdk.verifyAndCallClosure(successCallback, res);
-                //#endif
-                //#ifdef PLATFORM_NATIVE_ANDROID_IOS_WINDOWS
 			},function(err){
 				kony.sdk.logsdk.perf("Executing finished getAndRefreshBoundaries with network failure");
                 kony.sdk.logsdk.error("MessagingService::getAndRefreshBoundaries failed to get geoBoundaries from KMS");
@@ -11714,20 +12462,8 @@ function MessagingService(konyRef) {
         }else{
             currentObject.refreshBoundariesFailureCallback = failureCallback;
         }
-        //#endif
-        //#ifdef PLATFORM_NATIVE_ANDROID
-        if(!typeof (successCallback) == kony.sdk.constants.FUNCTION_STRING){
-            kony.sdk.logsdk.perf("Executing finished registerGeoBoundaries with an exception");
-            throw new Exception(kony.sdk.errorConstants.MESSAGING_FAILURE, "successCallback is not provided");
-        }else{
-            currentObject.refreshBoundariesSuccessCallback = successCallback;
-        }
 
-        currentObject.geoBoundariesResponse = null;
-        //#endif
-        //#ifdef PLATFORM_NATIVE_ANDROID_IOS_WINDOWS
-
-		kony.sdk.logsdk.perf("Executing getCurrentPosition");
+        kony.sdk.logsdk.perf("Executing getCurrentPosition");
         kony.location.getCurrentPosition(
         	function(res){
 				kony.sdk.logsdk.perf("Executing finished getCurrentPosition's success");
@@ -11789,15 +12525,21 @@ function MessagingService(konyRef) {
 			},function(err){
                 kony.sdk.logsdk.perf("Executing finished getCurrentPosition's failure");
                 kony.sdk.logsdk.perf("Executing finished registerGeoBoundaries with an exception");
-				if(err.code == 1){
+				if(err.code === 1) {
                     throw new Exception(kony.sdk.errorConstants.MESSAGING_FAILURE, "Permission to access location is not enabled");
-				}else if(err.code == 2){
+				} else if(err.code === 2) {
 					throw new Exception(kony.sdk.errorConstants.MESSAGING_FAILURE, "Enable location and try again");
-				}else if(err.code == 3){
+				} else if(err.code === 3) {
                     kony.sdk.logsdk.error("MessagingService::registerGeoBoundaries Unable to retrieve current location.");
 					kony.sdk.verifyAndCallClosure(failureCallback, kony.sdk.error.getMessagingError("Unable to retrieve current location"));
-				}
-			}
+				} else if(err.code === 5) {
+                    throw new Exception(kony.sdk.errorConstants.MESSAGING_FAILURE, "Permission to access location in background is denied.");
+                } else if(err.code === 6) {
+                    throw new Exception(kony.sdk.errorConstants.MESSAGING_FAILURE, "Permission to access location is denied with Don't Ask Again.");
+                }
+			}, {
+                requireBackgroundAccess : true
+            }
 		);
 	}
 
@@ -12022,7 +12764,7 @@ function MetricsService(konyRef) {
 
 		reportEventBufferArray.push(reportEventMap);
 
-		if (reportEventBufferArray.length % eventConfig["eventBufferAutoFlushCount"] === 0) {
+		if (reportEventBufferArray.length % eventConfig["eventBufferAutoFlushCount"] === 0 || evttype == eventTypeMap.crash) {
 			this.flushEvents();
 		}
 	};
@@ -12047,7 +12789,7 @@ function MetricsService(konyRef) {
 			ref.pushEventsToBufferArray();
 		}
 		var headers = {};
-		headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED;
+		headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED_CHARSET_UTF8;
 
 		payload.events = reportEventBufferBackupArray;
 		payload.svcid = "SendEvents";
@@ -12067,6 +12809,7 @@ function MetricsService(konyRef) {
 		}
 		function flushErrorCallback(response) {
 			kony.sdk.logsdk.error("Unable to flush events");
+			kony.sdk.logsdk.info("Application Events: " + JSON.stringify(reportEventBufferBackupArray));
 			ref.saveInDS();	
 		}
 
@@ -12164,7 +12907,7 @@ function MetricsService(konyRef) {
 		var options = {};
 		options[kony.sdk.constants.IGNORE_MESSAGE_INTEGRITY] = true;
 		var headers = {};
-		headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED;
+		headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED_CHARSET_UTF8;
 
 		networkProvider.post(url, newData, headers, function(res) {
 				//successcallback
@@ -15521,12 +16264,14 @@ function konySdkSyncService(konyRef) {
 }
 
 //#endif
-
 //#ifdef JS_PRECHECKIN
 	//JS_PRECHECKIN preprocessor used to ignore non-supported api's for desktop-web
 //#else
 
+
 function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options, isMFVersionCompatible) {
+    var utilityInstancePKCE = kony.sdk.util.getUtilityForPKCE();
+    utilityInstancePKCE.initializePKCEObject();
     var urlType = "/" + type + "/";
     var isSuccess = true;
     var isLogout = false;
@@ -15541,8 +16286,8 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
         slo = options["slo"];
     }
     var customQueryParamsForOAuth;
-    if(options && options.hasOwnProperty("customQueryParamsForOAuth")){
-        customQueryParamsForOAuth = kony.sdk.util.objectToQueryParams(options["customQueryParamsForOAuth"]);
+    if(options && options.hasOwnProperty(kony.sdk.constants.CUSTOM_QUERY_PARAMS_FOR_OAUTH)){
+        customQueryParamsForOAuth = kony.sdk.util.objectToQueryParams(options[kony.sdk.constants.CUSTOM_QUERY_PARAMS_FOR_OAUTH]);
     }
     var requestUrl;
 
@@ -15587,9 +16332,11 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
                     if (type === "oauth2" || type === "saml") {
                         headers[kony.sdk.constants.HTTP_CONTENT_HEADER] = kony.sdk.constants.CONTENT_TYPE_FORM_URL_ENCODED
                     }
-                    callback(urlType + "token", {
+                    var bodyParams = {
                         code: _contents
-                    }, headers);
+                    };
+                    bodyParams = utilityInstancePKCE.appendCodeVerifierInBodyParams(bodyParams);
+                        callback(urlType + "token", bodyParams, headers);
                 } catch (err) {
                     kony.sdk.logsdk.error("exception ::" + err);
                     failureCallback();
@@ -15631,10 +16378,16 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
             {
                 callback(1);
                 _popup.close();
+                _detachEvent();
             }
             kony.timer.schedule("SPALogout", handleLogoutInSPA, 3, false);
         }else{
             requestUrl = serviceUrl + urlType + "login?provider=" + providerName + "&appkey=" + appkey;
+            
+            var appVersion = kony.sdk.getFabricAppVersion();
+            if (!kony.sdk.isNullOrUndefined(appVersion)){ 
+                requestUrl += "&app_version=" + appVersion;
+            }
             requestUrl = appendCustomOAuthParamsToURL(requestUrl);
 
             //Checking whether server is compatable to redirect to user defined callback url
@@ -15643,18 +16396,84 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
                 kony.sdk.util.isJsonObject(options) && options.hasOwnProperty(kony.sdk.constants.IE11_CROSS_DOMAIN_OAUTH_BASE_URL)) {
                 requestUrl = constructURLIE11(stripTrailingCharacter(options[kony.sdk.constants.IE11_CROSS_DOMAIN_OAUTH_BASE_URL], "/"), requestUrl);
             }
+            requestUrl = utilityInstancePKCE.appendCodeChallengeOnURL(requestUrl);
         }
-        if(kony.os.deviceInfo().name === kony.sdk.constants.PLATFORM_SPA
-            && !kony.sdk.util.isMobileDevice()
-            && kony.sdk.util.isPWAStandaloneOrFullscreen()) {
-            _popup = kony.sdk.util.openPopupWindow(requestUrl, "");
+        if (kony.sdk.getPlatformName() === kony.sdk.constants.PLATFORM_THIN_CLIENT
+            && options[kony.sdk.constants.NO_POP_UP] === true) {
+            //we will not override success url value given by user
+            if (requestUrl.indexOf(kony.sdk.constants.OAUTH_REDIRECT_SUCCESS_URL) === -1) {
+                requestUrl = requestUrl + "&" + kony.sdk.constants.OAUTH_REDIRECT_SUCCESS_URL + "=" + kony.application.getBrowserProtocol() + "//" + kony.application.getBaseURL();
+            }
+            var loginHelperFunction = callback;
+            var isError = false;
+
+            var codeVerifierBodyParamsJSON = {};
+            codeVerifierBodyParamsJSON = utilityInstancePKCE.appendCodeVerifierInBodyParams(codeVerifierBodyParamsJSON);
+
+            var metaDataManagerForLoginInSameWindow = options[kony.sdk.constants.METADATA_MANAGER_FOR_LOGIN_IN_SAME_WINDOW_OBJECT];
+            metaDataManagerForLoginInSameWindow.saveCodeVerifier(codeVerifierBodyParamsJSON,
+                                                                saveCodeVerifierSuccessCallback,
+                                                                function (errorObject) {
+                                                                    isError = true;
+                                                                    loginHelperFunction(null, null, null, isError, errorObject);
+                                                                });
+
+            function saveCodeVerifierSuccessCallback() {
+                kony.sdk.logsdk.info("code_verifier was saved at middleware");
+                metaDataManagerForLoginInSameWindow.saveMetaData();
+                kony.sdk.logsdk.info("login metadata for no popup login was saved");
+
+                var userCustomDataSaveHandle = options[kony.sdk.constants.CUSTOM_DATA_SAVE_HANDLE];
+                if (kony.sdk.isNullOrUndefined(userCustomDataSaveHandle)) {
+                    //user does not want to store data before app loose context
+                    kony.sdk.logsdk.info("user has not provided" + kony.sdk.constants.CUSTOM_DATA_SAVE_HANDLE +
+                        ", we will proceed directly to auth");
+                    _openWindowInSelfMode();
+                } else {
+                    if (typeof (userCustomDataSaveHandle) !== 'function') {
+                        kony.sdk.logsdk.error("user has provided" + kony.sdk.constants.CUSTOM_DATA_SAVE_HANDLE +
+                            " but argument type is not a function");
+                        var errorObject = {};
+                        errorObject.code = kony.sdk.errorcodes.invalid_custom_data_save_handle;
+                        errorObject.message = kony.sdk.errormessages.invalid_custom_data_save_handle;
+                        isError = true;
+                        loginHelperFunction(null, null, null, isError, errorObject);
+                        return;
+                    }
+
+                    kony.sdk.logsdk.info("calling user's " + kony.sdk.constants.CUSTOM_DATA_SAVE_HANDLE);
+                    userCustomDataSaveHandle(_openWindowInSelfMode, function (err) {
+                        kony.sdk.logsdk.error("Error occurred while performing customDataSaveHandle.");
+                        var errorObject = {};
+                        errorObject.code = kony.sdk.errorcodes.custom_data_save_handle_failed;
+                        errorObject.message = kony.sdk.errormessages.custom_data_save_handle_failed;
+                        isError = true;
+                        loginHelperFunction(null, null, null, isError, errorObject);
+                        return;
+                    })
+                }
+
+                function _openWindowInSelfMode() {
+                    var config = {};
+                    config[kony.sdk.constants.KEY_URL] = requestUrl;
+                    config[kony.sdk.constants.KEY_IS_SAME_WINDOW] = true;
+                    kony.application.openURLAsync(config);
+                }
+            }
         } else {
-            _popup = _window.open(requestUrl);
+            if (kony.os.deviceInfo().name === kony.sdk.constants.PLATFORM_SPA
+                && !kony.sdk.util.isMobileDevice()
+                && kony.sdk.util.isPWAStandaloneOrFullscreen()) {
+                _popup = kony.sdk.util.openPopupWindow(requestUrl, "");
+            } else {
+                _popup = _window.open(requestUrl);
+            }
         }
 	}
 	else {
 		var browserSF = null;
 		var userDefined = false;
+        var userDefinedBrowserEvent = null;
         if(kony.sdk.util.hasBrowserWidget(options)){
             browserSF = options[kony.sdk.constants.BROWSER_WIDGET];
 			userDefined = true;
@@ -15736,14 +16555,17 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
             if (options && options["success_url"] && isMFVersionCompatible)
                 requestUrl += "&success_url="+options["success_url"];
 
+            requestUrl = utilityInstancePKCE.appendCodeChallengeOnURL(requestUrl);
 			if (options && options["UseDeviceBrowser"] && isMFVersionCompatible) {
 				kony.application.openURL(requestUrl);
 				return;
             } else {
                 isLoginCallbackInvoked = false;
                 //#ifdef PLATFORM_NATIVE_ANDROID
+                verifyAndStoreDefinedBrowserEvent(browserSF.onPageStarted);
                 browserSF.onPageStarted = handleRequestCallback;
                 //#else
+                verifyAndStoreDefinedBrowserEvent(browserSF.handleRequest);
                 browserSF.handleRequest = handleRequestCallback;
                 //#endif
                 requestUrl = appendCustomOAuthParamsToURL(requestUrl);
@@ -15753,7 +16575,7 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
             URL: requestUrl,
             requestMethod: constants.BROWSER_REQUEST_METHOD_GET
         };
-        if(Object.keys(headersConf).length > 0){
+        if(!isLogout && Object.keys(headersConf).length > 0){
             urlConf["headers"] = headersConf;
         }
         browserSF.requestURLConfig = urlConf;
@@ -15795,6 +16617,29 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
 			prevForm.show();
 		}
 
+        function verifyAndStoreDefinedBrowserEvent(browserEvent) {
+            if(browserEvent !== null) {
+                userDefinedBrowserEvent = browserEvent;
+            }
+        }
+
+        function verifyAndCallUserDefinedBrowserEvent(browserWidget, params) {
+            if(userDefinedBrowserEvent !== null) {
+                userDefinedBrowserEvent(browserWidget, params);
+            }
+        }
+
+        function resetOAuthLoginUserDefinedBrowserEvent(browserWidget) {
+            //Resetting the overridden onPageStarted/handleRequest callbacks to user defined callback after invoking /token call.
+            //If not reset, when the user does login next time using same browser widget, overridden SDK's handleRequestCallback
+            //is considered as user defined callback on these events. This ends up calling handleRequestCallback again.
+            //#ifdef PLATFORM_NATIVE_ANDROID
+            browserWidget.onPageStarted = userDefinedBrowserEvent;
+            //#else
+            browserWidget.handleRequest = userDefinedBrowserEvent;
+            //#endif
+        }
+
 		function handleRequestCallback(browserWidget, params) {
 
 			var originalUrl = params["originalURL"];
@@ -15812,7 +16657,9 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
                         // make request for tokens
                         kony.timer.schedule(new Date().getTime().toString(), function (url, callback, code, headers) {
                             return function () {
-                                callback(url, {code: code}, headers);
+                                var bodyParams = {code: code};
+                                bodyParams = utilityInstancePKCE.appendCodeVerifierInBodyParams(bodyParams);
+                                callback(url, bodyParams, headers);
                             };
                         }(urlType + "token", callback, decodeURIComponent(params.queryParams.code), headers), 1, false);
                         isLoginCallbackInvoked = true;
@@ -15824,6 +16671,10 @@ function OAuthHandler(serviceUrl, providerName, appkey, callback, type, options,
                     isLoginCallbackInvoked = true;
                     callback(urlType, {error: decodeURIComponent(params.queryParams.error)}, headers, true);
                 }
+            }
+            verifyAndCallUserDefinedBrowserEvent(browserWidget, params);
+            if(isLoginCallbackInvoked) {
+                resetOAuthLoginUserDefinedBrowserEvent(browserWidget);
             }
 			return false;
 		}
@@ -15851,12 +16702,14 @@ function handleDeeplinkCallback(params){
             requestUrl = "/login";
         }
         // make request for tokens
-        kony.sdk.util.OAuthCallback(requestUrl, {code: decodeURIComponent(params.launchparams.code)}, headers);
+        var bodyParams = {code: decodeURIComponent(params.launchparams.code)};
+        var utilityInstancePKCE = kony.sdk.util.getUtilityForPKCE();
+        bodyParams = utilityInstancePKCE.appendCodeVerifierInBodyParams(bodyParams);
+        kony.sdk.util.OAuthCallback(requestUrl, bodyParams , headers);
     }
 }
 
 //#endif
-
 
 if(kony.sdk){
 	kony.sdk.offline = {};
@@ -16260,7 +17113,6 @@ kony.sdk.util.deleteSSOToken = function () {
 };
 
 //#endif
-
 var KNYMobileFabric = null;
 var KNYMetricsService = null;
 var KNYMessagingService = null;
@@ -16336,7 +17188,21 @@ kony.setupsdks = function (initConfig, successCallBack, errorCallBack) {
                     return null;
                 }
             } else {
-                dsAppServiceDoc = JSON.parse(dsAppServiceDoc);
+                // App getting crashed while trying to parse encrypted AppServiceDoc data.
+                // To handle this scenario adding try catch and checking for salt key. If salt key is available
+                // setting flag to true and calling same getAppConfigFromCache() again to decrypt the data else returning null
+                try {
+                    dsAppServiceDoc = JSON.parse(dsAppServiceDoc);
+                } catch (err) {
+                    if(!kony.sdk.isNullOrUndefined(kony.sdk.dataStore.getItem(kony.sdk.util.prefixAppid(kony.sdk.constants.SHARED_CLIENT_IDENTIFIER)))) {
+                        kony.sdk.logsdk.debug("Setting Encryption App Config flag to true");
+                        kony.sdk.dataStore.setItem(kony.sdk.util.prefixAppid(kony.sdk.constants.ENCRYPTION_APPCONFIG_FLAG), true);
+                        return getAppConfigFromCache();
+                    } else {
+                        kony.sdk.logsdk.debug("Failed to parse App Service Doc data form Cache" + err );
+                        return null;
+                    }
+                }
             }
         } else {
             kony.sdk.logsdk.debug("Failed to retrieve config data form Cache");
@@ -16461,19 +17327,18 @@ kony.setupsdks = function (initConfig, successCallBack, errorCallBack) {
         }
     }
 
-    if (kony.sdk.isLicenseUrlAvailable && kony.license && kony.license.createSession) {
-        kony.license.createSession();
-    }
-
     try {
         // Pass the appkey, appSecret, SvcDoc to initWithServiceDoc
         KNYMobileFabric.initWithServiceDoc(acceptedMfAppMetaData.appKey, acceptedMfAppMetaData.appSecret, acceptedSvcDoc);
         // set eventtypes for APM
         KNYMetricsService = initializeMetricsForAPM(KNYMobileFabric, initConfig.eventTypes);
-        //Call anonymous login to avoid delay in first call invocation
-        // or to avoid timing issues in case of parallel service calls at application startup.
-        // This is an asynchronous call, and it is  good to have at this place. Can be removed if we see delays in App launch
-        callAnonymousLoginIfRequired(KNYMobileFabric);
+        if (kony.sdk.getPlatformName() !== kony.sdk.constants.PLATFORM_THIN_CLIENT) {
+            //Call anonymous login to avoid delay in first call invocation
+            // or to avoid timing issues in case of parallel service calls at application startup.
+            // This is an asynchronous call, and it is  good to have at this place. Can be removed if we see delays in App launch
+            callAnonymousLoginIfRequired(KNYMobileFabric);
+        }
+
         // call successcallback if exists
         kony.sdk.verifyAndCallClosure(successCallBack, KNYMobileFabric);
     } catch (error) {
@@ -16751,7 +17616,6 @@ kony.invokeEASMetaServiceWithLiteInit = function (appCredentials, versionCheckOp
         }
     }
 };
-
 kony.sdk.util = kony.sdk.util || {};
 
 function konyLogger() {
@@ -17331,6 +18195,41 @@ function konyDataStore() {
         }
         return items;
     }
+
+    /**
+     * This method first encrypt the value and save encrypted value against the given key
+     * @param key
+     * @param value -can accept JSON(converts to string) or plain string only
+     */
+    this.setSecureItem = function (key, value) {
+        kony.sdk.logsdk.info("saving data after encryption of plain data");
+        if (kony.sdk.util.isJsonObject(value)) {
+            value = JSON.stringify(value);
+        }
+        var encryptionKey = [kony.sdk.util.getSharedClientId()];
+        var encryptionAlgorithm = kony.sdk.constants.ENCRYPTION_ALGO_AES;
+        var securedValue = kony.sdk.util.encryptText(value, encryptionKey, encryptionAlgorithm);
+        this.setItem(key, securedValue);
+    }
+
+    /**
+     * This method retrieves saved encrypted value and decrypt it into original value
+     * @param key
+     * @returns {*} can return JSON if value is parsed or string otherwise
+     */
+    this.getSecureItem = function (key) {
+        kony.sdk.logsdk.info("retrieving encrypted data as plain data");
+        var value = this.getItem(key);
+        var encryptionKey = [kony.sdk.util.getSharedClientId()];
+        var decryptionAlgorithm = kony.sdk.constants.ENCRYPTION_ALGO_AES;
+        var securedValue = kony.sdk.util.decryptText(value, encryptionKey, decryptionAlgorithm);
+        if (kony.sdk.isJson(securedValue)) {
+            securedValue = JSON.parse(securedValue);
+        }
+
+        return securedValue;
+    }
+
 }
 
 function parseHttpResponse(httpRequest){
@@ -17642,9 +18541,9 @@ kony.sdk.util.saveMetadatainDs = function (appKey, appSecret, servConfig) {
 
     kony.sdk.dataStore.setItem(kony.sdk.constants.TOOLS_ETAG_ID, servConfig.service_doc_etag);
     kony.sdk.logsdk.debug("Update done. Current version = " + kony.sdk.getCurrentInstance().mainRef.config.service_doc_etag + " Updated to " + servConfig.service_doc_etag);
-
     kony.sdk.dataStore.setItem(kony.sdk.util.prefixAppid(kony.sdk.constants.MOBILE_FABRIC_SERVICE_DOC), kony.sdk.util.encryptAppConfig(JSON.stringify(servConfig)));
     kony.sdk.dataStore.setItem(appConfig.appId, JSON.stringify(appId));
+    kony.sdk.dataStore.setItem(kony.sdk.util.prefixAppid(kony.sdk.constants.ENCRYPTION_APPCONFIG_FLAG), true);
 
     kony.sdk.logsdk.info("### saveMetadatainDs:: metadata saved successfuly in dataStore");
 };
@@ -17655,10 +18554,26 @@ kony.sdk.util.saveMetadatainDs = function (appKey, appSecret, servConfig) {
 kony.sdk.util.deleteMetadatafromDs = function () {
 
     kony.sdk.dataStore.removeItem(appConfig.appId);
-    kony.sdk.dataStore.removeItem(kony.sdk.util.prefixAppid(kony.sdk.constants.MOBILE_FABRIC_SERVICE_DOC));
 
+    kony.sdk.dataStore.removeItem(kony.sdk.util.prefixAppid(kony.sdk.constants.MOBILE_FABRIC_SERVICE_DOC));
     kony.sdk.dataStore.removeItem(kony.sdk.util.prefixAppid(kony.sdk.constants.ENCRYPTION_APPCONFIG_FLAG));
-    kony.sdk.dataStore.removeItem(kony.sdk.util.prefixAppid(kony.sdk.constants.SHARED_CLIENT_IDENTIFIER));
+
+    /** Checking whether Persisted login or Offline login or refresh login tokens are present in secure storage
+     {returns} boolean
+     */
+    function shouldSharedClientIdentifierNeedsToBeRemoved() {
+        return kony.sdk.util.isNullOrUndefinedOrEmptyObject(
+                    kony.sdk.dataStore.getItem(kony.sdk.constants.PERSISTED_AUTH_RESPONSE))
+            && kony.sdk.util.isNullOrUndefinedOrEmptyObject(
+                    kony.sdk.dataStore.getItem(kony.sdk.constants.OFFLINE_LOGIN_AUTH_RESPONSE))
+            && kony.sdk.util.isNullOrUndefinedOrEmptyObject(
+                    kony.sdk.dataStore.getItem(kony.sdk.constants.PERSISTED_REFRESH_LOGIN_PROVIDER_TOKENS));
+    }
+
+    if (shouldSharedClientIdentifierNeedsToBeRemoved()) {
+        kony.sdk.logsdk.debug("### deleteMetadatafromDs:: Login meta not available, deleting identifier.");
+        kony.sdk.dataStore.removeItem(kony.sdk.util.prefixAppid(kony.sdk.constants.SHARED_CLIENT_IDENTIFIER));
+    }
     kony.sdk.logsdk.info("### deleteMetadatafromDs:: metadata deleted successfuly from dataStore");
 };
 
@@ -17698,6 +18613,9 @@ kony.sdk.getFabricAppVersion = function(){
         return MFAppVersion;
     }
     else if (!kony.sdk.isNullOrUndefined(appConfig) && !kony.sdk.isNullOrUndefined(appConfig.runtimeAppVersion)){
+        if(appConfig.runtimeAppVersion == "Default"  && !kony.sdk.isNullOrUndefined(appConfig.svcDoc)){
+            return appConfig.svcDoc.app_default_version;
+        }
         return appConfig.runtimeAppVersion;
     }
 };
@@ -17742,17 +18660,22 @@ kony.sdk.util.decryptSSOToken = function (encryptedtoken) {
 /**
  * Generates key to encrypt/decrypt any text.
  * @param salt {Array}
+ * @param keyStrength {Integer}
  * @returns string
  */
-kony.sdk.util.generateSecureKeyFromText = function (salt) {
+kony.sdk.util.generateSecureKeyFromText = function (salt, keyStrength) {
     var secureKey = "";
 
     if (!kony.sdk.isNullOrUndefined(salt) && kony.sdk.isArray(salt)) {
         var params = {};
         params["passphrasetext"] = salt;
         params["subalgo"] = kony.sdk.constants.ENCRYPTION_ALGO_AES;
-        params["passphrasehashalgo"] = kony.sdk.constants.HASH_FUNCTION_MD5;
-        secureKey = kony.crypto.newKey(kony.sdk.constants.ENC_TYPE_PASSPHRASE, 128, params);
+        if(kony.sdk.getPlatformName() === kony.sdk.constants.PLATFORM_IOS && keyStrength === kony.sdk.constants.AES_ALGO_KEY_STRENGTH_256) {
+            params[kony.sdk.constants.ENC_PASSPHRASE_HASH_ALGO] = kony.sdk.constants.HASH_FUNCTION_SHA2;
+        } else {
+            params[kony.sdk.constants.ENC_PASSPHRASE_HASH_ALGO] = kony.sdk.constants.HASH_FUNCTION_MD5;
+        }
+        secureKey = kony.crypto.newKey(kony.sdk.constants.ENC_TYPE_PASSPHRASE, keyStrength, params);
     }
     else {
         throw new Exception(kony.sdk.errorConstants.CONFIGURATION_FAILURE, "Invalid param. salt cannot be null, should be of type Array");
@@ -17770,7 +18693,10 @@ kony.sdk.util.generateSecureKeyFromText = function (salt) {
  */
 kony.sdk.util.encryptText = function (text, salt, encryptionAlgo) {
     try {
-        var encryptionKey = kony.sdk.util.generateSecureKeyFromText(salt);
+        var encryptionKey = kony.sdk.util.generateSecureKeyFromText(salt, kony.sdk.constants.AES_ALGO_KEY_STRENGTH_256);
+        if(kony.sdk.isNullOrUndefined(encryptionKey)) {
+            encryptionKey = kony.sdk.util.generateSecureKeyFromText(salt, kony.sdk.constants.AES_ALGO_KEY_STRENGTH_128);
+        }
         var encryptedText = kony.crypto.encrypt(encryptionAlgo, encryptionKey, text, {});
         if(kony.sdk.isNullOrUndefined(encryptedText) || encryptedText == "") {
             kony.sdk.util.recordCustomEvent("INVALID CRYPTO RESPONSE", "encryptedText: " + encryptedText, "encryptedText: null or EMPTY", "cipher", null);
@@ -17787,26 +18713,80 @@ kony.sdk.util.encryptText = function (text, salt, encryptionAlgo) {
 };
 
 /**
- * Decrypts text with the given salt and encryptionAlgo.
+ * Decrypts text with given decryptionAlgo and decryptionKey
  * @param text to be decrypted
- * @param salt additional input to a one-way function that "hashes" data
- * @param encryptionAlgo algo to be used to decrypt
+ * @param salt additional input to a one-way function that "hashes" data in case of fallback
+ * @param decryptionAlgo algo to be used to decrypt
+ * @param decryptionKey key to be used to decrypt
  * @returns decrypted string
  */
-kony.sdk.util.decryptText = function (text, salt, decryptionAlgo) {
+kony.sdk.util.performDecryption = function (text, salt, decryptionAlgo, decryptionKey) {
     try {
-        var decryptionKey = kony.sdk.util.generateSecureKeyFromText(salt);
         // convert base64 to rawbytes
         var raw_text = kony.sdk.util.convertBase64ToRawBytes(text);
 
         var decryptText = kony.crypto.decrypt(decryptionAlgo, decryptionKey, raw_text, {});
         if(kony.sdk.isNullOrUndefined(decryptText) || decryptText == "") {
             kony.sdk.util.recordCustomEvent("INVALID CRYPTO RESPONSE", "get decryptText: " + text, "decryptText: null", "decipher", null);
+            if(isKeyStrength256ForDecryption) {
+                isKeyStrength256ForDecryption = false;
+                decryptText = kony.sdk.util.fallBackToAES128ForDecryption(text, salt, decryptionAlgo);
+            }
         }
         return decryptText;
     } catch (exception) {
         kony.sdk.logsdk.error("Exception occurred while converting to raw text, exception :", exception);
         kony.sdk.util.recordCustomEvent("INVALID CRYPTO RESPONSE", "get decryptText: " + text, "decryptText: exception", "decipher", null);
+    }
+};
+
+/**
+ * Initiates text decryption with the given salt and encryptionAlgo 128 bit
+ * Immediate encryption with 256 bit is initiated for cases where 256 bit is supported and are using 128 bit until now
+ * @param text to be decrypted
+ * @param salt additional input to a one-way function that "hashes" data
+ * @param decryptionAlgo algo to be used to decrypt
+ * @returns decrypted string
+ */
+kony.sdk.util.fallBackToAES128ForDecryption = function(text, salt, decryptionAlgo) {
+    try {
+        var decryptionKey = kony.sdk.util.generateSecureKeyFromText(salt, kony.sdk.constants.AES_ALGO_KEY_STRENGTH_128);
+        var decryptText = kony.sdk.util.performDecryption(text, salt, decryptionAlgo, decryptionKey);
+        kony.sdk.util.encryptText(decryptText, salt, kony.sdk.constants.ENCRYPTION_ALGO_AES);
+
+        return decryptText;
+    } catch (exception) {
+        kony.sdk.logsdk.error("Exception occurred while decrypting text using AES 128, exception :", exception);
+    }
+};
+
+/**
+ * Flag to maintain info on decryption key size
+ * @type {boolean}
+ */
+isKeyStrength256ForDecryption = true;
+
+/**
+ * Initiates text decryption with the given salt and encryptionAlgo 256 bit and falls back to 128 bit in cases of 256 bit not being supported
+ * @param text to be decrypted
+ * @param salt additional input to a one-way function that "hashes" data
+ * @param decryptionAlgo algo to be used to decrypt
+ * @returns decrypted string
+ */
+kony.sdk.util.decryptText = function (text, salt, decryptionAlgo) {
+    try {
+        var decryptedText = null;
+        var decryptionKey = kony.sdk.util.generateSecureKeyFromText(salt, kony.sdk.constants.AES_ALGO_KEY_STRENGTH_256);
+        if(!kony.sdk.isNullOrUndefined(decryptionKey)) {
+            isKeyStrength256ForDecryption = true;
+            decryptedText = kony.sdk.util.performDecryption(text, salt, decryptionAlgo, decryptionKey);
+        } else {
+            isKeyStrength256ForDecryption = false;
+            decryptedText = kony.sdk.util.fallBackToAES128ForDecryption(text, salt, decryptionAlgo);
+        }
+        return decryptedText;
+    } catch (exception) {
+        kony.sdk.logsdk.error("Exception occurred while decrypting text using AES 256, exception :", exception);
     }
 };
 
@@ -17908,7 +18888,6 @@ kony.sdk.util.loadMetadataFromDs = function (dsAppMetaData, dsAppServiceDoc) {
 kony.sdk.util.getSharedClientId = function() {
     if(kony.sdk.isNullOrUndefined(kony.sdk.dataStore.getItem(kony.sdk.util.prefixAppid(kony.sdk.constants.SHARED_CLIENT_IDENTIFIER)))) {
         kony.sdk.dataStore.setItem(kony.sdk.util.prefixAppid(kony.sdk.constants.SHARED_CLIENT_IDENTIFIER), kony.license.generateUUID());
-        kony.sdk.dataStore.setItem(kony.sdk.util.prefixAppid(kony.sdk.constants.ENCRYPTION_APPCONFIG_FLAG), true);
         kony.sdk.util.recordCustomEvent("INVALID SHARED CLIENT_ID", "Generated new SharedClient ID", "SCID: NEW_VALUE", "decipher", null);
     }
     var sharedClientID = kony.sdk.dataStore.getItem(kony.sdk.util.prefixAppid(kony.sdk.constants.SHARED_CLIENT_IDENTIFIER));
@@ -17985,8 +18964,578 @@ kony.sdk.util.recordAndFlushCustomEvent = function(eventSubType, formID, widgetI
     }
 };
 
+/**
+ * Utility function to store, get and remove refresh tokens from datastore
+ */
+kony.sdk.util.getRefreshLoginTokenStoreUtility = (function() {
+    var refreshLoginTokenStoreUtilitySingletonObject = null;
+
+    function refreshLoginTokenStoreUtility() {
+        var currentObject = this;
+
+        /**
+         * This is an utility method to retrieve the persisted refresh login provider tokens
+         * @returns {Object} - JSON Object containing all persisted login provider tokens
+         */
+        var getPersistedRefreshLoginProviderTokensObject = function() {
+            kony.sdk.logsdk.perf("Entering getPersistedRefreshLoginProviderTokensObject");
+            var encryptedPersistedRefreshLoginProviderTokens = kony.sdk.dataStore.getItem(kony.sdk.constants.PERSISTED_REFRESH_LOGIN_PROVIDER_TOKENS);
+            var persistedRefreshLoginProviderTokensObject = null;
+
+            if(!kony.sdk.isNullOrUndefined(encryptedPersistedRefreshLoginProviderTokens)) {
+                kony.sdk.logsdk.info("decrypting persisted refresh login tokens");
+                var decryptedPersistedRefreshLoginProviderTokens = kony.sdk.util.decryptText(encryptedPersistedRefreshLoginProviderTokens, [kony.sdk.util.getSharedClientId()], kony.sdk.constants.ENCRYPTION_ALGO_AES);
+                if(!kony.sdk.isNullOrUndefined(decryptedPersistedRefreshLoginProviderTokens) && kony.sdk.isJson(decryptedPersistedRefreshLoginProviderTokens)) {
+                    kony.sdk.logsdk.info("parsing decrypted persisted refresh login tokens");
+                    persistedRefreshLoginProviderTokensObject = JSON.parse(decryptedPersistedRefreshLoginProviderTokens);
+                } else {
+                    kony.sdk.logsdk.warn("failed to decrypt " + kony.sdk.constants.PERSISTED_REFRESH_LOGIN_PROVIDER_TOKENS + " for refresh login");
+                }
+
+                kony.sdk.logsdk.info("returning persisted refresh login tokens");
+            } else {
+                kony.sdk.logsdk.info("there are no available persisted refresh login tokens");
+            }
+
+            return persistedRefreshLoginProviderTokensObject;
+        }
+
+        /**
+         * This is an utility method to store refresh login tokens in datastore
+         * @param {JSON} refreshLoginProviderTokensObject - JSON Object containing provider specific refresh tokens as key, value pairs
+         */
+        var storePersistedRefreshLoginProviderTokensObject = function(refreshLoginProviderTokensObject) {
+            kony.sdk.logsdk.perf("Entering storePersistedRefreshLoginProviderTokensObject");
+
+            if(kony.sdk.isNullOrUndefined(refreshLoginProviderTokensObject)) {
+                return;
+            }
+
+            var stringifiedRefreshLoginProviderTokens = JSON.stringify(refreshLoginProviderTokensObject);
+            kony.sdk.logsdk.info("encrypting refresh login tokens object and persisting");
+            var encryptedRefreshLoginProviderTokens = kony.sdk.util.encryptText(stringifiedRefreshLoginProviderTokens, [kony.sdk.util.getSharedClientId()], kony.sdk.constants.ENCRYPTION_ALGO_AES);
+            kony.sdk.dataStore.setItem(kony.sdk.constants.PERSISTED_REFRESH_LOGIN_PROVIDER_TOKENS, encryptedRefreshLoginProviderTokens);
+        }
+
+        /**
+         * This is an utility method used to remove all persisted refresh login provider tokens from datastore
+         */
+        this.removeAllPersistedRefreshLoginProviderTokens = function() {
+            kony.sdk.logsdk.perf("Entering removeAllPersistedRefreshLoginProviderTokens");
+            kony.sdk.dataStore.removeItem(kony.sdk.constants.PERSISTED_REFRESH_LOGIN_PROVIDER_TOKENS);
+        }
+
+        /**
+         * This function is used to store the refresh tokens based on provider
+         * @param {string} provider - name of the provider for which the refresh tokens needs to be stored
+         * @param {Object} tokensData - JSON Object containing both backend and internal refresh tokens for the provided provider
+         */
+        this.storeTokens = function(provider, tokensData) {
+            kony.sdk.logsdk.perf("Entering storeTokens");
+
+            if(kony.sdk.util.isNullOrEmptyString(provider) || kony.sdk.util.isNullOrUndefinedOrEmptyObject(tokensData)){
+                return;
+            }
+
+            var persistedRefreshLoginProviderTokensObject = getPersistedRefreshLoginProviderTokensObject();
+            if(kony.sdk.isNullOrUndefined(persistedRefreshLoginProviderTokensObject)) {
+                persistedRefreshLoginProviderTokensObject = {};
+            }
+
+            persistedRefreshLoginProviderTokensObject[provider] = tokensData;
+            kony.sdk.logsdk.info("persisting refresh login tokens in datastore");
+            storePersistedRefreshLoginProviderTokensObject(persistedRefreshLoginProviderTokensObject);
+            kony.sdk.logsdk.info("successfully stored refresh login tokens");
+        }
+
+        /**
+         * This function gets the persisted refresh tokens
+         * @param {string} provider - name of the provider for which the refresh tokens data needs to be retrieved
+         * @returns {Object} - JSON Object containing provider specific internal and backend refresh token
+         */
+        this.getTokens = function(provider) {
+            kony.sdk.logsdk.perf("Entering getTokens");
+            if(kony.sdk.util.isNullOrEmptyString(provider)) {
+                return null;
+            }
+
+            kony.sdk.logsdk.info("Fetching refresh login provider tokens from datastore");
+            var persistedRefreshLoginProviderTokensObject = getPersistedRefreshLoginProviderTokensObject();
+            var providerTokens = null;
+
+            if(!kony.sdk.isNullOrUndefined(persistedRefreshLoginProviderTokensObject)) {
+                providerTokens = persistedRefreshLoginProviderTokensObject[provider];
+            }
+
+            kony.sdk.logsdk.info("returning provider specific tokens");
+            return providerTokens;
+        }
+
+        /**
+         * This function removes the persisted refresh tokens for the provider
+         * @param {string} provider - name of the provider for which the refresh tokens have to be removed
+         */
+        this.removeTokens = function(provider) {
+            kony.sdk.logsdk.perf("Entering removeTokens");
+            if(kony.sdk.util.isNullOrEmptyString(provider)) {
+                return null;
+            }
+
+            kony.sdk.logsdk.info("Fetching refresh login provider tokens from datastore");
+            var persistedRefreshLoginProviderTokensObject = getPersistedRefreshLoginProviderTokensObject();
+
+            if(kony.sdk.isNullOrUndefined(persistedRefreshLoginProviderTokensObject)) {
+                return;
+            }
+
+            kony.sdk.logsdk.info("removing provider specific tokens from datastore");
+            delete persistedRefreshLoginProviderTokensObject[provider];
+
+            if(Object.keys(persistedRefreshLoginProviderTokensObject).length === 0) {
+                //removing persistedRefreshLoginProviderTokens from datastore
+                currentObject.removeAllPersistedRefreshLoginProviderTokens();
+            } else {
+                storePersistedRefreshLoginProviderTokensObject(persistedRefreshLoginProviderTokensObject);
+            }
+        }
+
+        /**
+         * This function returns the provider specific token (token can be internal or backend refresh token based on tokenType)
+         * @param provider - name of the provider for which the token has to be retrieved
+         * @param tokenType - internal / backend refresh token constant
+         * @returns token - corresponding internal or backend refresh token
+         */
+        var getToken = function (provider, tokenType) {
+            kony.sdk.logsdk.perf("Entering getToken");
+            var tokensData = currentObject.getTokens(provider);
+            var token = null;
+            if(!kony.sdk.isNullOrUndefined(tokensData)) {
+                token = tokensData[tokenType];
+            }
+
+            return token;
+        }
+
+        /**
+         * This function updates the token (can be internal/refresh) based on the tokenType
+         * @param provider - name of the provider for which the token has to be updated
+         * @param tokenType - type of the token to be updated (internal/refresh token)
+         */
+        var setToken = function (provider, tokenType, token) {
+            kony.sdk.logsdk.perf("Entering setToken");
+            var tokensData = currentObject.getTokens(provider);
+
+            if(!kony.sdk.isNullOrUndefined(tokensData)) {
+                tokensData[tokenType] = token;
+                currentObject.storeTokens(provider, tokensData);
+            }
+        }
+
+        /**
+         * This function gets the internal refresh token for the given provider
+         * @param {string} provider - name of the provider for which the internal refresh token has to be retrieved
+         * @returns {string} internal refresh token for the given provider, returns null if provider is invalid
+         */
+        this.getInternalRefreshToken = function(provider) {
+            kony.sdk.logsdk.perf("Entering getInternalRefreshToken");
+            return getToken(provider, kony.sdk.constants.INTERNAL_REFRESH_TOKEN);
+        }
+
+        /**
+         * This function set the internal refresh token for the give providers
+         * @param {string/Array} providers - name of the provider/providers for which the given internal refresh token has to be updated
+         * @param {string} internalRefreshToken - internal refresh token for the given provider
+         */
+        this.setInternalRefreshToken = function(providers, internalRefreshToken) {
+            kony.sdk.logsdk.perf("Entering setInternalRefreshToken");
+
+            //if given list of providers
+            if(!kony.sdk.isNullOrUndefined(providers) && (providers.constructor === Array)) {
+                var persistedRefreshLoginProviderTokens = getPersistedRefreshLoginProviderTokensObject();
+
+                if(kony.sdk.isNullOrUndefined(persistedRefreshLoginProviderTokens)) {
+                    kony.sdk.logsdk.warn("there are no refresh login providers in data store, so provided backend refresh tokens can't be updated");
+                    return;
+                }
+
+                var persistedProvidersList = Object.keys(persistedRefreshLoginProviderTokens);
+
+                if(!kony.sdk.isNullOrUndefined(persistedProvidersList)) {
+                    for (var index = 0; index < providers.length; index++) {
+                        if(persistedProvidersList.indexOf(providers[index]) != -1) {
+                            persistedRefreshLoginProviderTokens[providers[index]][kony.sdk.constants.INTERNAL_REFRESH_TOKEN] = internalRefreshToken;
+                        }
+                    }
+
+                    //store the updated tokens in data store
+                    storePersistedRefreshLoginProviderTokensObject(persistedRefreshLoginProviderTokens);
+                }
+            } else { // if given a provider
+                setToken(providers, kony.sdk.constants.INTERNAL_REFRESH_TOKEN, internalRefreshToken);
+            }
+        }
+
+        /**
+         * This function gets the backend refresh token for the given provider
+         * @param {string} provider - name of the provider for which the backend refresh token has to be retrieved
+         * @returns {string} backendRefreshToken - backend refresh token for the given provider
+         */
+        this.getBackendRefreshToken = function(provider) {
+            kony.sdk.logsdk.perf("Entering getBackendRefreshToken");
+            return getToken(provider, kony.sdk.constants.BACKEND_REFRESH_TOKEN);
+        }
+
+        /**
+         * This function updates the backend refresh token for the given provider
+         * @param {string} provider - name of the provider for which the given backendRefreshToken has to be updated
+         * @param {string} backendRefreshToken - backend refresh token for the given provider
+         */
+        this.setBackendRefreshToken = function (provider, backendRefreshToken) {
+            kony.sdk.logsdk.perf("Entering setBackendRefreshToken");
+            setToken(provider, kony.sdk.constants.BACKEND_REFRESH_TOKEN, backendRefreshToken);
+        }
+
+        /**
+         * This function returns JSON object of all the persisted internal and refresh tokens with provider
+         * @returns {Object} - JSON object containing aggregate of internal and backend refresh tokens
+         */
+        this.getAllPersistedRefreshLoginProviderTokens = function () {
+            kony.sdk.logsdk.perf("Entering getAllPersistedRefreshLoginProviderTokens");
+            return getPersistedRefreshLoginProviderTokensObject();
+        }
+
+        /**
+         * This function updates backend refresh tokens for the given providers
+         * @param {Object} backendRefreshTokens - JSON object containing provider name as key and value as backend refresh token
+         */
+        this.setBulkBackendRefreshTokens = function (backendRefreshTokens) {
+            kony.sdk.logsdk.perf("Entering setBulkBackendRefreshTokens");
+            if(kony.sdk.isNullOrUndefined(backendRefreshTokens) || !(backendRefreshTokens instanceof Object)) {
+                kony.sdk.logsdk.warn("provided backend refresh tokens are null/undefined or not an Object type");
+                return;
+            }
+
+            var persistedRefreshLoginProviderTokens = getPersistedRefreshLoginProviderTokensObject();
+            if(kony.sdk.isNullOrUndefined(persistedRefreshLoginProviderTokens)) {
+                kony.sdk.logsdk.warn("there are no refresh login providers in data store, so provided backend refresh tokens can't be updated");
+                return;
+            }
+
+            var persistedProvidersList = Object.keys(persistedRefreshLoginProviderTokens);
+            if (!kony.sdk.isNullOrUndefined(persistedProvidersList)) {
+                var providers = Object.keys(backendRefreshTokens);
+                var provider = null;
+
+                for (var index = 0; index < providers.length; index++) {
+                    provider = providers[index];
+                    if (persistedProvidersList.indexOf(provider) != -1) {
+                        if (!kony.sdk.isNullOrUndefined(backendRefreshTokens[provider])) {
+                            persistedRefreshLoginProviderTokens[provider][kony.sdk.constants.BACKEND_REFRESH_TOKEN] = backendRefreshTokens[provider];
+                        } else {
+                            kony.sdk.logsdk.warn("backend refresh token for " + provider + " is null or undefined");
+                        }
+                    }
+                }
+
+                //store the updated tokens in data store
+                storePersistedRefreshLoginProviderTokensObject(persistedRefreshLoginProviderTokens);
+            }
+        }
+    }
+
+    return function() {
+        if (kony.sdk.isNullOrUndefined(refreshLoginTokenStoreUtilitySingletonObject)) {
+            refreshLoginTokenStoreUtilitySingletonObject = new refreshLoginTokenStoreUtility();
+        }
+        return refreshLoginTokenStoreUtilitySingletonObject;
+    };
+
+})();
+
+/**
+ * Utility function for PKCE enablement in Oauth flows
+ * @return singleton utility object
+ */
+kony.sdk.util.getUtilityForPKCE = (function () {
+    var utilityObject = null;
+
+    /**
+     * Helper class containing methods for generating code verifier, code challenge,
+     * updating url & body params
+     */
+    function helperClassPKCE() {
+        var secureParams = null;
+
+        /**
+         * This method resets code verifier & code challenge to null
+         * @return void
+         */
+        this.resetPKCEObject = function () {
+            kony.sdk.logsdk.debug("secure params reset");
+            secureParams = null;
+        };
+
+        /**
+         * This method resets runtime utility object's PKCE values
+         * and tries to generates code verifier & code challenge
+         * @return void
+         */
+        this.initializePKCEObject = function () {
+            utilityObject.resetPKCEObject();
+            try {
+                var code_verifier = kony.crypto.generateSecureRandom({
+                    "size": 43, "type": "base64"
+                });
+                code_verifier = replaceUnwantedCharacters(code_verifier);
+                code_verifier = code_verifier.substring(0, 128);
+
+                var base64table = {"returnBase64String": "true"};
+                var code_challenge = kony.crypto.createHash(kony.sdk.constants.HASHING_ALGORITHM, code_verifier, base64table);
+                code_challenge = replaceUnwantedCharacters(code_challenge);
+
+                if (!kony.sdk.isNullOrUndefined(code_verifier) && !kony.sdk.isNullOrUndefined(code_challenge)) {
+                    kony.sdk.logsdk.debug("secure params generated");
+                    secureParams = {};
+                    secureParams[kony.sdk.constants.CODE_VERIFIER] = code_verifier;
+                    secureParams[kony.sdk.constants.CODE_CHALLENGE] = code_challenge;
+                } else {
+                    kony.sdk.logsdk.error("secure params generated are null");
+                }
+            } catch (e) {
+                kony.sdk.logsdk.error("could not generated secure params due to "+JSON.stringify(e));
+            }
+        };
+
+        /**
+         * This method replaces unwanted chars present in base64 table to RFC standardized char values
+         * @param base64String - {string}
+         * @return {string} base64 string with unwanted characters replaced
+         */
+        function replaceUnwantedCharacters(base64String) {
+            return base64String.replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=/g, '');
+        }
+
+        /**
+         * This method adds code_challenge & code_challenge_method as queryParams on url
+         * @param {String} url to call for login
+         * @return {String} url with added query params
+         */
+        this.appendCodeChallengeOnURL = function (url) {
+            if (!kony.sdk.isNullOrUndefined(secureParams) && !kony.sdk.isNullOrUndefined(url)) {
+                url += "&" + kony.sdk.constants.CODE_CHALLENGE + "=" + secureParams[kony.sdk.constants.CODE_CHALLENGE]
+                    + "&" + kony.sdk.constants.KEY_CODE_CHALLENGE_METHOD + "=" + kony.sdk.constants.CODE_CHALLENGE_METHOD_VALUE;
+                //after we passed code_challenge, we should no longer keep values with us.
+                secureParams[kony.sdk.constants.CODE_CHALLENGE] = null;
+            }
+            return url;
+        };
+
+        /**
+         * This method adds code_verifier in bodyParams
+         * and destroys runtime utility object's PKCE values for cleanup and avoiding misuse
+         * @param {JSON} bodyParams
+         * @return {JSON} bodyParams with added code_verifier
+         */
+        this.appendCodeVerifierInBodyParams = function (bodyParams) {
+            if (!kony.sdk.isNullOrUndefined(secureParams) && kony.sdk.util.isJsonObject(bodyParams)) {
+                bodyParams[kony.sdk.constants.CODE_VERIFIER] = secureParams[kony.sdk.constants.CODE_VERIFIER];
+                //after we passed code_verifier, last step of login activity will end & we should no longer keep values with us.
+                utilityObject.resetPKCEObject();
+            }
+            return bodyParams;
+        };
+
+    }
+
+    return function () {
+        if (kony.sdk.isNullOrUndefined(utilityObject)) {
+            utilityObject = new helperClassPKCE();
+            Object.freeze(utilityObject);
+        }
+        return utilityObject;
+    }
+})();
+
+/**
+ * Utility function to manage sdk meta data for login in same window
+ */
+kony.sdk.util.getMetaDataManagerForLoginInSameWindow = (function () {
+    var utilityObject = null;
+
+    function MetaDataManager() {
+        var metaData = null;
+        var networkProvider = null;
+        /**
+         * This function returns Middleware endpoint for saving and retrieve values in cookie
+         * @return {*}
+         */
+        function getClientStateEndpoint() {
+            var mainRef = konyRef.mainRef;
+            var middlewareServerUrl = mainRef.config.reportingsvc.session.split("/IST")[0];
+            return middlewareServerUrl + kony.sdk.constants.CODE_VERIFIER_MW_STORE_ENDPOINT;
+        }
+
+        /**
+         * This method sets given value to current object of utility against given key
+         * @param key
+         * @param value
+         */
+        this.setItem = function (key, value) {
+            kony.sdk.logsdk.info("setting value for MetaDataManagerForLoginInSameWindow for key-" + key);
+            metaData.set(key, value);
+        }
+
+        /**
+         * This method returns corresponding value for given key
+         * @param key
+         * @returns {any}
+         */
+        this.getItem = function (key) {
+            kony.sdk.logsdk.info("getting value for MetaDataManagerForLoginInSameWindow for key-" + key);
+            return metaData.get(key);
+        }
+
+        /**
+         * This method retrieves code verifier at Middleware as sdk/browser being a public client should not store locally
+         * successCallback will be called with code verifier body json if call gets passed ,otherwise failureCallback with error.
+         * @param successCallback
+         * @param failureCallback
+         */
+        this.retrieveCodeVerifier = function (successCallback, failureCallback) {
+            kony.sdk.logsdk.info("Entering retrieveCodeVerifier");
+            kony.sdk.claimsRefresh(_getCodeVerifier, failureCallback);
+
+            function _getCodeVerifier() {
+                kony.sdk.logsdk.info("getCodeVerifier's claims passed");
+                var middlewareStateUrl = getClientStateEndpoint();
+                var headers = {};
+                headers[kony.sdk.constants.KONY_AUTHORIZATION_HEADER] = konyRef.currentClaimToken;
+                headers[kony.sdk.constants.APP_KEY_HEADER] = konyRef.mainRef.appKey;
+                headers[kony.sdk.constants.APP_SECRET_HEADER] = konyRef.mainRef.appSecret;
+
+                networkProvider.get(middlewareStateUrl, null, headers, function (response){
+                    kony.sdk.logsdk.info("Exiting retrieveCodeVerifier with success");
+                    kony.sdk.verifyAndCallClosure(successCallback,response);
+                }, function (err) {
+                    kony.sdk.logsdk.error("unable to save the code verifier at middleware " + middlewareStateUrl + " , due to " + err.message);
+                    var errorObject = {};
+                    errorObject.code = kony.sdk.errorcodes.code_verifier_retrieve_failed;
+                    errorObject.message = kony.sdk.errormessages.code_verifier_retrieve_failed;
+                    kony.sdk.verifyAndCallClosure(failureCallback, errorObject);
+                });
+            }
+
+        }
+
+        /**
+         * This method saves code verifier at Middleware as sdk/browser being a public client should not store locally
+         * successCallback will be called if call gets passed ,otherwise failureCallback with error.
+         * @param codeVerifierJSON
+         * @param successCallback
+         * @param failureCallback
+         */
+        this.saveCodeVerifier = function (codeVerifierJSON, successCallback, failureCallback) {
+            kony.sdk.logsdk.info("Entering saveCodeVerifier");
+            kony.sdk.claimsRefresh(_saveCodeVerifier, failureCallback);
+
+            function _saveCodeVerifier() {
+                kony.sdk.logsdk.info("saveCodeVerifier's claims passed");
+                var middlewareStateUrl = getClientStateEndpoint();
+                var headers = {};
+                headers[kony.sdk.constants.KONY_AUTHORIZATION_HEADER] = konyRef.currentClaimToken;
+                headers[kony.sdk.constants.APP_KEY_HEADER] = konyRef.mainRef.appKey;
+                headers[kony.sdk.constants.APP_SECRET_HEADER] = konyRef.mainRef.appSecret;
+
+                networkProvider.post(middlewareStateUrl, codeVerifierJSON, headers, function (response) {
+                    kony.sdk.logsdk.info("Exiting saveCodeVerifier with success");
+                    kony.sdk.verifyAndCallClosure(successCallback, response);
+                }, function (err) {
+                    kony.sdk.logsdk.error("unable to save the code verifier at middleware " + middlewareStateUrl + " , due to " + err.message);
+                    var errorObject = {};
+                    errorObject.code = kony.sdk.errorcodes.code_verifier_save_failed;
+                    errorObject.message = kony.sdk.errormessages.code_verifier_save_failed;
+                    kony.sdk.verifyAndCallClosure(failureCallback, errorObject);
+                }, kony.sdk.constants.CONTENT_TYPE_JSON);
+            }
+
+        }
+
+        /**
+         * This method stores all value in secured way
+         */
+        this.saveMetaData = function () {
+            kony.sdk.logsdk.info("saving data inside MetaDataManagerForLoginInSameWindow");
+            kony.sdk.dataStore.setSecureItem(kony.sdk.constants.KEY_METADATA_SDK_LOGIN_FOR_SAME_WINDOW, this.getMetadataJSON());
+        }
+
+        /**
+         * This method returns all values of Map as JSON
+         * @returns {JSON}
+         */
+        this.getMetadataJSON = function () {
+            kony.sdk.logsdk.info("getting value of MetaDataManagerForLoginInSameWindow in json format");
+            var metaJSON = {};
+            metaData.forEach(function (value, key) {
+                metaJSON[key] = value;
+            });
+            return metaJSON;
+        }
+
+        /**
+         * This method retrieves and returns secured values stored and rehydrate the current util object
+         * @returns {JSON}
+         */
+        this.loadSavedMetaData = function () {
+            kony.sdk.logsdk.info("retrieving saved value of MetaDataManagerForLoginInSameWindow");
+            var metaJSON = kony.sdk.dataStore.getSecureItem(kony.sdk.constants.KEY_METADATA_SDK_LOGIN_FOR_SAME_WINDOW);
+            for (key in metaJSON) {
+                this.setItem(key, metaJSON[key]);
+            }
+            return metaJSON;
+        }
+
+        /**
+         * This method removes stored values
+         */
+        this.removeSavedMetaData = function () {
+            kony.sdk.logsdk.info("removing saved value of MetaDataManagerForLoginInSameWindow");
+            kony.sdk.dataStore.removeItem(kony.sdk.constants.KEY_METADATA_SDK_LOGIN_FOR_SAME_WINDOW);
+        }
+
+        /**
+         * This method initialize metaData object
+         */
+        this.initialize = function () {
+            kony.sdk.logsdk.info("initializing private variable of MetaDataManagerForLoginInSameWindow");
+            metaData = new Map();
+            networkProvider = new konyNetworkProvider();
+        }
+
+        /**
+         * This method removes any stored secured values and make run time values null
+         */
+        this.destroy = function () {
+            kony.sdk.logsdk.info("making internal variable null & removing saved state of MetaDataManagerForLoginInSameWindow");
+            this.removeSavedMetaData();
+            metaData = null;
+        }
+    }
+
+    return function () {
+        kony.sdk.logsdk.info("returning singleton instance of MetaDataManagerForLoginInSameWindow");
+        if (kony.sdk.isNullOrUndefined(utilityObject)) {
+            utilityObject = new MetaDataManager();
+            Object.freeze(utilityObject);
+        }
+        return utilityObject;
+    }
+})();
 //#ifdef PLATFORM_NATIVE_WINDOWS
 //This file is facade layer for intergration of windows offline objects via FFI.
+
+kony.sdk.sdkCommons = kony.sdk.sdkCommons || {};
 
 kony.sdk.OfflineObjects.setToken = function(token){
     var LOG_PREFIX = "kony.sdk.OfflineObjects.setToken";
@@ -18253,6 +19802,48 @@ kony.sdk.httpIntegrity.removeIntegrityCheck = function () {
 	catch(e)
 	{
 		kony.sdk.logsdk.debug("WindowsOfflineObjects is not enabled for this channel"+ JSON.stringify(e));
+	}
+};
+
+kony.sdk.sdkCommons.setGlobalRequestParam = function (paramName, paramValue, paramType) {
+
+    var LOG_PREFIX = "kony.sdk.sdkCommons.setGlobalRequestParam";
+    kony.sdk.logsdk.trace("Entering " + LOG_PREFIX);
+	try
+	{
+		WindowsOfflineObjects.setGlobalRequestParam(paramName, paramValue, paramType);
+	}
+	catch(e)
+	{
+		kony.sdk.logsdk.debug("setGlobalRequestParam is not available for this channel"+ JSON.stringify(e));
+	}
+};
+
+kony.sdk.sdkCommons.removeGlobalRequestParam = function (paramName, paramType) {
+
+    var LOG_PREFIX = "kony.sdk.sdkCommons.removeGlobalRequestParam";
+    kony.sdk.logsdk.trace("Entering " + LOG_PREFIX);
+	try
+	{
+		WindowsOfflineObjects.removeGlobalRequestParam(paramName, paramType);
+	}
+	catch(e)
+	{
+		kony.sdk.logsdk.debug("removeGlobalRequestParam is not available for this channel"+ JSON.stringify(e));
+	}
+};
+
+kony.sdk.sdkCommons.resetGlobalRequestParams = function () {
+
+    var LOG_PREFIX = "kony.sdk.sdkCommons.resetGlobalRequestParams";
+    kony.sdk.logsdk.trace("Entering " + LOG_PREFIX);
+	try
+	{
+		WindowsOfflineObjects.resetGlobalRequestParams();
+	}
+	catch(e)
+	{
+		kony.sdk.logsdk.debug("resetGlobalRequestParams is not available for this channel"+ JSON.stringify(e));
 	}
 };
 //#endif
